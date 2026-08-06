@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 
+import type { NavigationKey } from "@/shared/types/navigation";
 import type { Permission } from "@/shared/types/permissions";
 
 export type RouteAccess = "public" | "protected";
@@ -11,7 +12,7 @@ interface BaseRoute {
 
     path: string;
 
-    titleKey: string;
+    titleKey: NavigationKey;
 
     icon?: ComponentType;
 

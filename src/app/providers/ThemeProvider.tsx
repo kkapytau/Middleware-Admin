@@ -1,17 +1,8 @@
 import { ConfigProvider } from "antd";
 import type { PropsWithChildren } from "react";
 
+import { appTheme } from "@/app/theme";
+
 export function ThemeProvider({ children }: PropsWithChildren) {
-    return (
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorPrimary: "#c20831",
-                    borderRadius: 8,
-                },
-            }}
-        >
-            {children}
-        </ConfigProvider>
-    );
+    return <ConfigProvider theme={appTheme}>{children}</ConfigProvider>;
 }

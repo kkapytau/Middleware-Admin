@@ -1,0 +1,19 @@
+.sidebar {
+    background: #093f6b;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 64px;
+    margin-bottom: 8px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebarLogo {
+    width: 64px;
+}

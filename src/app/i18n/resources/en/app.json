@@ -10,5 +10,12 @@
         "required": "This field is required.",
         "invalidEmail": "Please enter a valid email address.",
         "passwordLength": "Password must contain at least 8 characters."
+    },
+    "navigation": {
+        "login": "Login",
+        "location": "Location",
+        "airports": "Airports",
+        "countries": "Countries",
+        "cities": "Cities"
     }
 }

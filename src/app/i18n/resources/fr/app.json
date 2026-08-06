@@ -1,11 +1,21 @@
 {
     "title": "Middleware Admin",
+
+    "navigation": {
+        "login": "Connexion",
+        "location": "Localisation",
+        "airports": "Aéroports",
+        "countries": "Pays",
+        "cities": "Villes"
+    },
+
     "login": {
         "title": "Middleware Admin",
         "email": "E-mail",
         "password": "Mot de passe",
         "signIn": "Se connecter"
     },
+
     "validation": {
         "required": "Ce champ est obligatoire.",
         "invalidEmail": "Veuillez saisir une adresse e-mail valide.",

@@ -1,13 +1,12 @@
 import { Navigate } from "react-router";
 
 import { isAuthenticated } from "@/app/auth";
-
-import { AppLayout } from "./AppLayout";
+import { AppShell } from "@/shared/components/layout/AppShell";
 
 export function ProtectedLayout() {
     if (!isAuthenticated()) {
         return <Navigate to="/login" replace />;
     }
 
-    return <AppLayout />;
+    return <AppShell />;
 }
