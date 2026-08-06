@@ -1,0 +1,19 @@
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+
+    padding: 24px;
+}
+
+.card {
+    width: 420px;
+}
+
+.title {
+    margin-bottom: 32px;
+
+    text-align: center;
+}

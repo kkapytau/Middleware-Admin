@@ -11,3 +11,5 @@ export function login(token: string): void {
 export function logout(): void {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
 }
+
+export * from "./useAuth";

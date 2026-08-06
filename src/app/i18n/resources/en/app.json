@@ -2,8 +2,13 @@
     "title": "Middleware Admin",
     "login": {
         "title": "Middleware Admin",
-        "username": "Username",
+        "email": "Email",
         "password": "Password",
         "signIn": "Sign In"
+    },
+    "validation": {
+        "required": "This field is required.",
+        "invalidEmail": "Please enter a valid email address.",
+        "passwordLength": "Password must contain at least 8 characters."
     }
 }

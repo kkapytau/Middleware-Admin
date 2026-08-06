@@ -1,20 +1,40 @@
-import { Layout } from "antd";
-import { Outlet } from "react-router";
+import { Button, Layout } from "antd";
+import type { ReactNode } from "react";
+import { useNavigate } from "react-router";
 
-const { Header, Sider, Content } = Layout;
+import { useAuth } from "@/app/auth";
 
-export function AppLayout() {
+const { Header, Content } = Layout;
+
+type Props = {
+    children: ReactNode;
+};
+
+export function AppLayout({ children }: Props) {
+    const navigate = useNavigate();
+    const { signOut } = useAuth();
+
+    const handleLogout = () => {
+        signOut();
+
+        void navigate("/login", {
+            replace: true,
+        });
+    };
+
     return (
         <Layout style={{ minHeight: "100vh" }}>
-            <Sider width={260}>Sidebar</Sider>
+            <Header
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                }}
+            >
+                <Button onClick={handleLogout}>Logout</Button>
+            </Header>
 
-            <Layout>
-                <Header>Header</Header>
-
-                <Content style={{ padding: 24 }}>
-                    <Outlet />
-                </Content>
-            </Layout>
+            <Content>{children}</Content>
         </Layout>
     );
 }

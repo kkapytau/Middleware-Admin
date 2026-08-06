@@ -3,10 +3,13 @@ import { Button, Card, Form, Input, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
-import { login } from "@/app/auth";
+import { useAuth } from "@/app/auth";
+import { emailRule, passwordRule, requiredRule } from "@/shared/validation";
+
+import styles from "./LoginPage.module.scss";
 
 type LoginForm = {
-    username: string;
+    email: string;
     password: string;
 };
 
@@ -15,13 +18,10 @@ const { Title } = Typography;
 export function LoginPage() {
     const { t } = useTranslation("app");
     const navigate = useNavigate();
+    const { signIn } = useAuth();
 
-    const handleSubmit = ({ username, password }: LoginForm) => {
-        if (!username.trim() || !password.trim()) {
-            return;
-        }
-
-        login("demo-token");
+    const handleSubmit = (_values: LoginForm) => {
+        signIn("demo-token");
 
         void navigate("/", {
             replace: true,
@@ -29,56 +29,36 @@ export function LoginPage() {
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 24,
-            }}
-        >
-            <Card
-                style={{
-                    width: 420,
-                }}
-            >
-                <Title
-                    level={3}
-                    style={{
-                        textAlign: "center",
-                        marginBottom: 32,
-                    }}
-                >
+        <div className={styles.page}>
+            <Card className={styles.card}>
+                <Title level={3} className={styles.title}>
                     {t("login.title")}
                 </Title>
 
-                <Form<LoginForm> layout="vertical" onFinish={handleSubmit}>
+                <Form<LoginForm> layout="vertical" onFinish={handleSubmit} requiredMark={false}>
                     <Form.Item
-                        name="username"
-                        label={t("login.username")}
+                        name="email"
+                        label={t("login.email")}
                         rules={[
-                            {
-                                required: true,
-                            },
+                            requiredRule(t("validation.required")),
+                            emailRule(t("validation.invalidEmail")),
                         ]}
                     >
-                        <Input prefix={<UserOutlined />} autoComplete="username" />
+                        <Input prefix={<UserOutlined />} autoComplete="email" />
                     </Form.Item>
 
                     <Form.Item
                         name="password"
                         label={t("login.password")}
                         rules={[
-                            {
-                                required: true,
-                            },
+                            requiredRule(t("validation.required")),
+                            passwordRule(t("validation.passwordLength")),
                         ]}
                     >
                         <Input.Password prefix={<LockOutlined />} autoComplete="current-password" />
                     </Form.Item>
 
-                    <Button htmlType="submit" type="primary" block>
+                    <Button type="primary" htmlType="submit" block>
                         {t("login.signIn")}
                     </Button>
                 </Form>
