@@ -1,3 +1,9 @@
 {
-    "title": "Middleware Admin"
+    "title": "Middleware Admin",
+    "login": {
+        "title": "Middleware Admin",
+        "username": "Nom d'utilisateur",
+        "password": "Mot de passe",
+        "signIn": "Se connecter"
+    }
 }
