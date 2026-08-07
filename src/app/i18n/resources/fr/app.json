@@ -20,5 +20,25 @@
         "required": "Ce champ est obligatoire.",
         "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
         "passwordLength": "Le mot de passe doit contenir au moins 8 caractères."
+    },
+    "actions": {
+        "addEntity": "Ajouter {{entity}}",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "refresh": "Actualiser",
+        "search": "Rechercher",
+        "logout": "Déconnexion"
+    },
+    "statuses": {
+        "metropolitan": "Métropolitain",
+        "regional": "Régional"
+    },
+    "columns": {
+        "airport": "Aéroport",
+        "code": "Code",
+        "city": "Ville",
+        "country": "Pays",
+        "continent": "Continent",
+        "metropolitan": "Métropolitain"
     }
 }

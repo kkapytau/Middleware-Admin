@@ -10,7 +10,7 @@ export function LanguageSwitcher() {
 
     const items: MenuProps["items"] = languages.map((language) => ({
         key: language.code,
-        nativeName: language.nativeName,
+        label: language.nativeName,
     }));
 
     const handleClick: MenuProps["onClick"] = ({ key }) => {

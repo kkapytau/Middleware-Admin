@@ -3,13 +3,10 @@
     justify-content: space-between;
     align-items: center;
 
-    padding-inline: 24px;
-
     background: #fff;
-
-    border-bottom: 1px solid #f0f0f0;
+    padding-inline: 24px;
 }
 
-.title {
-    margin: 0 !important;
+.header :global(.ant-typography) {
+    margin: 0;
 }

@@ -17,5 +17,25 @@
         "airports": "Airports",
         "countries": "Countries",
         "cities": "Cities"
+    },
+    "actions": {
+        "addEntity": "Add {{entity}}",
+        "edit": "Edit",
+        "delete": "Delete",
+        "refresh": "Refresh",
+        "search": "Search",
+        "logout": "Logout"
+    },
+    "statuses": {
+        "metropolitan": "Metropolitan",
+        "regional": "Regional"
+    },
+    "columns": {
+        "airport": "Airport",
+        "code": "Code",
+        "city": "City",
+        "country": "Country",
+        "continent": "Continent",
+        "metropolitan": "Metropolitan"
     }
 }
