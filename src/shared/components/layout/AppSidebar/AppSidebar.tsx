@@ -23,7 +23,7 @@ function buildMenuItems(
             const Icon = route.icon;
 
             return {
-                key: route.path,
+                key: route.type === "page" ? route.path : route.key,
 
                 label: t(route.titleKey),
 

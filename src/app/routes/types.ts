@@ -10,8 +10,6 @@ interface BaseRoute {
 
     access: RouteAccess;
 
-    path: string;
-
     titleKey: NavigationKey;
 
     icon?: ComponentType;
@@ -23,7 +21,7 @@ interface BaseRoute {
 
 export interface PageRoute extends BaseRoute {
     type: "page";
-
+    path: string;
     component: ComponentType;
 }
 
