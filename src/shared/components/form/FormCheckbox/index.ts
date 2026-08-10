@@ -1,1 +1,1 @@
-export * from "./FormCheckbox.tsx";
+export * from "./FormCheckbox";

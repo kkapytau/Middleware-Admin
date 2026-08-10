@@ -1,58 +1,82 @@
-import { Button, Drawer } from "antd";
-import { useRef } from "react";
+import { Button, Drawer, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { type AirportFormValues, useCreateAirport } from "@/entities/airport";
-import { AirportForm, type AirportFormRef } from "@/pages/Airports/components/AirportForm";
+import { useCreateAirport, useUpdateAirport } from "@/entities/airport";
+import {
+    type Airport,
+    type AirportFormValues,
+    airportToFormValues,
+} from "@/entities/airport/model";
+import { AirportForm } from "@/pages/Airports/components/AirportForm";
 
 import styles from "./AirportDrawer.module.scss";
 
 interface AirportDrawerProps {
     open: boolean;
 
+    airport?: Airport;
+
     onClose: () => void;
 }
 
-export function AirportDrawer({ open, onClose }: AirportDrawerProps) {
+export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
     const { t } = useTranslation("app");
 
-    const formRef = useRef<AirportFormRef>(null);
+    const createAirport = useCreateAirport();
+    const updateAirport = useUpdateAirport();
 
-    const createAirportMutation = useCreateAirport();
+    const isEdit = airport !== undefined;
 
     async function handleSubmit(values: AirportFormValues) {
-        await createAirportMutation.mutateAsync(values);
+        if (airport) {
+            await updateAirport.mutateAsync({
+                id: airport.id,
+                values,
+            });
+        } else {
+            await createAirport.mutateAsync(values);
+        }
 
         onClose();
     }
 
+    const isSaving = createAirport.isPending || updateAirport.isPending;
+
     return (
         <Drawer
             open={open}
-            size={520}
             destroyOnHidden
-            title={t("actions.addEntity", {
-                entity: t("navigation.airports"),
-            })}
+            title={
+                isEdit
+                    ? t("actions.edit")
+                    : t("actions.addEntity", {
+                          entity: t("navigation.airports"),
+                      })
+            }
             onClose={onClose}
             footer={
                 <div className={styles.footer}>
-                    <Button onClick={onClose}>{t("actions.cancel")}</Button>
+                    <Space>
+                        <Button onClick={onClose}>{t("actions.cancel")}</Button>
 
-                    <Button
-                        type="primary"
-                        loading={createAirportMutation.isPending}
-                        onClick={() => {
-                            formRef.current?.submit();
-                        }}
-                    >
-                        {t("actions.save")}
-                    </Button>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            form="airport-form"
+                            loading={isSaving}
+                        >
+                            {t("actions.save")}
+                        </Button>
+                    </Space>
                 </div>
             }
         >
             <div className={styles.content}>
-                <AirportForm ref={formRef} onSubmit={handleSubmit} />
+                <AirportForm
+                    id="airport-form"
+                    defaultValues={airport ? airportToFormValues(airport) : undefined}
+                    onSubmit={handleSubmit}
+                />
             </div>
         </Drawer>
     );

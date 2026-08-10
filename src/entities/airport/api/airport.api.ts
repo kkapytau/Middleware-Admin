@@ -1,9 +1,21 @@
-import { getCities } from "@/entities/city";
+import { type City, getCities } from "@/entities/city";
 
 import type { Airport, AirportFormValues } from "../model";
 import { airportMocks } from "./mocks";
 
 const NETWORK_DELAY = 500;
+
+async function getCityByCode(cityCode: string): Promise<City> {
+    const cities = await getCities();
+
+    const city = cities.find((item) => item.cityCode === cityCode);
+
+    if (!city) {
+        throw new Error(`City "${cityCode}" not found`);
+    }
+
+    return city;
+}
 
 async function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -18,9 +30,7 @@ export async function getAirports(): Promise<Airport[]> {
 export async function createAirport(values: AirportFormValues): Promise<Airport> {
     await delay(NETWORK_DELAY);
 
-    const cities = await getCities();
-
-    const city = cities.find((item) => item.cityCode === values.cityId);
+    const city = await getCityByCode(values.cityId);
 
     if (!city) {
         throw new Error(`City "${values.cityId}" not found`);
@@ -28,6 +38,30 @@ export async function createAirport(values: AirportFormValues): Promise<Airport>
 
     return {
         id: crypto.randomUUID(),
+        airportCode: values.airportCode,
+        airportName: values.airportName,
+        isMetropolitan: values.isMetropolitan,
+        coordinates: {
+            latitude: values.latitude,
+            longitude: values.longitude,
+        },
+        city,
+    };
+}
+
+export interface UpdateAirportParams {
+    id: string;
+
+    values: AirportFormValues;
+}
+
+export async function updateAirport({ id, values }: UpdateAirportParams): Promise<Airport> {
+    await delay(NETWORK_DELAY);
+
+    const city = await getCityByCode(values.cityId);
+
+    return {
+        id,
         airportCode: values.airportCode,
         airportName: values.airportName,
         isMetropolitan: values.isMetropolitan,

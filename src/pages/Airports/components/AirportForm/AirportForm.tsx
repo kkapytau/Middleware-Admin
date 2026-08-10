@@ -1,26 +1,25 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "antd";
-import { forwardRef, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { type AirportFormValues,defaultAirportFormValues } from "@/entities/airport/model";
+import {
+    type AirportFormValues,
+    createAirportFormSchema,
+    defaultAirportFormValues,
+} from "@/entities/airport/model";
 import { useCities } from "@/entities/city";
-import { FormCheckbox, FormInput, FormSelect } from "@/shared/components/form";
-
-export interface AirportFormRef {
-    submit: () => void;
-}
+import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
 
 interface AirportFormProps {
+    id?: string;
+
     defaultValues?: AirportFormValues;
 
     onSubmit: (values: AirportFormValues) => void | Promise<void>;
 }
 
-export const AirportForm = forwardRef<AirportFormRef, AirportFormProps>(function AirportForm(
-    { defaultValues = defaultAirportFormValues, onSubmit },
-    ref,
-) {
+export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
     const { t } = useTranslation("app");
 
     const { data: cities = [], isLoading } = useCities();
@@ -30,74 +29,78 @@ export const AirportForm = forwardRef<AirportFormRef, AirportFormProps>(function
         label: city.cityName,
     }));
 
-    const { control, handleSubmit } = useForm<AirportFormValues>({
-        defaultValues,
+    const airportFormSchema = createAirportFormSchema({
+        required: t("validation.required"),
+        airportCodeLength: t("validation.airportCodeLength"),
+        latitudeRange: t("validation.latitudeRange"),
+        longitudeRange: t("validation.longitudeRange"),
     });
 
-    useImperativeHandle(ref, () => ({
-        submit() {
-            void handleSubmit(onSubmit)();
-        },
-    }));
+    const { control, handleSubmit } = useForm<AirportFormValues>({
+        defaultValues: defaultValues ?? defaultAirportFormValues,
+        resolver: zodResolver(airportFormSchema),
+    });
 
     return (
         <Form
             layout="horizontal"
-            colon={false}
             labelCol={{ flex: "110px" }}
             wrapperCol={{ flex: 1 }}
+            colon={false}
+            component={false}
         >
-            <FormInput
-                control={control}
-                name="airportCode"
-                label={t("form.airportCode")}
-                placeholder={t("form.enterAirportCode")}
-                inputProps={{
-                    maxLength: 3,
+            <form
+                id={id}
+                onSubmit={(event) => {
+                    void handleSubmit(onSubmit)(event);
                 }}
-            />
+            >
+                <FormInput
+                    control={control}
+                    name="airportCode"
+                    label={t("form.airportCode")}
+                    placeholder={t("form.enterAirportCode")}
+                    inputProps={{
+                        maxLength: 3,
+                    }}
+                />
 
-            <FormInput
-                control={control}
-                name="airportName"
-                label={t("form.airportName")}
-                placeholder={t("form.enterAirportName")}
-            />
+                <FormInput
+                    control={control}
+                    name="airportName"
+                    label={t("form.airportName")}
+                    placeholder={t("form.enterAirportName")}
+                />
 
-            <FormSelect
-                control={control}
-                name="cityId"
-                label={t("form.city")}
-                placeholder={t("form.selectCity")}
-                options={cityOptions}
-                loading={isLoading}
-                allowClear
-                showSearch
-            />
+                <FormSelect
+                    control={control}
+                    name="cityId"
+                    label={t("form.city")}
+                    placeholder={t("form.selectCity")}
+                    options={cityOptions}
+                    loading={isLoading}
+                    allowClear
+                    showSearch
+                />
 
-            <FormInput
-                control={control}
-                name="latitude"
-                label={t("form.latitude")}
-                placeholder={t("form.enterLatitude")}
-                inputProps={{
-                    type: "number",
-                }}
-            />
+                <FormNumberInput
+                    control={control}
+                    name="latitude"
+                    label={t("form.latitude")}
+                    placeholder={t("form.enterLatitude")}
+                />
 
-            <FormInput
-                control={control}
-                name="longitude"
-                label={t("form.longitude")}
-                placeholder={t("form.enterLongitude")}
-                inputProps={{
-                    type: "number",
-                }}
-            />
+                <FormNumberInput
+                    control={control}
+                    name="longitude"
+                    label={t("form.longitude")}
+                    placeholder={t("form.enterLongitude")}
+                />
 
-            <FormCheckbox control={control} name="isMetropolitan">
-                {t("form.metropolitan")}
-            </FormCheckbox>
+                <FormCheckbox control={control} name="isMetropolitan">
+                    {t("form.metropolitan")}
+                </FormCheckbox>
+            </form>
         </Form>
     );
-});
+}

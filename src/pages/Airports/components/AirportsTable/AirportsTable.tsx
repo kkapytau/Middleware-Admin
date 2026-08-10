@@ -1,4 +1,4 @@
-import { Table, type TableProps } from "antd";
+import { Button, Space, Table, type TableProps } from "antd";
 import { useTranslation } from "react-i18next";
 
 import type { Airport } from "@/entities/airport";
@@ -10,9 +10,11 @@ interface AirportsTableProps {
     data: Airport[];
 
     loading: boolean;
+
+    onEdit: (airport: Airport) => void;
 }
 
-export function AirportsTable({ data, loading }: AirportsTableProps) {
+export function AirportsTable({ data, loading, onEdit }: AirportsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Airport>["columns"] = [
@@ -48,6 +50,17 @@ export function AirportsTable({ data, loading }: AirportsTableProps) {
             key: "metropolitan",
             width: 170,
             render: (_, airport) => <MetropolitanTag metropolitan={airport.isMetropolitan} />,
+        },
+        {
+            title: t("actions.edit"),
+            key: "actions",
+            render: (_, airport) => (
+                <Space>
+                    <Button type="default" onClick={() => onEdit(airport)}>
+                        {t("actions.edit")}
+                    </Button>
+                </Space>
+            ),
         },
     ];
 

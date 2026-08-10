@@ -19,7 +19,12 @@
     "validation": {
         "required": "Ce champ est obligatoire.",
         "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
-        "passwordLength": "Le mot de passe doit contenir au moins 8 caractères."
+        "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
+        "airportCodeLength": "Le code de l'aéroport doit contenir exactement 3 caractères.",
+        "airportNameRequired": "Le nom de l'aéroport est obligatoire.",
+        "cityRequired": "La ville est obligatoire.",
+        "latitudeRange": "La latitude doit être comprise entre -90 et 90.",
+        "longitudeRange": "La longitude doit être comprise entre -180 et 180."
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",

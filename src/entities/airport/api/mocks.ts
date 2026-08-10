@@ -4,6 +4,8 @@ import type { Airport } from "../model";
 
 export const airportMocks: Airport[] = [
     {
+        id: "airport-1",
+
         airportCode: "CDG",
 
         airportName: "Charles de Gaulle",
@@ -20,6 +22,8 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-2",
+
         airportCode: "ORY",
 
         airportName: "Paris Orly",
@@ -36,6 +40,7 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-3",
         airportCode: "MRS",
 
         airportName: "Marseille Provence",
@@ -52,6 +57,7 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-4",
         airportCode: "MAD",
 
         airportName: "Adolfo Suárez Madrid–Barajas",
@@ -68,6 +74,7 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-5",
         airportCode: "BCN",
 
         airportName: "Barcelona–El Prat",
@@ -84,6 +91,7 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-6",
         airportCode: "CMN",
 
         airportName: "Mohammed V",
@@ -100,6 +108,7 @@ export const airportMocks: Airport[] = [
     },
 
     {
+        id: "airport-7",
         airportCode: "RAK",
 
         airportName: "Marrakech Menara",
