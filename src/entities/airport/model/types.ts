@@ -7,6 +7,8 @@ export interface Coordinates {
 }
 
 export interface Airport {
+    id: string;
+
     airportCode: string;
 
     airportName: string;

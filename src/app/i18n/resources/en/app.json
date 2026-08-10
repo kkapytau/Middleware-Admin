@@ -24,7 +24,9 @@
         "delete": "Delete",
         "refresh": "Refresh",
         "search": "Search",
-        "logout": "Logout"
+        "logout": "Logout",
+        "cancel": "Cancel",
+        "save": "Save"
     },
     "statuses": {
         "metropolitan": "Metropolitan",
@@ -37,5 +39,19 @@
         "country": "Country",
         "continent": "Continent",
         "metropolitan": "Metropolitan"
+    },
+    "form": {
+        "airportCode": "Airport Code",
+        "airportName": "Airport Name",
+        "city": "City",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "metropolitan": "Metropolitan Airport",
+
+        "selectCity": "Select city",
+        "enterAirportCode": "Enter airport code",
+        "enterAirportName": "Enter airport name",
+        "enterLatitude": "Enter latitude",
+        "enterLongitude": "Enter longitude"
     }
 }

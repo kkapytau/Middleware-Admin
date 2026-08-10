@@ -4,12 +4,17 @@ import { useTranslation } from "react-i18next";
 
 import styles from "./AirportsToolbar.module.scss";
 
-export function AirportsToolbar() {
+interface AirportsToolbarProps {
+    onAdd: () => void;
+}
+
+export function AirportsToolbar(props: AirportsToolbarProps) {
     const { t } = useTranslation("app");
+    const { onAdd } = props;
 
     return (
         <div className={styles.toolbar}>
-            <Button type="primary" icon={<PlusOutlined />}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={onAdd}>
                 {t("actions.addEntity", {
                     entity: t("navigation.airports"),
                 })}
