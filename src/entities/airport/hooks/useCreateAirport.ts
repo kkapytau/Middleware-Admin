@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { airportKeys, createAirport } from "../api";
-import type { Airport } from "../model";
 
 export function useCreateAirport() {
     const queryClient = useQueryClient();
@@ -9,11 +8,10 @@ export function useCreateAirport() {
     return useMutation({
         mutationFn: createAirport,
 
-        onSuccess: (newAirport) => {
-            queryClient.setQueryData<Airport[]>(airportKeys.all, (currentAirports = []) => [
-                ...currentAirports,
-                newAirport,
-            ]);
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: airportKeys.all,
+            });
         },
     });
 }

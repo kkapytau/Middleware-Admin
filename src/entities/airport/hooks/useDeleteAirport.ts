@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { airportKeys, updateAirport } from "../api";
+import { airportKeys, deleteAirport } from "../api";
 
-export function useUpdateAirport() {
+export function useDeleteAirport() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: updateAirport,
+        mutationFn: deleteAirport,
 
         onSuccess: async () => {
             await queryClient.invalidateQueries({

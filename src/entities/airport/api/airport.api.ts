@@ -36,7 +36,7 @@ export async function createAirport(values: AirportFormValues): Promise<Airport>
         throw new Error(`City "${values.cityId}" not found`);
     }
 
-    return {
+    const newAirport: Airport = {
         id: crypto.randomUUID(),
         airportCode: values.airportCode,
         airportName: values.airportName,
@@ -47,6 +47,10 @@ export async function createAirport(values: AirportFormValues): Promise<Airport>
         },
         city,
     };
+
+    airportMocks.push(newAirport);
+
+    return newAirport;
 }
 
 export interface UpdateAirportParams {
@@ -60,7 +64,13 @@ export async function updateAirport({ id, values }: UpdateAirportParams): Promis
 
     const city = await getCityByCode(values.cityId);
 
-    return {
+    const index = airportMocks.findIndex((airport) => airport.id === id);
+
+    if (index === -1) {
+        throw new Error(`Airport "${id}" not found`);
+    }
+
+    const updatedAirport: Airport = {
         id,
         airportCode: values.airportCode,
         airportName: values.airportName,
@@ -71,4 +81,20 @@ export async function updateAirport({ id, values }: UpdateAirportParams): Promis
         },
         city,
     };
+
+    airportMocks[index] = updatedAirport;
+
+    return updatedAirport;
+}
+
+export async function deleteAirport(id: string): Promise<void> {
+    await delay(NETWORK_DELAY);
+
+    const index = airportMocks.findIndex((airport) => airport.id === id);
+
+    if (index === -1) {
+        throw new Error(`Airport "${id}" not found`);
+    }
+
+    airportMocks.splice(index, 1);
 }

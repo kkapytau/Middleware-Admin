@@ -1,4 +1,4 @@
-import { Button, Space, Table, type TableProps } from "antd";
+import { Button, Popconfirm, Space, Table, type TableProps } from "antd";
 import { useTranslation } from "react-i18next";
 
 import type { Airport } from "@/entities/airport";
@@ -12,9 +12,11 @@ interface AirportsTableProps {
     loading: boolean;
 
     onEdit: (airport: Airport) => void;
+
+    onDelete: (airport: Airport) => void;
 }
 
-export function AirportsTable({ data, loading, onEdit }: AirportsTableProps) {
+export function AirportsTable({ data, loading, onEdit, onDelete }: AirportsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Airport>["columns"] = [
@@ -59,6 +61,16 @@ export function AirportsTable({ data, loading, onEdit }: AirportsTableProps) {
                     <Button type="default" onClick={() => onEdit(airport)}>
                         {t("actions.edit")}
                     </Button>
+
+                    <Popconfirm
+                        title={t("actions.delete")}
+                        description={t("actions.deleteConfirmation")}
+                        onConfirm={() => onDelete(airport)}
+                        okText={t("actions.delete")}
+                        cancelText={t("actions.cancel")}
+                    >
+                        <Button danger>{t("actions.delete")}</Button>
+                    </Popconfirm>
                 </Space>
             ),
         },

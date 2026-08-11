@@ -34,7 +34,8 @@
         "search": "Rechercher",
         "logout": "Se déconnecter",
         "cancel": "Annuler",
-        "save": "Enregistrer"
+        "save": "Enregistrer",
+        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet aéroport ?"
     },
     "statuses": {
         "metropolitan": "Métropolitain",
