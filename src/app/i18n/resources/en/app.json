@@ -21,7 +21,9 @@
         "location": "Location",
         "airports": "Airports",
         "countries": "Countries",
-        "cities": "Cities"
+        "cities": "Cities",
+        "functions": "Functions",
+        "function": "Function"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -32,7 +34,10 @@
         "logout": "Logout",
         "cancel": "Cancel",
         "save": "Save",
-        "deleteConfirmation": "Are you sure you want to delete this airport?"
+        "deleteConfirmation": "Are you sure you want to delete this airport?",
+        "actions": "Actions",
+        "addPair": "Add pair",
+        "editEntity": "Edit {{entity}}"
     },
     "statuses": {
         "metropolitan": "Metropolitan",
@@ -58,6 +63,12 @@
         "enterAirportCode": "Enter airport code",
         "enterAirportName": "Enter airport name",
         "enterLatitude": "Enter latitude",
-        "enterLongitude": "Enter longitude"
+        "enterLongitude": "Enter longitude",
+
+        "functionName": "Function name",
+        "enterFunctionName": "Enter function name",
+        "keyValuePairs": "Key-value pairs",
+        "key": "Key",
+        "value": "Value"
     }
 }

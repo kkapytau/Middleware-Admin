@@ -74,8 +74,6 @@ export const locationGroup: AppRoute = {
 
     access: "protected",
 
-    path: "/location",
-
     titleKey: "navigation.location",
 
     showInNavigation: true,

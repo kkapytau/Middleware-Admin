@@ -6,7 +6,9 @@
         "location": "Localisation",
         "airports": "Aéroports",
         "countries": "Pays",
-        "cities": "Villes"
+        "cities": "Villes",
+        "functions": "Fonctions",
+        "function": "Fonction"
     },
 
     "login": {
@@ -35,7 +37,10 @@
         "logout": "Se déconnecter",
         "cancel": "Annuler",
         "save": "Enregistrer",
-        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet aéroport ?"
+        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet aéroport ?",
+        "actions": "Actions",
+        "addPair": "Ajouter une paire",
+        "editEntity": "Modifier {{entity}}"
     },
     "statuses": {
         "metropolitan": "Métropolitain",
@@ -61,6 +66,12 @@
         "enterAirportCode": "Saisissez le code de l'aéroport",
         "enterAirportName": "Saisissez le nom de l'aéroport",
         "enterLatitude": "Saisissez la latitude",
-        "enterLongitude": "Saisissez la longitude"
+        "enterLongitude": "Saisissez la longitude",
+
+        "functionName": "Nom de la fonction",
+        "enterFunctionName": "Saisissez le nom de la fonction",
+        "keyValuePairs": "Paires clé-valeur",
+        "key": "Clé",
+        "value": "Valeur"
     }
 }
