@@ -4,4 +4,5 @@ export type NavigationKey =
     | "navigation.airports"
     | "navigation.countries"
     | "navigation.cities"
-    | "navigation.functions";
+    | "navigation.functions"
+    | "navigation.flows";

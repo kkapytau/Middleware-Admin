@@ -2,18 +2,21 @@
     background: #093f6b;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
 
-    :global(.ant-menu > .ant-menu-submenu) {
-        position: relative;
+    :global(.ant-menu-root > .ant-menu-submenu) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        margin-bottom: 4px;
+        padding-bottom: 4px;
     }
 
-    :global(.ant-menu > .ant-menu-submenu)::after {
-        content: "";
-        position: absolute;
-        left: 16px;
-        right: 16px;
-        bottom: 0;
-        height: 1px;
-        background: rgba(255, 255, 255, 0.12);
+    :global(.ant-menu-root > .ant-menu-item) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 0;
+        margin-inline: 0;
+        width: 100%;
+    }
+
+    :global(.ant-menu-root > .ant-menu-item:last-child) {
+        border-bottom: none;
     }
 }
 

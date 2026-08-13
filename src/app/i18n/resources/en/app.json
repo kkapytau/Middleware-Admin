@@ -18,7 +18,10 @@
         "functionNameRequired": "Function name is required",
         "keyRequired": "Key is required",
         "valueRequired": "Value is required",
-        "duplicateKey": "Key must be unique"
+        "duplicateKey": "Key must be unique",
+        "flowCodeMinLength": "Code must be at least 3 characters",
+        "flowCodeMaxLength": "Code must not exceed 50 characters",
+        "flowNameMaxLength": "Name must not exceed 100 characters"
     },
     "navigation": {
         "login": "Login",
@@ -27,7 +30,9 @@
         "countries": "Countries",
         "cities": "Cities",
         "functions": "Functions",
-        "function": "Function"
+        "function": "Function",
+        "flow": "Flow",
+        "flows": "Flows"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -73,6 +78,11 @@
         "enterFunctionName": "Enter function name",
         "keyValuePairs": "Key-value pairs",
         "key": "Key",
-        "value": "Value"
+        "value": "Value",
+
+        "flowCode": "Flow code",
+        "flowCodePlaceholder": "Enter flow code",
+        "flowName": "Flow name",
+        "flowNamePlaceholder": "Enter flow name"
     }
 }

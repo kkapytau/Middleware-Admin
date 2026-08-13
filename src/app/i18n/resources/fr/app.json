@@ -8,7 +8,9 @@
         "countries": "Pays",
         "cities": "Villes",
         "functions": "Fonctions",
-        "function": "Fonction"
+        "function": "Fonction",
+        "flow": "Flux",
+        "flows": "Flux"
     },
 
     "login": {
@@ -30,7 +32,10 @@
         "functionNameRequired": "Le nom de la fonction est requis",
         "keyRequired": "La clé est requise",
         "valueRequired": "La valeur est requise",
-        "duplicateKey": "La clé doit être unique"
+        "duplicateKey": "La clé doit être unique",
+        "flowCodeMinLength": "Le code doit contenir au moins 3 caractères",
+        "flowCodeMaxLength": "Le code ne doit pas dépasser 50 caractères",
+        "flowNameMaxLength": "Le nom ne doit pas dépasser 100 caractères"
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -76,6 +81,11 @@
         "enterFunctionName": "Saisissez le nom de la fonction",
         "keyValuePairs": "Paires clé-valeur",
         "key": "Clé",
-        "value": "Valeur"
+        "value": "Valeur",
+
+        "flowCode": "Code du flux",
+        "flowCodePlaceholder": "Saisissez le code du flux",
+        "flowName": "Nom du flux",
+        "flowNamePlaceholder": "Saisissez le nom du flux"
     }
 }
