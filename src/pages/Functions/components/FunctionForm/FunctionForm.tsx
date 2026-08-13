@@ -5,8 +5,8 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import {
+    createFlowFunctionFormSchema,
     defaultFlowFunctionFormValues,
-    flowFunctionFormSchema,
     type FlowFunctionFormValues,
 } from "@/entities/flowFunction/model";
 import { FormInput } from "@/shared/components/form";
@@ -22,9 +22,16 @@ interface FunctionFormProps {
 export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionFormProps) {
     const { t } = useTranslation("app");
 
+    const schema = createFlowFunctionFormSchema({
+        functionNameRequired: t("validation.functionNameRequired"),
+        keyRequired: t("validation.keyRequired"),
+        valueRequired: t("validation.valueRequired"),
+        duplicateKey: t("validation.duplicateKey"),
+    });
+
     const { control, handleSubmit } = useForm<FlowFunctionFormValues>({
         defaultValues: defaultValues ?? defaultFlowFunctionFormValues,
-        resolver: zodResolver(flowFunctionFormSchema),
+        resolver: zodResolver(schema),
     });
 
     const { fields, append, remove } = useFieldArray({

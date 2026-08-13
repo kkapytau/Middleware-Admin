@@ -26,7 +26,11 @@
         "airportNameRequired": "Le nom de l'aéroport est obligatoire.",
         "cityRequired": "La ville est obligatoire.",
         "latitudeRange": "La latitude doit être comprise entre -90 et 90.",
-        "longitudeRange": "La longitude doit être comprise entre -180 et 180."
+        "longitudeRange": "La longitude doit être comprise entre -180 et 180.",
+        "functionNameRequired": "Le nom de la fonction est requis",
+        "keyRequired": "La clé est requise",
+        "valueRequired": "La valeur est requise",
+        "duplicateKey": "La clé doit être unique"
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
