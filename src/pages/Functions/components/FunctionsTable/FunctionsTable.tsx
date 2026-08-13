@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Space, Table, Typography } from "antd";
+import { Button, Popconfirm, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
@@ -6,11 +6,8 @@ import type { FlowFunction } from "@/entities/flowFunction";
 
 interface FunctionsTableProps {
     data: FlowFunction[];
-
     loading: boolean;
-
     onEdit: (flowFunction: FlowFunction) => void;
-
     onDelete: (flowFunction: FlowFunction) => void;
 }
 
@@ -22,19 +19,6 @@ export function FunctionsTable({ data, loading, onEdit, onDelete }: FunctionsTab
             title: t("form.functionName"),
             dataIndex: "name",
             key: "name",
-        },
-        {
-            title: t("form.keyValuePairs"),
-            key: "values",
-            render: (_, flowFunction) => (
-                <Space orientation="vertical" size={2}>
-                    {flowFunction.values.map(({ key, value }) => (
-                        <Typography.Text key={key}>
-                            <Typography.Text strong>{key}</Typography.Text> → {value}
-                        </Typography.Text>
-                    ))}
-                </Space>
-            ),
         },
         {
             title: t("actions.actions"),

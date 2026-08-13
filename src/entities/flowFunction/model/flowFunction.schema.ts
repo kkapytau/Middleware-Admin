@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import type { FlowFunction } from "./types";
-
 export interface FlowFunctionValidationMessages {
     functionNameRequired: string;
     keyRequired: string;
@@ -66,10 +64,3 @@ export const defaultFlowFunctionFormValues: FlowFunctionFormValues = {
         },
     ],
 };
-
-export function flowFunctionToFormValues(flowFunction: FlowFunction): FlowFunctionFormValues {
-    return {
-        name: flowFunction.name,
-        values: flowFunction.values,
-    };
-}

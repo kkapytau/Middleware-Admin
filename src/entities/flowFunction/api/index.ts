@@ -5,4 +5,3 @@ export {
     getFlowFunctions,
     updateFlowFunction,
 } from "./flowFunction.api";
-export * from "./mocks";

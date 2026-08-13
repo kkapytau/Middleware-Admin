@@ -1,22 +1,26 @@
 import { Drawer } from "antd";
 import { useTranslation } from "react-i18next";
 
-import type { FlowFunction, FlowFunctionFormValues } from "@/entities/flowFunction/model";
+import type { FlowFunctionDetail, FlowFunctionFormValues } from "@/entities/flowFunction/model";
 import { FunctionForm } from "@/pages/Functions/components/FunctionForm";
 
 import styles from "./FunctionDrawer.module.scss";
 
 interface FunctionDrawerProps {
     open: boolean;
-
-    flowFunction?: FlowFunction;
-
+    loading: boolean;
+    flowFunction?: FlowFunctionDetail;
     onClose: () => void;
-
     onSubmit: (values: FlowFunctionFormValues) => Promise<void>;
 }
 
-export function FunctionDrawer({ open, flowFunction, onClose, onSubmit }: FunctionDrawerProps) {
+export function FunctionDrawer({
+    open,
+    loading,
+    flowFunction,
+    onClose,
+    onSubmit,
+}: FunctionDrawerProps) {
     const { t } = useTranslation("app");
 
     const isEditMode = Boolean(flowFunction);
@@ -24,6 +28,7 @@ export function FunctionDrawer({ open, flowFunction, onClose, onSubmit }: Functi
     return (
         <Drawer
             open={open}
+            loading={loading}
             title={
                 isEditMode
                     ? t("actions.editEntity", {

@@ -4,6 +4,7 @@ import type { FlowFunction, FlowFunctionFormValues } from "@/entities/flowFuncti
 import {
     useCreateFlowFunction,
     useDeleteFlowFunction,
+    useFlowFunction,
     useFlowFunctions,
     useUpdateFlowFunction,
 } from "@/entities/flowFunction";
@@ -21,15 +22,18 @@ export function FlowFunctionsPage() {
     const deleteFlowFunction = useDeleteFlowFunction();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingFunction, setEditingFunction] = useState<FlowFunction | null>(null);
+    const [editingFunctionId, setEditingFunctionId] = useState<number | null>(null);
+
+    const { data: editingFunction, isLoading: isEditingFunctionLoading } =
+        useFlowFunction(editingFunctionId);
 
     function handleAdd() {
-        setEditingFunction(null);
+        setEditingFunctionId(null);
         setDrawerOpen(true);
     }
 
     function handleEdit(flowFunction: FlowFunction) {
-        setEditingFunction(flowFunction);
+        setEditingFunctionId(flowFunction.id);
         setDrawerOpen(true);
     }
 
@@ -39,13 +43,13 @@ export function FlowFunctionsPage() {
 
     function handleDrawerClose() {
         setDrawerOpen(false);
-        setEditingFunction(null);
+        setEditingFunctionId(null);
     }
 
     async function handleSubmit(values: FlowFunctionFormValues): Promise<void> {
-        if (editingFunction) {
+        if (editingFunctionId !== null) {
             await updateFlowFunction.mutateAsync({
-                id: editingFunction.id,
+                id: editingFunctionId,
                 values,
             });
 
@@ -72,7 +76,8 @@ export function FlowFunctionsPage() {
 
             <FunctionDrawer
                 open={drawerOpen}
-                flowFunction={editingFunction ?? undefined}
+                flowFunction={editingFunction}
+                loading={isEditingFunctionLoading}
                 onClose={handleDrawerClose}
                 onSubmit={handleSubmit}
             />

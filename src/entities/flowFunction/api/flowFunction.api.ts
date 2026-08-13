@@ -1,69 +1,97 @@
-import type { FlowFunction, FlowFunctionFormValues } from "../model";
-import { flowFunctionMocks } from "./mocks";
+import { api } from "@/shared/api";
 
-const NETWORK_DELAY = 500;
+import type { FlowFunction, FlowFunctionDetail, FlowFunctionFormValues } from "../model";
 
-async function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+interface FunctionListResponse {
+    content: Array<{
+        id: number;
+        name: string;
+    }>;
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    sort: string;
+}
+
+interface FunctionDetailResponse {
+    id: number;
+    name: string;
+    map: Record<string, string>;
+}
+
+const FUNCTIONS_ENDPOINT = "internal/api/v1/functions";
+
+function mapFunctionDetail(response: FunctionDetailResponse): FlowFunctionDetail {
+    return {
+        id: response.id,
+        name: response.name,
+        values: Object.entries(response.map).map(([key, value]) => ({
+            key,
+            value,
+        })),
+    };
 }
 
 export async function getFlowFunctions(): Promise<FlowFunction[]> {
-    await delay(NETWORK_DELAY);
+    const response = await api
+        .get(FUNCTIONS_ENDPOINT, {
+            searchParams: {
+                page: 0,
+                size: 50,
+            },
+        })
+        .json<FunctionListResponse>();
 
-    return flowFunctionMocks;
+    return response.content;
 }
 
-export async function createFlowFunction(values: FlowFunctionFormValues): Promise<FlowFunction> {
-    await delay(NETWORK_DELAY);
+export async function getFlowFunction(id: number): Promise<FlowFunctionDetail> {
+    const response = await api.get(`${FUNCTIONS_ENDPOINT}/${id}`).json<FunctionDetailResponse>();
 
-    const newFlowFunction: FlowFunction = {
-        id: crypto.randomUUID(),
-        name: values.name,
-        values: values.values,
-    };
+    return mapFunctionDetail(response);
+}
 
-    flowFunctionMocks.push(newFlowFunction);
+export async function createFlowFunction(
+    values: FlowFunctionFormValues,
+): Promise<FlowFunctionDetail> {
+    const response = await api
+        .post(FUNCTIONS_ENDPOINT, {
+            json: {
+                name: values.name,
+                map: Object.fromEntries(values.values.map(({ key, value }) => [key, value])),
+            },
+        })
+        .json<FunctionDetailResponse>();
 
-    return newFlowFunction;
+    return mapFunctionDetail(response);
 }
 
 export interface UpdateFlowFunctionParams {
-    id: string;
-
+    id: number;
     values: FlowFunctionFormValues;
 }
 
 export async function updateFlowFunction({
     id,
     values,
-}: UpdateFlowFunctionParams): Promise<FlowFunction> {
-    await delay(NETWORK_DELAY);
+}: UpdateFlowFunctionParams): Promise<FlowFunctionDetail> {
+    const response = await api
+        .put(`${FUNCTIONS_ENDPOINT}/${id}`, {
+            json: {
+                name: values.name,
+                map: Object.fromEntries(values.values.map(({ key, value }) => [key, value])),
+            },
+        })
+        .json<FunctionDetailResponse>();
 
-    const index = flowFunctionMocks.findIndex((flowFunction) => flowFunction.id === id);
-
-    if (index === -1) {
-        throw new Error(`Function "${id}" not found`);
-    }
-
-    const updatedFlowFunction: FlowFunction = {
-        id,
-        name: values.name,
-        values: values.values,
-    };
-
-    flowFunctionMocks[index] = updatedFlowFunction;
-
-    return updatedFlowFunction;
+    return mapFunctionDetail(response);
 }
 
-export async function deleteFlowFunction(id: string): Promise<void> {
-    await delay(NETWORK_DELAY);
-
-    const index = flowFunctionMocks.findIndex((flowFunction) => flowFunction.id === id);
-
-    if (index === -1) {
-        throw new Error(`Function "${id}" not found`);
-    }
-
-    flowFunctionMocks.splice(index, 1);
+export async function deleteFlowFunction(id: number): Promise<void> {
+    await api.delete(FUNCTIONS_ENDPOINT, {
+        searchParams: {
+            ids: String(id),
+        },
+    });
 }
