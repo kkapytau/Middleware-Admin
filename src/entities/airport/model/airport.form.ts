@@ -1,13 +1,12 @@
-import type { AirportFormValues } from "./airport.schema";
-import type { Airport } from "./types";
+import type { AirportDetail, AirportFormValues } from "./types";
 
-export function airportToFormValues(airport: Airport): AirportFormValues {
+export function airportToFormValues(airport: AirportDetail): AirportFormValues {
     return {
-        airportCode: airport.airportCode,
-        airportName: airport.airportName,
-        cityId: airport.city.cityCode,
-        latitude: airport.coordinates.latitude,
-        longitude: airport.coordinates.longitude,
-        isMetropolitan: airport.isMetropolitan,
+        code: airport.code,
+        name: airport.name,
+        cityId: airport.city.id,
+        latitude: airport.coordinates?.latitude,
+        longitude: airport.coordinates?.longitude,
+        metropolitan: airport.metropolitan,
     };
 }

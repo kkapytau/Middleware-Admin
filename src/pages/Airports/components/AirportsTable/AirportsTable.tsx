@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 
 import type { Airport } from "@/entities/airport";
 
-import { MetropolitanTag } from "../MetropolitanTag";
 import styles from "./AirportsTable.module.scss";
 
 interface AirportsTableProps {
@@ -33,29 +32,9 @@ export function AirportsTable({ data, loading, onEdit, onDelete }: AirportsTable
             width: 100,
         },
         {
-            title: t("columns.city"),
-            key: "city",
-            render: (_, airport) => airport.city.cityName,
-        },
-        {
-            title: t("columns.country"),
-            key: "country",
-            render: (_, airport) => airport.city.country.countryName,
-        },
-        {
-            title: t("columns.continent"),
-            key: "continent",
-            render: (_, airport) => airport.city.country.continent.continentName,
-        },
-        {
-            title: t("columns.metropolitan"),
-            key: "metropolitan",
-            width: 170,
-            render: (_, airport) => <MetropolitanTag metropolitan={airport.isMetropolitan} />,
-        },
-        {
             title: t("actions.edit"),
             key: "actions",
+            width: 180,
             render: (_, airport) => (
                 <Space>
                     <Button type="default" onClick={() => onEdit(airport)}>

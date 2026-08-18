@@ -1,30 +1,43 @@
+import { api } from "@/shared/api";
+
 import type { Flow, FlowFormValues } from "../model";
-import { flowMocks } from "./mocks";
 
-const NETWORK_DELAY = 500;
-
-async function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+interface FlowListResponse {
+    content: Flow[];
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    sort: string;
 }
 
-export async function getFlows(): Promise<Flow[]> {
-    await delay(NETWORK_DELAY);
+interface FlowDetailResponse {
+    id: number;
+    code: string;
+    name: string;
+}
 
-    return flowMocks;
+const FLOWS_ENDPOINT = "internal/api/v1/flows";
+
+export async function getFlows(): Promise<Flow[]> {
+    const response = await api
+        .get(FLOWS_ENDPOINT, {
+            searchParams: {
+                page: 0,
+                size: 50,
+            },
+        })
+        .json<FlowListResponse>();
+
+    return response.content;
 }
 
 export async function createFlow(values: FlowFormValues): Promise<Flow> {
-    await delay(NETWORK_DELAY);
-
-    const newFlow: Flow = {
-        id: Math.max(0, ...flowMocks.map((flow) => flow.id)) + 1,
-        code: values.code,
-        name: values.name,
-    };
-
-    flowMocks.push(newFlow);
-
-    return newFlow;
+    return api
+        .post(FLOWS_ENDPOINT, {
+            json: values,
+        })
+        .json<FlowDetailResponse>();
 }
 
 export interface UpdateFlowParams {
@@ -33,33 +46,15 @@ export interface UpdateFlowParams {
 }
 
 export async function updateFlow({ id, values }: UpdateFlowParams): Promise<Flow> {
-    await delay(NETWORK_DELAY);
-
-    const index = flowMocks.findIndex((flow) => flow.id === id);
-
-    if (index === -1) {
-        throw new Error(`Flow "${id}" not found`);
-    }
-
-    const updatedFlow: Flow = {
-        id,
-        code: values.code,
-        name: values.name,
-    };
-
-    flowMocks[index] = updatedFlow;
-
-    return updatedFlow;
+    return api
+        .put(`${FLOWS_ENDPOINT}/${id}`, {
+            json: values,
+        })
+        .json<FlowDetailResponse>();
 }
 
 export async function deleteFlow(id: number): Promise<void> {
-    await delay(NETWORK_DELAY);
-
-    const index = flowMocks.findIndex((flow) => flow.id === id);
-
-    if (index === -1) {
-        throw new Error(`Flow "${id}" not found`);
-    }
-
-    flowMocks.splice(index, 1);
+    await api.delete(FLOWS_ENDPOINT, {
+        json: [id],
+    });
 }

@@ -3,7 +3,5 @@ export const airportKeys = {
 
     lists: () => [...airportKeys.all, "list"] as const,
 
-    details: () => [...airportKeys.all, "detail"] as const,
-
-    detail: (code: string) => [...airportKeys.details(), code] as const,
+    detail: (id: number | null) => [...airportKeys.all, "detail", id] as const,
 };

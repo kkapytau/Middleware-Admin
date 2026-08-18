@@ -2,6 +2,7 @@ import { EnvironmentOutlined } from "@ant-design/icons";
 
 import { AirportsPage } from "@/pages/Airports";
 import { CitiesPage } from "@/pages/Cities";
+import { ContinentsPage } from "@/pages/Continents";
 import { CountriesPage } from "@/pages/Countries";
 import { permissions } from "@/shared/types/permissions";
 
@@ -47,6 +48,26 @@ export const countriesRoute: AppRoute = {
     component: CountriesPage,
 };
 
+export const continentsRoute: AppRoute = {
+    key: "continents",
+
+    type: "page",
+
+    access: "protected",
+
+    path: "/location/continents",
+
+    titleKey: "navigation.continents",
+
+    icon: EnvironmentOutlined,
+
+    showInNavigation: true,
+
+    permissions: [permissions.country.read],
+
+    component: ContinentsPage,
+};
+
 export const citiesRoute: AppRoute = {
     key: "cities",
 
@@ -78,5 +99,5 @@ export const locationGroup: AppRoute = {
 
     showInNavigation: true,
 
-    children: [airportsRoute, countriesRoute, citiesRoute],
+    children: [airportsRoute, countriesRoute, citiesRoute, continentsRoute],
 };

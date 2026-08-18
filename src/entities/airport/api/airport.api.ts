@@ -1,100 +1,122 @@
-import { type City, getCities } from "@/entities/city";
+import { api } from "@/shared/api";
 
-import type { Airport, AirportFormValues } from "../model";
-import { airportMocks } from "./mocks";
+import type { Airport, AirportDetail, AirportFormValues } from "../model";
 
-const NETWORK_DELAY = 500;
-
-async function getCityByCode(cityCode: string): Promise<City> {
-    const cities = await getCities();
-
-    const city = cities.find((item) => item.cityCode === cityCode);
-
-    if (!city) {
-        throw new Error(`City "${cityCode}" not found`);
-    }
-
-    return city;
+interface AirportListResponse {
+    content: Array<{
+        id: number;
+        code: string;
+        name: string;
+    }>;
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    sort: string;
 }
 
-async function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+interface AirportDetailResponse {
+    id: number;
+    code: string;
+    name: string;
+    translations: Record<string, string>;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    metropolitan: boolean;
+    city: {
+        id: number;
+        code: string;
+        name: string;
+        translations: Record<string, string>;
+    };
+}
+
+const AIRPORTS_ENDPOINT = "internal/api/v1/airports";
+
+function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
+    return {
+        id: response.id,
+        code: response.code,
+        name: response.name,
+        cityId: response.city.id,
+        latitude: response.coordinates.latitude,
+        longitude: response.coordinates.longitude,
+        metropolitan: response.metropolitan,
+    };
 }
 
 export async function getAirports(): Promise<Airport[]> {
-    await delay(NETWORK_DELAY);
+    const response = await api
+        .get(AIRPORTS_ENDPOINT, {
+            searchParams: {
+                page: 0,
+                size: 50,
+            },
+        })
+        .json<AirportListResponse>();
 
-    return airportMocks;
+    return response.content;
 }
 
-export async function createAirport(values: AirportFormValues): Promise<Airport> {
-    await delay(NETWORK_DELAY);
+export async function getAirport(id: number): Promise<AirportDetail> {
+    const response = await api.get(`${AIRPORTS_ENDPOINT}/${id}`).json<AirportDetailResponse>();
 
-    const city = await getCityByCode(values.cityId);
+    return mapAirportDetail(response);
+}
 
-    if (!city) {
-        throw new Error(`City "${values.cityId}" not found`);
+export async function createAirport(values: AirportFormValues): Promise<AirportDetail> {
+    if (values.cityId === null) {
+        throw new Error("City is required");
     }
 
-    const newAirport: Airport = {
-        id: crypto.randomUUID(),
-        airportCode: values.airportCode,
-        airportName: values.airportName,
-        isMetropolitan: values.isMetropolitan,
-        coordinates: {
-            latitude: values.latitude,
-            longitude: values.longitude,
-        },
-        city,
-    };
+    const response = await api
+        .post(AIRPORTS_ENDPOINT, {
+            json: {
+                code: values.code,
+                name: values.name,
+                cityId: values.cityId,
+                latitude: values.latitude,
+                longitude: values.longitude,
+                metropolitan: values.metropolitan,
+            },
+        })
+        .json<AirportDetailResponse>();
 
-    airportMocks.push(newAirport);
-
-    return newAirport;
+    return mapAirportDetail(response);
 }
 
 export interface UpdateAirportParams {
-    id: string;
-
+    id: number;
     values: AirportFormValues;
 }
 
-export async function updateAirport({ id, values }: UpdateAirportParams): Promise<Airport> {
-    await delay(NETWORK_DELAY);
-
-    const city = await getCityByCode(values.cityId);
-
-    const index = airportMocks.findIndex((airport) => airport.id === id);
-
-    if (index === -1) {
-        throw new Error(`Airport "${id}" not found`);
+export async function updateAirport({ id, values }: UpdateAirportParams): Promise<AirportDetail> {
+    if (values.cityId === null) {
+        throw new Error("City is required");
     }
 
-    const updatedAirport: Airport = {
-        id,
-        airportCode: values.airportCode,
-        airportName: values.airportName,
-        isMetropolitan: values.isMetropolitan,
-        coordinates: {
-            latitude: values.latitude,
-            longitude: values.longitude,
-        },
-        city,
-    };
+    const response = await api
+        .put(`${AIRPORTS_ENDPOINT}/${id}`, {
+            json: {
+                code: values.code,
+                name: values.name,
+                cityId: values.cityId,
+                latitude: values.latitude,
+                longitude: values.longitude,
+                metropolitan: values.metropolitan,
+            },
+        })
+        .json<AirportDetailResponse>();
 
-    airportMocks[index] = updatedAirport;
-
-    return updatedAirport;
+    return mapAirportDetail(response);
 }
 
-export async function deleteAirport(id: string): Promise<void> {
-    await delay(NETWORK_DELAY);
-
-    const index = airportMocks.findIndex((airport) => airport.id === id);
-
-    if (index === -1) {
-        throw new Error(`Airport "${id}" not found`);
-    }
-
-    airportMocks.splice(index, 1);
+export async function deleteAirport(id: number): Promise<void> {
+    await api.delete(AIRPORTS_ENDPOINT, {
+        searchParams: {
+            ids: String(id),
+        },
+    });
 }

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import type { AirportFormValues } from "@/entities/airport";
+
 interface AirportValidationMessages {
     required: string;
 
@@ -12,15 +14,27 @@ interface AirportValidationMessages {
 
 export function createAirportFormSchema(messages: AirportValidationMessages) {
     return z.object({
-        airportCode: z
-            .string()
+        code: z
+            .string({
+                error: messages.required,
+            })
             .trim()
             .min(1, messages.required)
             .length(3, messages.airportCodeLength),
 
-        airportName: z.string().trim().min(1, messages.required),
+        name: z
+            .string({
+                error: messages.required,
+            })
+            .trim()
+            .min(1, messages.required),
 
-        cityId: z.string().min(1, messages.required),
+        cityId: z
+            .number()
+            .nullable()
+            .refine((value) => value !== null, {
+                error: messages.required,
+            }),
 
         latitude: z
             .number({
@@ -36,17 +50,15 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             .min(-180, messages.longitudeRange)
             .max(180, messages.longitudeRange),
 
-        isMetropolitan: z.boolean(),
+        metropolitan: z.boolean(),
     });
 }
 
-export type AirportFormValues = z.infer<ReturnType<typeof createAirportFormSchema>>;
-
 export const defaultAirportFormValues: AirportFormValues = {
-    airportCode: "",
-    airportName: "",
-    cityId: "",
-    latitude: 0,
-    longitude: 0,
-    isMetropolitan: false,
+    code: "",
+    name: "",
+    cityId: null,
+    latitude: undefined,
+    longitude: undefined,
+    metropolitan: false,
 };

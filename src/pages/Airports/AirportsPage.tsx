@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { type Airport, useAirports, useDeleteAirport } from "@/entities/airport";
+import { type Airport, useAirport, useAirports, useDeleteAirport } from "@/entities/airport";
 import { AirportsToolbar } from "@/pages/Airports/components";
 
 import styles from "./AirportsPage.module.scss";
@@ -13,21 +13,24 @@ export function AirportsPage() {
     const deleteAirport = useDeleteAirport();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [selectedAirport, setSelectedAirport] = useState<Airport>();
+    const [selectedAirportId, setSelectedAirportId] = useState<number | null>(null);
+
+    const { data: airportDetail, isLoading: isAirportDetailLoading } =
+        useAirport(selectedAirportId);
 
     function handleAdd() {
-        setSelectedAirport(undefined);
+        setSelectedAirportId(null);
         setDrawerOpen(true);
     }
 
     function handleEdit(airport: Airport) {
-        setSelectedAirport(airport);
+        setSelectedAirportId(airport.id);
         setDrawerOpen(true);
     }
 
     function handleClose() {
         setDrawerOpen(false);
-        setSelectedAirport(undefined);
+        setSelectedAirportId(null);
     }
 
     function handleDelete(airport: Airport) {
@@ -45,7 +48,12 @@ export function AirportsPage() {
                 onDelete={handleDelete}
             />
 
-            <AirportDrawer open={drawerOpen} airport={selectedAirport} onClose={handleClose} />
+            <AirportDrawer
+                open={drawerOpen}
+                loading={isAirportDetailLoading}
+                airport={airportDetail}
+                onClose={handleClose}
+            />
         </div>
     );
 }

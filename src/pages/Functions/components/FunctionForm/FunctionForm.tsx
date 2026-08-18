@@ -1,6 +1,7 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Flex, Form, Input } from "antd";
+import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -13,13 +14,10 @@ import { FormInput } from "@/shared/components/form";
 
 interface FunctionFormProps {
     defaultValues?: FlowFunctionFormValues;
-
     onSubmit: (values: FlowFunctionFormValues) => Promise<void>;
-
-    onCancel: () => void;
 }
 
-export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionFormProps) {
+export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
     const { t } = useTranslation("app");
 
     const schema = createFlowFunctionFormSchema({
@@ -29,7 +27,7 @@ export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionForm
         duplicateKey: t("validation.duplicateKey"),
     });
 
-    const { control, handleSubmit } = useForm<FlowFunctionFormValues>({
+    const { control, handleSubmit, reset } = useForm<FlowFunctionFormValues>({
         defaultValues: defaultValues ?? defaultFlowFunctionFormValues,
         resolver: zodResolver(schema),
     });
@@ -39,17 +37,22 @@ export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionForm
         name: "values",
     });
 
+    const handleFormFinish = () => {
+        void handleSubmit(onSubmit)();
+    };
+
+    useEffect(() => {
+        reset(defaultValues ?? defaultFlowFunctionFormValues);
+    }, [defaultValues, reset]);
+
     return (
         <Form
+            id="function-form"
             layout="horizontal"
             labelCol={{ flex: "110px" }}
             wrapperCol={{ flex: 1 }}
             colon={false}
-            component="form"
-            onSubmitCapture={(event) => {
-                event.preventDefault();
-                void handleSubmit(onSubmit)(event);
-            }}
+            onFinish={handleFormFinish}
         >
             <FormInput
                 control={control}
@@ -69,7 +72,10 @@ export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionForm
                                     <Form.Item
                                         validateStatus={fieldState.error ? "error" : undefined}
                                         help={fieldState.error?.message}
-                                        style={{ flex: 1, marginBottom: 0 }}
+                                        style={{
+                                            flex: 1,
+                                            marginBottom: 0,
+                                        }}
                                     >
                                         <Input {...inputField} placeholder={t("form.key")} />
                                     </Form.Item>
@@ -83,7 +89,10 @@ export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionForm
                                     <Form.Item
                                         validateStatus={fieldState.error ? "error" : undefined}
                                         help={fieldState.error?.message}
-                                        style={{ flex: 1, marginBottom: 0 }}
+                                        style={{
+                                            flex: 1,
+                                            marginBottom: 0,
+                                        }}
                                     >
                                         <Input {...inputField} placeholder={t("form.value")} />
                                     </Form.Item>
@@ -111,16 +120,6 @@ export function FunctionForm({ defaultValues, onSubmit, onCancel }: FunctionForm
                         }
                     >
                         {t("actions.addPair")}
-                    </Button>
-                </Flex>
-            </Form.Item>
-
-            <Form.Item>
-                <Flex justify="end" gap={8}>
-                    <Button onClick={onCancel}>{t("actions.cancel")}</Button>
-
-                    <Button type="primary" htmlType="submit">
-                        {t("actions.save")}
                     </Button>
                 </Flex>
             </Form.Item>

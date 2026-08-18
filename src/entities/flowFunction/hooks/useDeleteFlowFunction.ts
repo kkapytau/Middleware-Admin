@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteFlowFunction } from "../api";
-import { flowFunctionKeys } from "./useFlowFunctions";
+import { deleteFlowFunction, flowFunctionKeys } from "../api";
 
 export function useDeleteFlowFunction() {
     const queryClient = useQueryClient();

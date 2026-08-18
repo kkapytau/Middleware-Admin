@@ -5,4 +5,5 @@ export type NavigationKey =
     | "navigation.countries"
     | "navigation.cities"
     | "navigation.functions"
-    | "navigation.flows";
+    | "navigation.flows"
+    | "navigation.continents";

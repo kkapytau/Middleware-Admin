@@ -1,3 +1,4 @@
+import { Space } from "antd";
 import { useState } from "react";
 
 import { type Flow, useDeleteFlow, useFlows } from "@/entities/flow";
@@ -5,7 +6,6 @@ import { type Flow, useDeleteFlow, useFlows } from "@/entities/flow";
 import { FlowDrawer } from "./components/FlowDrawer";
 import { FlowsTable } from "./components/FlowsTable";
 import { FlowsToolbar } from "./components/FlowsToolbar";
-import styles from "./FlowsPage.module.scss";
 
 export function FlowsPage() {
     const { data = [], isLoading } = useFlows();
@@ -34,7 +34,7 @@ export function FlowsPage() {
     };
 
     return (
-        <div className={styles.page}>
+        <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <FlowsToolbar onAdd={handleAdd} />
 
             <FlowsTable
@@ -46,6 +46,6 @@ export function FlowsPage() {
             />
 
             <FlowDrawer open={drawerOpen} flow={editingFlow} onClose={handleDrawerClose} />
-        </div>
+        </Space>
     );
 }

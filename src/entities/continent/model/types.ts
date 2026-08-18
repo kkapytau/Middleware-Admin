@@ -1,5 +1,9 @@
 export interface Continent {
-    continentCode: string;
+    id: number;
+    code: string;
+    name: string;
+}
 
-    continentName: string;
+export interface ContinentDetail extends Continent {
+    translations: Record<string, string>;
 }

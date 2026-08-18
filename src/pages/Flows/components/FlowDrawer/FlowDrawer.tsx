@@ -1,5 +1,4 @@
 import { Button, Drawer, Space } from "antd";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Flow, type FlowFormValues, useCreateFlow, useUpdateFlow } from "@/entities/flow";
@@ -35,13 +34,6 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
 
         onClose();
     };
-
-    useEffect(() => {
-        if (!open) {
-            createFlow.reset();
-            updateFlow.reset();
-        }
-    }, [open, createFlow, updateFlow]);
 
     return (
         <Drawer

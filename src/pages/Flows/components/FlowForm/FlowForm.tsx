@@ -21,6 +21,7 @@ export function FlowForm({ defaultValues, onSubmit }: FlowFormProps) {
         flowCodeMinLength: t("validation.flowCodeMinLength"),
         flowCodeMaxLength: t("validation.flowCodeMaxLength"),
         flowNameMaxLength: t("validation.flowNameMaxLength"),
+        flowCodePattern: t("validation.flowCodePattern"),
     });
 
     const { control, handleSubmit, reset } = useForm<FlowFormValues>({
@@ -28,19 +29,16 @@ export function FlowForm({ defaultValues, onSubmit }: FlowFormProps) {
         resolver: zodResolver(flowFormSchema),
     });
 
+    const handleFormFinish = () => {
+        void handleSubmit(onSubmit)();
+    };
+
     useEffect(() => {
         reset(defaultValues ?? defaultFlowFormValues);
     }, [defaultValues, reset]);
 
     return (
-        <Form
-            id="flow-form"
-            layout="vertical"
-            onFinish={() => {
-                handleSubmit(onSubmit);
-            }}
-            className={styles.form}
-        >
+        <Form id="flow-form" layout="vertical" onFinish={handleFormFinish} className={styles.form}>
             <Controller
                 name="code"
                 control={control}

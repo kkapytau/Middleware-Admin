@@ -29,14 +29,10 @@ export function FlowsTable({ data, loading, deletingFlowId, onEdit, onDelete }: 
         {
             title: t("actions.actions"),
             key: "actions",
-            align: "right",
+            width: 180,
             render: (_, flow) => (
                 <Space>
-                    <Button onClick={() => onEdit(flow)}>
-                        {t("actions.editEntity", {
-                            entity: t("navigation.flow"),
-                        })}
-                    </Button>
+                    <Button onClick={() => onEdit(flow)}>{t("actions.edit")}</Button>
 
                     <Popconfirm
                         title={t("actions.deleteConfirmation")}

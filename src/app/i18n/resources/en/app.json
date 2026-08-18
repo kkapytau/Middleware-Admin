@@ -21,7 +21,12 @@
         "duplicateKey": "Key must be unique",
         "flowCodeMinLength": "Code must be at least 3 characters",
         "flowCodeMaxLength": "Code must not exceed 50 characters",
-        "flowNameMaxLength": "Name must not exceed 100 characters"
+        "flowNameMaxLength": "Name must not exceed 100 characters",
+        "flowCodePattern": "Flow code can contain only letters, numbers, underscores, and hyphens.",
+        "continentNameRequired": "Continent name is required.",
+        "codeUppercaseLength": "Code must contain exactly 2 uppercase letters.",
+        "countryNameRequired": "Country name is required.",
+        "continentRequired": "Continent is required."
     },
     "navigation": {
         "login": "Login",
@@ -32,7 +37,9 @@
         "functions": "Functions",
         "function": "Function",
         "flow": "Flow",
-        "flows": "Flows"
+        "flows": "Flows",
+        "continents": "Continents",
+        "continent": "Continent"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -58,17 +65,22 @@
         "city": "City",
         "country": "Country",
         "continent": "Continent",
-        "metropolitan": "Metropolitan"
+        "metropolitan": "Metropolitan",
+        "name": "Name"
     },
     "form": {
         "airportCode": "Airport Code",
         "airportName": "Airport Name",
         "city": "City",
+        "country": "Country",
+        "continent": "Continent",
         "latitude": "Latitude",
         "longitude": "Longitude",
         "metropolitan": "Metropolitan Airport",
 
         "selectCity": "Select city",
+        "selectCountry": "Select country",
+        "selectContinent": "Select continent",
         "enterAirportCode": "Enter airport code",
         "enterAirportName": "Enter airport name",
         "enterLatitude": "Enter latitude",
@@ -83,6 +95,11 @@
         "flowCode": "Flow code",
         "flowCodePlaceholder": "Enter flow code",
         "flowName": "Flow name",
-        "flowNamePlaceholder": "Enter flow name"
+        "flowNamePlaceholder": "Enter flow name",
+
+        "code": "Code",
+        "enterCode": "Enter code",
+        "enterName": "Enter name",
+        "name": "Name"
     }
 }

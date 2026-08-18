@@ -1,31 +1,21 @@
+import { Space } from "antd";
 import { useState } from "react";
 
-import type { FlowFunction, FlowFunctionFormValues } from "@/entities/flowFunction";
-import {
-    useCreateFlowFunction,
-    useDeleteFlowFunction,
-    useFlowFunction,
-    useFlowFunctions,
-    useUpdateFlowFunction,
-} from "@/entities/flowFunction";
+import type { FlowFunction } from "@/entities/flowFunction";
+import { useDeleteFlowFunction, useFlowFunction, useFlowFunctions } from "@/entities/flowFunction";
 import { FunctionsToolbar } from "@/pages/Functions/components";
 
 import { FunctionDrawer } from "./components/FunctionDrawer";
 import { FunctionsTable } from "./components/FunctionsTable";
-import styles from "./FlowFunctionsPage.module.scss";
 
 export function FlowFunctionsPage() {
     const { data = [], isLoading } = useFlowFunctions();
-
-    const createFlowFunction = useCreateFlowFunction();
-    const updateFlowFunction = useUpdateFlowFunction();
     const deleteFlowFunction = useDeleteFlowFunction();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingFunctionId, setEditingFunctionId] = useState<number | null>(null);
 
-    const { data: editingFunction, isLoading: isEditingFunctionLoading } =
-        useFlowFunction(editingFunctionId);
+    const { data: editingFunction } = useFlowFunction(editingFunctionId);
 
     function handleAdd() {
         setEditingFunctionId(null);
@@ -46,25 +36,8 @@ export function FlowFunctionsPage() {
         setEditingFunctionId(null);
     }
 
-    async function handleSubmit(values: FlowFunctionFormValues): Promise<void> {
-        if (editingFunctionId !== null) {
-            await updateFlowFunction.mutateAsync({
-                id: editingFunctionId,
-                values,
-            });
-
-            handleDrawerClose();
-
-            return;
-        }
-
-        await createFlowFunction.mutateAsync(values);
-
-        handleDrawerClose();
-    }
-
     return (
-        <div className={styles.page}>
+        <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <FunctionsToolbar onAdd={handleAdd} />
 
             <FunctionsTable
@@ -77,10 +50,8 @@ export function FlowFunctionsPage() {
             <FunctionDrawer
                 open={drawerOpen}
                 flowFunction={editingFunction}
-                loading={isEditingFunctionLoading}
                 onClose={handleDrawerClose}
-                onSubmit={handleSubmit}
             />
-        </div>
+        </Space>
     );
 }

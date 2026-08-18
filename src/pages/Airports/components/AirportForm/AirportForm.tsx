@@ -13,21 +13,14 @@ import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/c
 
 interface AirportFormProps {
     id?: string;
-
     defaultValues?: AirportFormValues;
-
     onSubmit: (values: AirportFormValues) => void | Promise<void>;
 }
 
 export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: cities = [], isLoading } = useCities();
-
-    const cityOptions = cities.map((city) => ({
-        value: city.cityCode,
-        label: city.cityName,
-    }));
+    const { data: cities = [], isLoading: citiesLoading } = useCities();
 
     const airportFormSchema = createAirportFormSchema({
         required: t("validation.required"),
@@ -40,6 +33,11 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
         defaultValues: defaultValues ?? defaultAirportFormValues,
         resolver: zodResolver(airportFormSchema),
     });
+
+    const cityOptions = cities.map((city) => ({
+        value: city.id,
+        label: `${city.code} — ${city.name}`,
+    }));
 
     return (
         <Form
@@ -57,7 +55,7 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
             >
                 <FormInput
                     control={control}
-                    name="airportCode"
+                    name="code"
                     label={t("form.airportCode")}
                     placeholder={t("form.enterAirportCode")}
                     inputProps={{
@@ -67,7 +65,7 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
 
                 <FormInput
                     control={control}
-                    name="airportName"
+                    name="name"
                     label={t("form.airportName")}
                     placeholder={t("form.enterAirportName")}
                 />
@@ -78,7 +76,7 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
                     label={t("form.city")}
                     placeholder={t("form.selectCity")}
                     options={cityOptions}
-                    loading={isLoading}
+                    loading={citiesLoading}
                     allowClear
                     showSearch
                 />
@@ -97,7 +95,7 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
                     placeholder={t("form.enterLongitude")}
                 />
 
-                <FormCheckbox control={control} name="isMetropolitan">
+                <FormCheckbox control={control} name="metropolitan">
                     {t("form.metropolitan")}
                 </FormCheckbox>
             </form>

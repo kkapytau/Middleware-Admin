@@ -10,7 +10,8 @@
         "functions": "Fonctions",
         "function": "Fonction",
         "flow": "Flux",
-        "flows": "Flux"
+        "flows": "Flux",
+        "continents": "Continents"
     },
 
     "login": {
@@ -35,7 +36,8 @@
         "duplicateKey": "La clé doit être unique",
         "flowCodeMinLength": "Le code doit contenir au moins 3 caractères",
         "flowCodeMaxLength": "Le code ne doit pas dépasser 50 caractères",
-        "flowNameMaxLength": "Le nom ne doit pas dépasser 100 caractères"
+        "flowNameMaxLength": "Le nom ne doit pas dépasser 100 caractères",
+        "flowCodePattern": "Le code du flow ne peut contenir que des lettres, des chiffres, des underscores et des tirets."
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -61,7 +63,8 @@
         "city": "Ville",
         "country": "Pays",
         "continent": "Continent",
-        "metropolitan": "Métropolitain"
+        "metropolitan": "Métropolitain",
+        "name": "Nom"
     },
     "form": {
         "airportCode": "Code Aéroport",
@@ -86,6 +89,11 @@
         "flowCode": "Code du flux",
         "flowCodePlaceholder": "Saisissez le code du flux",
         "flowName": "Nom du flux",
-        "flowNamePlaceholder": "Saisissez le nom du flux"
+        "flowNamePlaceholder": "Saisissez le nom du flux",
+
+        "code": "Code",
+        "enterCode": "Entrez le code",
+        "enterName": "Entrez le nom",
+        "name": "Nom"
     }
 }

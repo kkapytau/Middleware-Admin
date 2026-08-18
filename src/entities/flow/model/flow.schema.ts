@@ -7,18 +7,18 @@ export interface FlowValidationMessages {
     flowCodeMinLength: string;
     flowCodeMaxLength: string;
     flowNameMaxLength: string;
+    flowCodePattern: string;
 }
 
 export function createFlowFormSchema(messages: FlowValidationMessages) {
     return z.object({
         code: z
             .string()
-            .trim()
-            .min(1, messages.required)
             .min(3, messages.flowCodeMinLength)
-            .max(50, messages.flowCodeMaxLength),
+            .max(50, messages.flowCodeMaxLength)
+            .regex(/^[A-Za-z0-9_-]+$/, messages.flowCodePattern),
 
-        name: z.string().trim().min(1, messages.required).max(100, messages.flowNameMaxLength),
+        name: z.string().min(1, messages.required).max(100, messages.flowNameMaxLength),
     });
 }
 

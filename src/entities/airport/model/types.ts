@@ -1,21 +1,35 @@
-import type { City } from "@/entities/city";
-
 export interface Coordinates {
     latitude: number;
-
     longitude: number;
 }
 
 export interface Airport {
-    id: string;
+    id: number;
+    code: string;
+    name: string;
+}
 
-    airportCode: string;
+export interface AirportCity {
+    id: number;
+    code: string;
+    name: string;
+}
 
-    airportName: string;
-
-    isMetropolitan: boolean;
-
+export interface AirportDetail {
+    id: number;
+    code: string;
+    name: string;
+    translations: Record<string, string>;
     coordinates: Coordinates;
+    metropolitan: boolean;
+    city: AirportCity;
+}
 
-    city: City;
+export interface AirportFormValues {
+    code: string;
+    name: string;
+    cityId: number | null;
+    latitude: number | undefined;
+    longitude: number | undefined;
+    metropolitan: boolean;
 }
