@@ -1,8 +1,9 @@
-import { Button, Popconfirm, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { Flow } from "@/entities/flow";
+import { EntityActions } from "@/shared/components/EntityActions";
+import { EntityTable } from "@/shared/components/EntityTable";
 
 interface FlowsTableProps {
     data: Flow[];
@@ -31,28 +32,18 @@ export function FlowsTable({ data, loading, deletingFlowId, onEdit, onDelete }: 
             key: "actions",
             width: 180,
             render: (_, flow) => (
-                <Space>
-                    <Button onClick={() => onEdit(flow)}>{t("actions.edit")}</Button>
-
-                    <Popconfirm
-                        title={t("actions.deleteConfirmation")}
-                        onConfirm={() => {
-                            void onDelete(flow);
-                        }}
-                        okText={t("actions.delete")}
-                        cancelText={t("actions.cancel")}
-                    >
-                        <Button danger loading={deletingFlowId === flow.id}>
-                            {t("actions.delete")}
-                        </Button>
-                    </Popconfirm>
-                </Space>
+                <EntityActions
+                    record={flow}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    deleting={deletingFlowId === flow.id}
+                />
             ),
         },
     ];
 
     return (
-        <Table<Flow>
+        <EntityTable<Flow>
             rowKey="id"
             columns={columns}
             dataSource={data}

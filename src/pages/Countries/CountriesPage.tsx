@@ -1,13 +1,15 @@
 import { Space } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { useCountries, useCountry, useDeleteCountry } from "@/entities/country";
+import { type Country, useCountries, useCountry, useDeleteCountry } from "@/entities/country";
 import { CountriesTable } from "@/pages/Countries/components/CountriesTable";
-import { CountriesToolbar } from "@/pages/Countries/components/CountriesToolbar";
 import { CountryDrawer } from "@/pages/Countries/components/CountryDrawer";
+import { EntityToolbar } from "@/shared/components/EntityToolbar";
 
 export function CountriesPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const { t } = useTranslation("app");
     const [editingCountryId, setEditingCountryId] = useState<number | null>(null);
 
     const { data: countries = [], isLoading } = useCountries();
@@ -21,8 +23,8 @@ export function CountriesPage() {
         setDrawerOpen(true);
     };
 
-    const handleEdit = (id: number) => {
-        setEditingCountryId(id);
+    const handleEdit = (country: Country) => {
+        setEditingCountryId(country.id);
         setDrawerOpen(true);
     };
 
@@ -31,25 +33,19 @@ export function CountriesPage() {
         setEditingCountryId(null);
     };
 
-    const handleDelete = async (id: number) => {
-        try {
-            await deleteCountry.mutateAsync(id);
-        } catch {
-            console.error("Failed to delete country");
-        }
+    const handleDelete = async (country: Country) => {
+        await deleteCountry.mutateAsync(country.id);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-            <CountriesToolbar onCreate={handleCreate} />
+            <EntityToolbar entity={t("navigation.countries")} onAdd={handleCreate} />
 
             <CountriesTable
                 data={countries}
                 loading={isLoading}
                 onEdit={handleEdit}
-                onDelete={(id) => {
-                    void handleDelete(id);
-                }}
+                onDelete={handleDelete}
             />
 
             <CountryDrawer open={drawerOpen} country={editingCountry} onClose={handleClose} />

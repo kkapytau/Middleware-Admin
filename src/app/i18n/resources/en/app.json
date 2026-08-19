@@ -26,7 +26,9 @@
         "continentNameRequired": "Continent name is required.",
         "codeUppercaseLength": "Code must contain exactly 2 uppercase letters.",
         "countryNameRequired": "Country name is required.",
-        "continentRequired": "Continent is required."
+        "continentRequired": "Continent is required.",
+        "cityCodeLength": "City code must contain exactly 3 characters.",
+        "cityCodePattern": "City code can contain only uppercase letters."
     },
     "navigation": {
         "login": "Login",
@@ -34,6 +36,7 @@
         "airports": "Airports",
         "countries": "Countries",
         "cities": "Cities",
+        "city": "City",
         "functions": "Functions",
         "function": "Function",
         "flow": "Flow",
@@ -50,7 +53,7 @@
         "logout": "Logout",
         "cancel": "Cancel",
         "save": "Save",
-        "deleteConfirmation": "Are you sure you want to delete this airport?",
+        "deleteConfirmation": "Are you sure you want to delete this item?",
         "actions": "Actions",
         "addPair": "Add pair",
         "editEntity": "Edit {{entity}}"

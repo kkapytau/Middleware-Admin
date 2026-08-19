@@ -1,11 +1,9 @@
-import { Button, Drawer, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { type Airport, useAirport, useCreateAirport, useUpdateAirport } from "@/entities/airport";
 import { type AirportFormValues, airportToFormValues } from "@/entities/airport/model";
 import { AirportForm } from "@/pages/Airports/components/AirportForm";
-
-import styles from "./AirportDrawer.module.scss";
+import { EntityDrawer } from "@/shared/components/EntityDrawer";
 
 interface AirportDrawerProps {
     open: boolean;
@@ -23,8 +21,8 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
 
     const { data: airportDetail, isLoading: isLoadingAirport } = useAirport(airportId);
 
-    const isEdit = airport !== undefined;
-    const isSaving = createAirport.isPending || updateAirport.isPending;
+    const isEditing = Boolean(airport);
+    const isSubmitting = createAirport.isPending || updateAirport.isPending;
 
     async function handleSubmit(values: AirportFormValues): Promise<void> {
         if (airport) {
@@ -40,44 +38,27 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
     }
 
     return (
-        <Drawer
+        <EntityDrawer
             open={open}
-            destroyOnHidden
-            loading={isEdit && isLoadingAirport}
+            loading={isEditing && isLoadingAirport}
+            submitting={isSubmitting}
+            formId="airport-form"
             title={
-                isEdit
-                    ? t("actions.edit")
+                isEditing
+                    ? t("actions.editEntity", {
+                          entity: t("navigation.airports"),
+                      })
                     : t("actions.addEntity", {
                           entity: t("navigation.airports"),
                       })
             }
             onClose={onClose}
-            footer={
-                <div className={styles.footer}>
-                    <Space>
-                        <Button onClick={onClose} disabled={isSaving}>
-                            {t("actions.cancel")}
-                        </Button>
-
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            form="airport-form"
-                            loading={isSaving}
-                        >
-                            {t("actions.save")}
-                        </Button>
-                    </Space>
-                </div>
-            }
         >
-            <div className={styles.content}>
-                <AirportForm
-                    id="airport-form"
-                    defaultValues={airportDetail ? airportToFormValues(airportDetail) : undefined}
-                    onSubmit={handleSubmit}
-                />
-            </div>
-        </Drawer>
+            <AirportForm
+                id="airport-form"
+                defaultValues={airportDetail ? airportToFormValues(airportDetail) : undefined}
+                onSubmit={handleSubmit}
+            />
+        </EntityDrawer>
     );
 }

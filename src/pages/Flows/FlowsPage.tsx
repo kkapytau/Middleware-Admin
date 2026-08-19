@@ -1,20 +1,22 @@
 import { Space } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { type Flow, useDeleteFlow, useFlows } from "@/entities/flow";
+import { EntityToolbar } from "@/shared/components/EntityToolbar";
 
 import { FlowDrawer } from "./components/FlowDrawer";
 import { FlowsTable } from "./components/FlowsTable";
-import { FlowsToolbar } from "./components/FlowsToolbar";
 
 export function FlowsPage() {
     const { data = [], isLoading } = useFlows();
+    const { t } = useTranslation("app");
     const deleteFlow = useDeleteFlow();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingFlow, setEditingFlow] = useState<Flow | undefined>();
 
-    const handleAdd = () => {
+    const handleCreate = () => {
         setEditingFlow(undefined);
         setDrawerOpen(true);
     };
@@ -35,8 +37,7 @@ export function FlowsPage() {
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-            <FlowsToolbar onAdd={handleAdd} />
-
+            <EntityToolbar entity={t("navigation.flow")} onAdd={handleCreate} />
             <FlowsTable
                 data={data}
                 loading={isLoading}
@@ -44,7 +45,6 @@ export function FlowsPage() {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
-
             <FlowDrawer open={drawerOpen} flow={editingFlow} onClose={handleDrawerClose} />
         </Space>
     );

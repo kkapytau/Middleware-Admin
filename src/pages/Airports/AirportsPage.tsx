@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { type Airport, useAirport, useAirports, useDeleteAirport } from "@/entities/airport";
-import { AirportsToolbar } from "@/pages/Airports/components";
+import { EntityToolbar } from "@/shared/components/EntityToolbar";
 
 import styles from "./AirportsPage.module.scss";
 import { AirportDrawer } from "./components/AirportDrawer";
@@ -9,16 +10,16 @@ import { AirportsTable } from "./components/AirportsTable";
 
 export function AirportsPage() {
     const { data = [], isLoading } = useAirports();
+    const { t } = useTranslation("app");
 
     const deleteAirport = useDeleteAirport();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedAirportId, setSelectedAirportId] = useState<number | null>(null);
 
-    const { data: airportDetail, isLoading: isAirportDetailLoading } =
-        useAirport(selectedAirportId);
+    const { data: airportDetail } = useAirport(selectedAirportId);
 
-    function handleAdd() {
+    function handleCreate() {
         setSelectedAirportId(null);
         setDrawerOpen(true);
     }
@@ -33,13 +34,13 @@ export function AirportsPage() {
         setSelectedAirportId(null);
     }
 
-    function handleDelete(airport: Airport) {
-        deleteAirport.mutate(airport.id);
-    }
+    const handleDelete = async (airport: Airport) => {
+        await deleteAirport.mutateAsync(airport.id);
+    };
 
     return (
         <div className={styles.page}>
-            <AirportsToolbar onAdd={handleAdd} />
+            <EntityToolbar entity={t("navigation.airports")} onAdd={handleCreate} />
 
             <AirportsTable
                 data={data}
@@ -48,12 +49,7 @@ export function AirportsPage() {
                 onDelete={handleDelete}
             />
 
-            <AirportDrawer
-                open={drawerOpen}
-                loading={isAirportDetailLoading}
-                airport={airportDetail}
-                onClose={handleClose}
-            />
+            <AirportDrawer open={drawerOpen} airport={airportDetail} onClose={handleClose} />
         </div>
     );
 }

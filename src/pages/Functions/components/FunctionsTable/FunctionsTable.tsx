@@ -1,14 +1,15 @@
-import { Button, Popconfirm, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { FlowFunction } from "@/entities/flowFunction";
+import { EntityActions } from "@/shared/components/EntityActions";
+import { EntityTable } from "@/shared/components/EntityTable";
 
 interface FunctionsTableProps {
     data: FlowFunction[];
     loading: boolean;
     onEdit: (flowFunction: FlowFunction) => void;
-    onDelete: (flowFunction: FlowFunction) => void;
+    onDelete: (flowFunction: FlowFunction) => Promise<void>;
 }
 
 export function FunctionsTable({ data, loading, onEdit, onDelete }: FunctionsTableProps) {
@@ -25,27 +26,13 @@ export function FunctionsTable({ data, loading, onEdit, onDelete }: FunctionsTab
             key: "actions",
             width: 180,
             render: (_, flowFunction) => (
-                <Space>
-                    <Button type="default" onClick={() => onEdit(flowFunction)}>
-                        {t("actions.edit")}
-                    </Button>
-
-                    <Popconfirm
-                        title={t("actions.delete")}
-                        description={t("actions.deleteConfirmation")}
-                        onConfirm={() => onDelete(flowFunction)}
-                        okText={t("actions.delete")}
-                        cancelText={t("actions.cancel")}
-                    >
-                        <Button danger>{t("actions.delete")}</Button>
-                    </Popconfirm>
-                </Space>
+                <EntityActions record={flowFunction} onEdit={onEdit} onDelete={onDelete} />
             ),
         },
     ];
 
     return (
-        <Table<FlowFunction>
+        <EntityTable<FlowFunction>
             rowKey="id"
             columns={columns}
             dataSource={data}

@@ -1,13 +1,20 @@
 import { Space } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { useContinent, useContinents, useDeleteContinent } from "@/entities/continent";
+import {
+    type Continent,
+    useContinent,
+    useContinents,
+    useDeleteContinent,
+} from "@/entities/continent";
 import { ContinentDrawer } from "@/pages/Continents/components/ContinentDrawer";
 import { ContinentsTable } from "@/pages/Continents/components/ContinentsTable";
-import { ContinentsToolbar } from "@/pages/Continents/components/ContinentsToolbar";
+import { EntityToolbar } from "@/shared/components/EntityToolbar";
 
 export function ContinentsPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const { t } = useTranslation("app");
     const [editingContinentId, setEditingContinentId] = useState<number | null>(null);
 
     const { data: continents = [], isLoading } = useContinents();
@@ -21,8 +28,8 @@ export function ContinentsPage() {
         setDrawerOpen(true);
     };
 
-    const handleEdit = (id: number) => {
-        setEditingContinentId(id);
+    const handleEdit = (continent: Continent) => {
+        setEditingContinentId(continent.id);
         setDrawerOpen(true);
     };
 
@@ -31,25 +38,19 @@ export function ContinentsPage() {
         setEditingContinentId(null);
     };
 
-    const handleDelete = async (id: number) => {
-        try {
-            await deleteContinent.mutateAsync(id);
-        } catch {
-            console.error("Failed to delete continent");
-        }
+    const handleDelete = async (continent: Continent) => {
+        await deleteContinent.mutateAsync(continent.id);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-            <ContinentsToolbar onCreate={handleCreate} />
+            <EntityToolbar entity={t("navigation.continent")} onAdd={handleCreate} />
 
             <ContinentsTable
                 data={continents}
                 loading={isLoading}
                 onEdit={handleEdit}
-                onDelete={(id) => {
-                    void handleDelete(id);
-                }}
+                onDelete={handleDelete}
             />
 
             <ContinentDrawer open={drawerOpen} continent={editingContinent} onClose={handleClose} />

@@ -1,19 +1,18 @@
-import { Button, Drawer, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
 import {
-    type Continent,
+    type ContinentDetail,
     type ContinentFormValues,
     useCreateContinent,
     useUpdateContinent,
 } from "@/entities/continent";
+import { EntityDrawer } from "@/shared/components/EntityDrawer";
 
 import { ContinentForm } from "../ContinentForm";
-import styles from "./ContinentDrawer.module.scss";
 
 interface ContinentDrawerProps {
     open: boolean;
-    continent?: Continent;
+    continent?: ContinentDetail;
     onClose: () => void;
 }
 
@@ -40,8 +39,10 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
     };
 
     return (
-        <Drawer
+        <EntityDrawer
             open={open}
+            submitting={isSubmitting}
+            formId="continent-form"
             title={
                 isEditing
                     ? t("actions.editEntity", {
@@ -52,27 +53,19 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
                       })
             }
             onClose={onClose}
-            destroyOnHidden
-            footer={
-                <div className={styles.footer}>
-                    <Space>
-                        <Button onClick={onClose} disabled={isSubmitting}>
-                            {t("actions.cancel")}
-                        </Button>
-
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            form="continent-form"
-                            loading={isSubmitting}
-                        >
-                            {t("actions.save")}
-                        </Button>
-                    </Space>
-                </div>
-            }
         >
-            <ContinentForm defaultValues={continent} onSubmit={handleSubmit} />
-        </Drawer>
+            <ContinentForm
+                defaultValues={
+                    continent
+                        ? {
+                              code: continent.code,
+                              name: continent.name,
+                              translations: continent.translations,
+                          }
+                        : undefined
+                }
+                onSubmit={handleSubmit}
+            />
+        </EntityDrawer>
     );
 }

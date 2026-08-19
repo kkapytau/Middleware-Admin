@@ -1,13 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { QUERY_STALE_TIME } from "@/shared/constants/query";
-
-import { cityKeys, getCities } from "../api";
+import { cityKeys, getCities, getCity } from "../api";
 
 export function useCities() {
     return useQuery({
-        queryKey: cityKeys.all,
+        queryKey: cityKeys.list(),
         queryFn: getCities,
-        staleTime: QUERY_STALE_TIME,
+    });
+}
+
+export function useCity(id: number | undefined, options?: { enabled?: boolean }) {
+    return useQuery({
+        queryKey: cityKeys.detail(id),
+        queryFn: async () => {
+            if (id === undefined) {
+                throw new Error("City id is required");
+            }
+
+            return getCity(id);
+        },
+        enabled: id !== undefined && options?.enabled !== false,
     });
 }

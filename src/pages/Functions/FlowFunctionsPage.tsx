@@ -1,15 +1,17 @@
 import { Space } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { FlowFunction } from "@/entities/flowFunction";
 import { useDeleteFlowFunction, useFlowFunction, useFlowFunctions } from "@/entities/flowFunction";
-import { FunctionsToolbar } from "@/pages/Functions/components";
+import { EntityToolbar } from "@/shared/components/EntityToolbar";
 
 import { FunctionDrawer } from "./components/FunctionDrawer";
 import { FunctionsTable } from "./components/FunctionsTable";
 
 export function FlowFunctionsPage() {
     const { data = [], isLoading } = useFlowFunctions();
+    const { t } = useTranslation("app");
     const deleteFlowFunction = useDeleteFlowFunction();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -17,7 +19,7 @@ export function FlowFunctionsPage() {
 
     const { data: editingFunction } = useFlowFunction(editingFunctionId);
 
-    function handleAdd() {
+    function handleCreate() {
         setEditingFunctionId(null);
         setDrawerOpen(true);
     }
@@ -27,9 +29,9 @@ export function FlowFunctionsPage() {
         setDrawerOpen(true);
     }
 
-    function handleDelete(flowFunction: FlowFunction) {
-        deleteFlowFunction.mutate(flowFunction.id);
-    }
+    const handleDelete = async (flowFunction: FlowFunction) => {
+        await deleteFlowFunction.mutateAsync(flowFunction.id);
+    };
 
     function handleDrawerClose() {
         setDrawerOpen(false);
@@ -38,7 +40,7 @@ export function FlowFunctionsPage() {
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-            <FunctionsToolbar onAdd={handleAdd} />
+            <EntityToolbar entity={t("navigation.function")} onAdd={handleCreate} />
 
             <FunctionsTable
                 data={data}

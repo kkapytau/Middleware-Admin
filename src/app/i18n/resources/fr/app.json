@@ -7,6 +7,7 @@
         "airports": "Aéroports",
         "countries": "Pays",
         "cities": "Villes",
+        "city": "Ville",
         "functions": "Fonctions",
         "function": "Fonction",
         "flow": "Flux",
@@ -37,7 +38,9 @@
         "flowCodeMinLength": "Le code doit contenir au moins 3 caractères",
         "flowCodeMaxLength": "Le code ne doit pas dépasser 50 caractères",
         "flowNameMaxLength": "Le nom ne doit pas dépasser 100 caractères",
-        "flowCodePattern": "Le code du flow ne peut contenir que des lettres, des chiffres, des underscores et des tirets."
+        "flowCodePattern": "Le code du flow ne peut contenir que des lettres, des chiffres, des underscores et des tirets.",
+        "cityCodeLength": "Le code de la ville doit contenir exactement 3 caractères.",
+        "cityCodePattern": "Le code de la ville ne peut contenir que des lettres majuscules."
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -48,7 +51,7 @@
         "logout": "Se déconnecter",
         "cancel": "Annuler",
         "save": "Enregistrer",
-        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet aéroport ?",
+        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet élément ?",
         "actions": "Actions",
         "addPair": "Ajouter une paire",
         "editEntity": "Modifier {{entity}}"

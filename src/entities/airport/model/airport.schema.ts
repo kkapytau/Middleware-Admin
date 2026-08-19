@@ -29,12 +29,9 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             .trim()
             .min(1, messages.required),
 
-        cityId: z
-            .number()
-            .nullable()
-            .refine((value) => value !== null, {
-                error: messages.required,
-            }),
+        cityId: z.number().refine((value) => value !== null, {
+            error: messages.required,
+        }),
 
         latitude: z
             .number({
@@ -57,8 +54,8 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
 export const defaultAirportFormValues: AirportFormValues = {
     code: "",
     name: "",
-    cityId: null,
-    latitude: undefined,
-    longitude: undefined,
+    cityId: 0,
+    latitude: 0,
+    longitude: 0,
     metropolitan: false,
 };

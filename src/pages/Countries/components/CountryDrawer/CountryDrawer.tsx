@@ -1,4 +1,3 @@
-import { Button, Drawer, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -7,9 +6,9 @@ import {
     useCreateCountry,
     useUpdateCountry,
 } from "@/entities/country";
+import { EntityDrawer } from "@/shared/components/EntityDrawer";
 
 import { CountryForm } from "../CountryForm";
-import styles from "./CountryDrawer.module.scss";
 
 interface CountryDrawerProps {
     open: boolean;
@@ -40,8 +39,10 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
     };
 
     return (
-        <Drawer
+        <EntityDrawer
             open={open}
+            submitting={isSubmitting}
+            formId="country-form"
             title={
                 isEditing
                     ? t("actions.editEntity", {
@@ -52,25 +53,6 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
                       })
             }
             onClose={onClose}
-            destroyOnHidden
-            footer={
-                <div className={styles.footer}>
-                    <Space>
-                        <Button onClick={onClose} disabled={isSubmitting}>
-                            {t("actions.cancel")}
-                        </Button>
-
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            form="country-form"
-                            loading={isSubmitting}
-                        >
-                            {t("actions.save")}
-                        </Button>
-                    </Space>
-                </div>
-            }
         >
             <CountryForm
                 defaultValues={
@@ -85,6 +67,6 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
                 }
                 onSubmit={handleSubmit}
             />
-        </Drawer>
+        </EntityDrawer>
     );
 }

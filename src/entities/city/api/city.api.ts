@@ -1,13 +1,9 @@
 import { api } from "@/shared/api";
 
-import type { City } from "../model";
+import type { City, CityDetail, CityFormValues } from "../model";
 
 interface CityListResponse {
-    content: Array<{
-        id: number;
-        code: string;
-        name: string;
-    }>;
+    content: City[];
     page: number;
     size: number;
     totalElements: number;
@@ -24,25 +20,18 @@ interface CityDetailResponse {
         id: number;
         code: string;
         name: string;
+        translations: Record<string, string>;
     };
 }
 
 const CITIES_ENDPOINT = "internal/api/v1/cities";
-
-function mapCityDetail(response: CityDetailResponse): City {
-    return {
-        id: response.id,
-        code: response.code,
-        name: response.name,
-    };
-}
 
 export async function getCities(): Promise<City[]> {
     const response = await api
         .get(CITIES_ENDPOINT, {
             searchParams: {
                 page: 0,
-                size: 100,
+                size: 50,
             },
         })
         .json<CityListResponse>();
@@ -50,10 +39,29 @@ export async function getCities(): Promise<City[]> {
     return response.content;
 }
 
-export async function getCity(id: number): Promise<City> {
-    const response = await api.get(`${CITIES_ENDPOINT}/${id}`).json<CityDetailResponse>();
+export async function getCity(id: number): Promise<CityDetail> {
+    return api.get(`${CITIES_ENDPOINT}/${id}`).json<CityDetailResponse>();
+}
 
-    return mapCityDetail(response);
+export async function createCity(values: CityFormValues): Promise<CityDetail> {
+    return api
+        .post(CITIES_ENDPOINT, {
+            json: values,
+        })
+        .json<CityDetailResponse>();
+}
+
+export interface UpdateCityParams {
+    id: number;
+    values: CityFormValues;
+}
+
+export async function updateCity({ id, values }: UpdateCityParams): Promise<CityDetail> {
+    return api
+        .put(`${CITIES_ENDPOINT}/${id}`, {
+            json: values,
+        })
+        .json<CityDetailResponse>();
 }
 
 export async function deleteCity(id: number): Promise<void> {
