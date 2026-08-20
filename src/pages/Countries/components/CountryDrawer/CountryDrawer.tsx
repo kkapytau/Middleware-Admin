@@ -7,6 +7,7 @@ import {
     useUpdateCountry,
 } from "@/entities/country";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 import { CountryForm } from "../CountryForm";
 
@@ -21,21 +22,30 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
 
     const createCountry = useCreateCountry();
     const updateCountry = useUpdateCountry();
+    const { handleError } = useMutationErrorHandler();
 
     const isEditing = Boolean(country);
     const isSubmitting = createCountry.isPending || updateCountry.isPending;
 
     const handleSubmit = async (values: CountryFormValues) => {
-        if (country) {
-            await updateCountry.mutateAsync({
-                id: country.id,
-                values,
-            });
-        } else {
-            await createCountry.mutateAsync(values);
-        }
+        try {
+            if (country) {
+                await updateCountry.mutateAsync({
+                    id: country.id,
+                    values,
+                });
+            } else {
+                await createCountry.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

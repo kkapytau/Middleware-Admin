@@ -11,6 +11,7 @@ import {
 import { ContinentDrawer } from "@/pages/Continents/components/ContinentDrawer";
 import { ContinentsTable } from "@/pages/Continents/components/ContinentsTable";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 export function ContinentsPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -22,6 +23,7 @@ export function ContinentsPage() {
     const { data: editingContinent } = useContinent(editingContinentId);
 
     const deleteContinent = useDeleteContinent();
+    const { handleError } = useMutationErrorHandler();
 
     const handleCreate = () => {
         setEditingContinentId(null);
@@ -39,7 +41,15 @@ export function ContinentsPage() {
     };
 
     const handleDelete = async (continent: Continent) => {
-        await deleteContinent.mutateAsync(continent.id);
+        try {
+            await deleteContinent.mutateAsync(continent.id);
+        } catch (error) {
+            if (handleError(error, t("errors.deleteConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

@@ -42,6 +42,10 @@
         "cityCodeLength": "Le code de la ville doit contenir exactement 3 caractères.",
         "cityCodePattern": "Le code de la ville ne peut contenir que des lettres majuscules."
     },
+    "errors": {
+        "deleteConflict": "Cet élément ne peut pas être supprimé car il est référencé par d'autres enregistrements.",
+        "createConflict": "Un enregistrement portant le même nom ou code existe déjà."
+    },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
         "edit": "Modifier",
@@ -54,11 +58,8 @@
         "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet élément ?",
         "actions": "Actions",
         "addPair": "Ajouter une paire",
-        "editEntity": "Modifier {{entity}}"
-    },
-    "statuses": {
-        "metropolitan": "Métropolitain",
-        "regional": "Régional"
+        "editEntity": "Modifier {{entity}}",
+        "error": "Erreur"
     },
     "columns": {
         "airport": "Aéroport",

@@ -6,6 +6,7 @@ import { type Country, useCountries, useCountry, useDeleteCountry } from "@/enti
 import { CountriesTable } from "@/pages/Countries/components/CountriesTable";
 import { CountryDrawer } from "@/pages/Countries/components/CountryDrawer";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 export function CountriesPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -17,6 +18,7 @@ export function CountriesPage() {
     const { data: editingCountry } = useCountry(editingCountryId);
 
     const deleteCountry = useDeleteCountry();
+    const { handleError } = useMutationErrorHandler();
 
     const handleCreate = () => {
         setEditingCountryId(null);
@@ -34,7 +36,15 @@ export function CountriesPage() {
     };
 
     const handleDelete = async (country: Country) => {
-        await deleteCountry.mutateAsync(country.id);
+        try {
+            await deleteCountry.mutateAsync(country.id);
+        } catch (error) {
+            if (handleError(error, t("errors.deleteConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

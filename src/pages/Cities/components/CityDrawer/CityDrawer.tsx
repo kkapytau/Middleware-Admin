@@ -8,6 +8,7 @@ import {
     useUpdateCity,
 } from "@/entities/city";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 import { CityForm } from "../CityForm";
 
@@ -22,6 +23,7 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
 
     const createCity = useCreateCity();
     const updateCity = useUpdateCity();
+    const { handleError } = useMutationErrorHandler();
 
     const isEditing = Boolean(city);
 
@@ -31,16 +33,24 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
     const isSubmitting = createCity.isPending || updateCity.isPending;
 
     const handleSubmit = async (values: CityFormValues) => {
-        if (city) {
-            await updateCity.mutateAsync({
-                id: city.id,
-                values,
-            });
-        } else {
-            await createCity.mutateAsync(values);
-        }
+        try {
+            if (city) {
+                await updateCity.mutateAsync({
+                    id: city.id,
+                    values,
+                });
+            } else {
+                await createCity.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

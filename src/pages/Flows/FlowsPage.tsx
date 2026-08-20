@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { type Flow, useDeleteFlow, useFlows } from "@/entities/flow";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 import { FlowDrawer } from "./components/FlowDrawer";
 import { FlowsTable } from "./components/FlowsTable";
@@ -15,6 +16,7 @@ export function FlowsPage() {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingFlow, setEditingFlow] = useState<Flow | undefined>();
+    const { handleError } = useMutationErrorHandler();
 
     const handleCreate = () => {
         setEditingFlow(undefined);
@@ -32,7 +34,15 @@ export function FlowsPage() {
     };
 
     const handleDelete = async (flow: Flow) => {
-        await deleteFlow.mutateAsync(flow.id);
+        try {
+            await deleteFlow.mutateAsync(flow.id);
+        } catch (error) {
+            if (handleError(error, t("errors.deleteConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

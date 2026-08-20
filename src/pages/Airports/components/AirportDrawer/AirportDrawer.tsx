@@ -4,6 +4,7 @@ import { type Airport, useAirport, useCreateAirport, useUpdateAirport } from "@/
 import { type AirportFormValues, airportToFormValues } from "@/entities/airport/model";
 import { AirportForm } from "@/pages/Airports/components/AirportForm";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 interface AirportDrawerProps {
     open: boolean;
@@ -16,6 +17,7 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
 
     const createAirport = useCreateAirport();
     const updateAirport = useUpdateAirport();
+    const { handleError } = useMutationErrorHandler();
 
     const airportId = airport?.id ?? null;
 
@@ -25,16 +27,24 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
     const isSubmitting = createAirport.isPending || updateAirport.isPending;
 
     async function handleSubmit(values: AirportFormValues): Promise<void> {
-        if (airport) {
-            await updateAirport.mutateAsync({
-                id: airport.id,
-                values,
-            });
-        } else {
-            await createAirport.mutateAsync(values);
-        }
+        try {
+            if (airport) {
+                await updateAirport.mutateAsync({
+                    id: airport.id,
+                    values,
+                });
+            } else {
+                await createAirport.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     }
 
     return (

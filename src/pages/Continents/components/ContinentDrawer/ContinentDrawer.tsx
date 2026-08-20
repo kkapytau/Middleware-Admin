@@ -7,6 +7,7 @@ import {
     useUpdateContinent,
 } from "@/entities/continent";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 import { ContinentForm } from "../ContinentForm";
 
@@ -21,21 +22,30 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
 
     const createContinent = useCreateContinent();
     const updateContinent = useUpdateContinent();
+    const { handleError } = useMutationErrorHandler();
 
     const isEditing = Boolean(continent);
     const isSubmitting = createContinent.isPending || updateContinent.isPending;
 
     const handleSubmit = async (values: ContinentFormValues) => {
-        if (continent) {
-            await updateContinent.mutateAsync({
-                id: continent.id,
-                values,
-            });
-        } else {
-            await createContinent.mutateAsync(values);
-        }
+        try {
+            if (continent) {
+                await updateContinent.mutateAsync({
+                    id: continent.id,
+                    values,
+                });
+            } else {
+                await createContinent.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

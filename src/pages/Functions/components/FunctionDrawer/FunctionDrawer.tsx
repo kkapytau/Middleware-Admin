@@ -8,6 +8,7 @@ import {
 } from "@/entities/flowFunction";
 import { FunctionForm } from "@/pages/Functions/components/FunctionForm";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 interface FunctionDrawerProps {
     open: boolean;
@@ -20,22 +21,31 @@ export function FunctionDrawer({ open, flowFunction, onClose }: FunctionDrawerPr
 
     const createFlowFunction = useCreateFlowFunction();
     const updateFlowFunction = useUpdateFlowFunction();
+    const { handleError } = useMutationErrorHandler();
 
     const isEditing = Boolean(flowFunction);
 
     const isSubmitting = createFlowFunction.isPending || updateFlowFunction.isPending;
 
     const handleSubmit = async (values: FlowFunctionFormValues) => {
-        if (flowFunction) {
-            await updateFlowFunction.mutateAsync({
-                id: flowFunction.id,
-                values,
-            });
-        } else {
-            await createFlowFunction.mutateAsync(values);
-        }
+        try {
+            if (flowFunction) {
+                await updateFlowFunction.mutateAsync({
+                    id: flowFunction.id,
+                    values,
+                });
+            } else {
+                await createFlowFunction.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

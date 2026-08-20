@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { type Flow, type FlowFormValues, useCreateFlow, useUpdateFlow } from "@/entities/flow";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
+import { useMutationErrorHandler } from "@/shared/hooks";
 
 import { FlowForm } from "../FlowForm";
 
@@ -16,22 +17,31 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
 
     const createFlow = useCreateFlow();
     const updateFlow = useUpdateFlow();
+    const { handleError } = useMutationErrorHandler();
 
     const isEditing = Boolean(flow);
 
     const isSubmitting = createFlow.isPending || updateFlow.isPending;
 
     const handleSubmit = async (values: FlowFormValues) => {
-        if (flow) {
-            await updateFlow.mutateAsync({
-                id: flow.id,
-                values,
-            });
-        } else {
-            await createFlow.mutateAsync(values);
-        }
+        try {
+            if (flow) {
+                await updateFlow.mutateAsync({
+                    id: flow.id,
+                    values,
+                });
+            } else {
+                await createFlow.mutateAsync(values);
+            }
 
-        onClose();
+            onClose();
+        } catch (error) {
+            if (handleError(error, t("errors.createConflict"))) {
+                return;
+            }
+
+            throw error;
+        }
     };
 
     return (

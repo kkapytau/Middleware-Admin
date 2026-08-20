@@ -18,6 +18,10 @@
     :global(.ant-menu-root > .ant-menu-item:last-child) {
         border-bottom: none;
     }
+
+    :global(.ant-menu-title-content) {
+        text-align: left;
+    }
 }
 
 .logoContainer {
