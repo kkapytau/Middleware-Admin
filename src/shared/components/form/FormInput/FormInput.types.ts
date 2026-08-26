@@ -14,4 +14,6 @@ export interface FormInputProps<T extends FieldValues> {
     disabled?: boolean;
 
     inputProps?: InputProps;
+
+    prefix?: ReactNode;
 }

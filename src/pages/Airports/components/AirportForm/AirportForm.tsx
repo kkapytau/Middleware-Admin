@@ -8,7 +8,7 @@ import {
     createAirportFormSchema,
     defaultAirportFormValues,
 } from "@/entities/airport/model";
-import { useCities } from "@/entities/city";
+import { useAllCities } from "@/entities/city";
 import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
 
 interface AirportFormProps {
@@ -20,7 +20,7 @@ interface AirportFormProps {
 export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: cities = [], isLoading: citiesLoading } = useCities();
+    const { data: cities = [], isLoading: citiesLoading } = useAllCities();
 
     const airportFormSchema = createAirportFormSchema({
         required: t("validation.required"),

@@ -1,4 +1,4 @@
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { Country } from "@/entities/country";
@@ -8,11 +8,18 @@ import { EntityTable } from "@/shared/components/EntityTable";
 interface CountriesTableProps {
     data: Country[];
     loading: boolean;
+    pagination?: TablePaginationConfig;
     onEdit: (country: Country) => void;
     onDelete: (country: Country) => Promise<void>;
 }
 
-export function CountriesTable({ data, loading, onEdit, onDelete }: CountriesTableProps) {
+export function CountriesTable({
+    data,
+    loading,
+    pagination,
+    onEdit,
+    onDelete,
+}: CountriesTableProps) {
     const { t } = useTranslation("app");
     const columns: ColumnsType<Country> = [
         {
@@ -36,6 +43,12 @@ export function CountriesTable({ data, loading, onEdit, onDelete }: CountriesTab
     ];
 
     return (
-        <EntityTable<Country> rowKey="id" columns={columns} dataSource={data} loading={loading} />
+        <EntityTable<Country>
+            rowKey="id"
+            columns={columns}
+            dataSource={data}
+            loading={loading}
+            pagination={pagination}
+        />
     );
 }

@@ -1,4 +1,4 @@
-import { api } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { FlowFunction, FlowFunctionDetail, FlowFunctionFormValues } from "../model";
 
@@ -33,17 +33,26 @@ function mapFunctionDetail(response: FunctionDetailResponse): FlowFunctionDetail
     };
 }
 
-export async function getFlowFunctions(): Promise<FlowFunction[]> {
-    const response = await api
+export async function getFlowFunctions(
+    page: number,
+    size: number,
+): Promise<PageResponse<FlowFunction>> {
+    return await api
         .get(FUNCTIONS_ENDPOINT, {
             searchParams: {
-                page: 0,
-                size: 50,
+                page,
+                size,
             },
         })
         .json<FunctionListResponse>();
+}
 
-    return response.content;
+export async function getAllFlowFunctions(locale: string): Promise<FlowFunction[]> {
+    return getAllPages(getFlowFunctions, (a, b) =>
+        a.name.localeCompare(b.name, locale, {
+            sensitivity: "base",
+        }),
+    );
 }
 
 export async function getFlowFunction(id: number): Promise<FlowFunctionDetail> {

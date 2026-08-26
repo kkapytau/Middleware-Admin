@@ -6,4 +6,5 @@ export type NavigationKey =
     | "navigation.cities"
     | "navigation.functions"
     | "navigation.flows"
-    | "navigation.continents";
+    | "navigation.continents"
+    | "navigation.flowRules";

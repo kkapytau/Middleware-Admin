@@ -4,10 +4,10 @@ export const routes = {
     home: "/",
 
     location: {
-        airports: "/location/airports",
+        airports: "/airports",
 
-        countries: "/location/countries",
+        countries: "/countries",
 
-        cities: "/location/cities",
+        cities: "/cities",
     },
 } as const;

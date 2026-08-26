@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Input, Select } from "antd";
+import { Form } from "antd";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useContinents } from "@/entities/continent";
@@ -10,6 +10,7 @@ import {
     createCountryFormSchema,
     defaultCountryFormValues,
 } from "@/entities/country";
+import { FormInput, FormSelect } from "@/shared/components/form";
 
 interface CountryFormProps {
     defaultValues?: CountryFormValues;
@@ -31,6 +32,11 @@ export function CountryForm({ defaultValues, onSubmit }: CountryFormProps) {
         resolver: zodResolver(countryFormSchema),
     });
 
+    const continentsOptions = continents.map((continent) => ({
+        value: continent.id,
+        label: `${continent.code} - ${continent.name}`,
+    }));
+
     const handleFormFinish = () => {
         void handleSubmit(onSubmit)();
     };
@@ -41,56 +47,29 @@ export function CountryForm({ defaultValues, onSubmit }: CountryFormProps) {
 
     return (
         <Form id="country-form" layout="vertical" onFinish={handleFormFinish}>
-            <Controller
+            <FormInput
+                control={control}
                 name="code"
-                control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.code")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} maxLength={2} placeholder={t("form.enterCode")} />
-                    </Form.Item>
-                )}
+                label={t("form.code")}
+                placeholder={t("form.enterCode")}
             />
 
-            <Controller
+            <FormInput
+                control={control}
                 name="name"
-                control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.name")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} maxLength={100} placeholder={t("form.enterName")} />
-                    </Form.Item>
-                )}
+                label={t("form.name")}
+                placeholder={t("form.enterName")}
             />
 
-            <Controller
-                name="continentId"
+            <FormSelect
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.continent")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Select
-                            {...field}
-                            value={field.value || undefined}
-                            placeholder={t("form.selectContinent")}
-                            loading={isContinentsLoading}
-                            options={continents.map((continent) => ({
-                                value: continent.id,
-                                label: `${continent.code} - ${continent.name}`,
-                            }))}
-                            onChange={field.onChange}
-                        />
-                    </Form.Item>
-                )}
+                name="continentId"
+                label={t("form.continent")}
+                placeholder={t("form.selectContinent")}
+                options={continentsOptions}
+                loading={isContinentsLoading}
+                allowClear
+                showSearch
             />
         </Form>
     );

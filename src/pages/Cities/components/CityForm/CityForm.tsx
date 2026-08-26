@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Input, Select } from "antd";
+import { Form } from "antd";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { type CityFormValues, createCityFormSchema, defaultCityFormValues } from "@/entities/city";
-import { useCountries } from "@/entities/country";
+import { useAllCountries } from "@/entities/country";
+import { FormInput, FormSelect } from "@/shared/components/form";
 
 interface CityFormProps {
     defaultValues?: CityFormValues;
@@ -15,7 +16,7 @@ interface CityFormProps {
 export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: countries = [], isLoading: isLoadingCountries } = useCountries();
+    const { data: countries = [], isLoading: isLoadingCountries } = useAllCountries();
 
     const cityFormSchema = createCityFormSchema({
         required: t("validation.required"),
@@ -28,6 +29,11 @@ export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
         resolver: zodResolver(cityFormSchema),
     });
 
+    const countryOptions = countries.map((country) => ({
+        value: country.id,
+        label: `${country.code} — ${country.name}`,
+    }));
+
     const handleFormFinish = () => {
         void handleSubmit(onSubmit)();
     };
@@ -38,55 +44,29 @@ export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
 
     return (
         <Form id="city-form" layout="vertical" onFinish={handleFormFinish}>
-            <Controller
+            <FormInput
+                control={control}
                 name="code"
-                control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.code")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} placeholder={t("form.enterCode")} maxLength={3} />
-                    </Form.Item>
-                )}
+                label={t("form.code")}
+                placeholder={t("form.enterCode")}
             />
 
-            <Controller
+            <FormInput
+                control={control}
                 name="name"
-                control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.name")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} placeholder={t("form.enterName")} />
-                    </Form.Item>
-                )}
+                label={t("form.name")}
+                placeholder={t("form.enterName")}
             />
 
-            <Controller
-                name="countryId"
+            <FormSelect
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.country")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Select
-                            {...field}
-                            value={field.value || undefined}
-                            loading={isLoadingCountries}
-                            placeholder={t("form.selectCountry")}
-                            options={countries.map((country) => ({
-                                value: country.id,
-                                label: `${country.code} — ${country.name}`,
-                            }))}
-                        />
-                    </Form.Item>
-                )}
+                name="countryId"
+                label={t("form.country")}
+                placeholder={t("form.selectCountry")}
+                options={countryOptions}
+                loading={isLoadingCountries}
+                allowClear
+                showSearch
             />
         </Form>
     );

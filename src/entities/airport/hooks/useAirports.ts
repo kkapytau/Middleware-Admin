@@ -4,11 +4,11 @@ import { QUERY_STALE_TIME } from "@/shared/constants/query";
 
 import { airportKeys, getAirport, getAirports } from "../api";
 
-export function useAirports() {
+export function useAirports(page: number, size: number) {
     return useQuery({
-        queryKey: airportKeys.all,
+        queryKey: [...airportKeys.lists(), page, size],
 
-        queryFn: getAirports,
+        queryFn: () => getAirports(page, size),
 
         staleTime: QUERY_STALE_TIME,
     });

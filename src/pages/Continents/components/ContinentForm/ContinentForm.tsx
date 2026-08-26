@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Input } from "antd";
+import { Form } from "antd";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -9,6 +9,7 @@ import {
     createContinentFormSchema,
     defaultContinentFormValues,
 } from "@/entities/continent";
+import { FormInput } from "@/shared/components/form";
 
 interface ContinentFormProps {
     defaultValues?: ContinentFormValues;
@@ -38,32 +39,18 @@ export function ContinentForm({ defaultValues, onSubmit }: ContinentFormProps) {
 
     return (
         <Form id="continent-form" layout="vertical" onFinish={handleFormFinish}>
-            <Controller
-                name="code"
+            <FormInput
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.code")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} maxLength={2} placeholder={t("form.enterCode")} />
-                    </Form.Item>
-                )}
+                name="code"
+                label={t("form.code")}
+                placeholder={t("form.enterCode")}
             />
 
-            <Controller
-                name="name"
+            <FormInput
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.name")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} maxLength={50} placeholder={t("form.enterName")} />
-                    </Form.Item>
-                )}
+                name="name"
+                label={t("form.name")}
+                placeholder={t("form.enterName")}
             />
         </Form>
     );

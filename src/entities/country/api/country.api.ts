@@ -1,4 +1,4 @@
-import { api } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { Country, CountryDetail, CountryFormValues } from "../model";
 
@@ -40,17 +40,23 @@ function mapCountryDetail(response: CountryDetailResponse): CountryDetail {
     };
 }
 
-export async function getCountries(): Promise<Country[]> {
-    const response = await api
+export async function getCountries(page: number, size: number): Promise<PageResponse<Country>> {
+    return api
         .get(COUNTRIES_ENDPOINT, {
             searchParams: {
-                page: 0,
-                size: 50,
+                page,
+                size,
             },
         })
         .json<CountryListResponse>();
+}
 
-    return response.content;
+export async function getAllCountries(locale: string): Promise<Country[]> {
+    return getAllPages(getCountries, (a, b) =>
+        a.name.localeCompare(b.name, locale, {
+            sensitivity: "base",
+        }),
+    );
 }
 
 export async function getCountry(id: number): Promise<CountryDetail> {

@@ -1,4 +1,4 @@
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { FlowFunction } from "@/entities/flowFunction";
@@ -8,11 +8,18 @@ import { EntityTable } from "@/shared/components/EntityTable";
 interface FunctionsTableProps {
     data: FlowFunction[];
     loading: boolean;
+    pagination?: TablePaginationConfig;
     onEdit: (flowFunction: FlowFunction) => void;
     onDelete: (flowFunction: FlowFunction) => Promise<void>;
 }
 
-export function FunctionsTable({ data, loading, onEdit, onDelete }: FunctionsTableProps) {
+export function FunctionsTable({
+    data,
+    loading,
+    onEdit,
+    onDelete,
+    pagination,
+}: FunctionsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<FlowFunction> = [
@@ -37,7 +44,7 @@ export function FunctionsTable({ data, loading, onEdit, onDelete }: FunctionsTab
             columns={columns}
             dataSource={data}
             loading={loading}
-            pagination={false}
+            pagination={pagination}
         />
     );
 }

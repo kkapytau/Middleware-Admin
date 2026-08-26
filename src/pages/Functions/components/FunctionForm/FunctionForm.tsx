@@ -1,8 +1,8 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Form, Input } from "antd";
+import { Button, Flex, Form } from "antd";
 import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -65,38 +65,16 @@ export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
                 <Flex vertical gap={8}>
                     {fields.map((field, index) => (
                         <Flex key={field.id} gap={8}>
-                            <Controller
+                            <FormInput
                                 control={control}
                                 name={`values.${index}.key`}
-                                render={({ field: inputField, fieldState }) => (
-                                    <Form.Item
-                                        validateStatus={fieldState.error ? "error" : undefined}
-                                        help={fieldState.error?.message}
-                                        style={{
-                                            flex: 1,
-                                            marginBottom: 0,
-                                        }}
-                                    >
-                                        <Input {...inputField} placeholder={t("form.key")} />
-                                    </Form.Item>
-                                )}
+                                placeholder={t("form.key")}
                             />
 
-                            <Controller
+                            <FormInput
                                 control={control}
                                 name={`values.${index}.value`}
-                                render={({ field: inputField, fieldState }) => (
-                                    <Form.Item
-                                        validateStatus={fieldState.error ? "error" : undefined}
-                                        help={fieldState.error?.message}
-                                        style={{
-                                            flex: 1,
-                                            marginBottom: 0,
-                                        }}
-                                    >
-                                        <Input {...inputField} placeholder={t("form.value")} />
-                                    </Form.Item>
-                                )}
+                                placeholder={t("form.value")}
                             />
 
                             <Button

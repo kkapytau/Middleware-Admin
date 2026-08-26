@@ -29,11 +29,19 @@
         "continentRequired": "Continent is required.",
         "cityCodeLength": "City code must contain exactly 3 characters.",
         "cityCodePattern": "City code can contain only uppercase letters.",
-        "deleteConflict": "This item cannot be deleted because it is referenced by other records."
+        "deleteConflict": "This item cannot be deleted because it is referenced by other records.",
+        "flowRuleConfigJson": "Configuration must be valid JSON.",
+        "flowRuleConfigObject": "Configuration must be a valid JSON object.",
+        "flowRuleNameMaxLength": "Flow rule name must be 255 characters or fewer.",
+        "flowRuleConfigUrl": "Configuration must contain a non-empty URL field."
     },
     "errors": {
         "deleteConflict": "This item cannot be deleted because it is referenced by other records.",
         "createConflict": "A record with this name already exists."
+    },
+    "filters": {
+        "title": "Filters",
+        "reset": "Reset"
     },
     "navigation": {
         "login": "Login",
@@ -47,7 +55,9 @@
         "flow": "Flow",
         "flows": "Flows",
         "continents": "Continents",
-        "continent": "Continent"
+        "continent": "Continent",
+        "flowRule": "Flow Rule",
+        "flowRules": "Flow Rules"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -105,6 +115,19 @@
         "code": "Code",
         "enterCode": "Enter code",
         "enterName": "Enter name",
-        "name": "Name"
+        "name": "Name",
+
+        "flowRuleName": "Flow rule name",
+        "flow": "Flow",
+        "enabled": "Enabled",
+        "flowRuleNamePlaceholder": "Enter flow rule name",
+        "flowPlaceholder": "Select flow",
+        "flowRuleConfig": "Configuration",
+        "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
+        "flowRuleConfigHelp": "Enter a valid JSON object containing a non-empty URL field."
+    },
+    "common": {
+        "yes": "Yes",
+        "no": "No"
     }
 }

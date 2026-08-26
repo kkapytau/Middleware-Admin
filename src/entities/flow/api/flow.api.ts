@@ -1,4 +1,4 @@
-import { api } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { Flow, FlowFormValues } from "../model";
 
@@ -19,17 +19,23 @@ interface FlowDetailResponse {
 
 const FLOWS_ENDPOINT = "internal/api/v1/flows";
 
-export async function getFlows(): Promise<Flow[]> {
-    const response = await api
+export async function getFlows(page: number, size: number): Promise<PageResponse<Flow>> {
+    return await api
         .get(FLOWS_ENDPOINT, {
             searchParams: {
-                page: 0,
-                size: 50,
+                page,
+                size,
             },
         })
         .json<FlowListResponse>();
+}
 
-    return response.content;
+export async function getAllFlows(locale: string): Promise<Flow[]> {
+    return getAllPages(getFlows, (a, b) =>
+        a.name.localeCompare(b.name, locale, {
+            sensitivity: "base",
+        }),
+    );
 }
 
 export async function createFlow(values: FlowFormValues): Promise<Flow> {

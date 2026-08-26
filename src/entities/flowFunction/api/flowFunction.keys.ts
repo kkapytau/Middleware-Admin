@@ -4,4 +4,6 @@ export const flowFunctionKeys = {
     lists: () => [...flowFunctionKeys.all, "list"] as const,
 
     detail: (id: number | null) => [...flowFunctionKeys.all, "detail", id] as const,
+
+    options: (locale: string) => [...flowFunctionKeys.all, "options", locale] as const,
 };

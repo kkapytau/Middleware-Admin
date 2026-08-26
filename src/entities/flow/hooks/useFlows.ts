@@ -1,18 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getFlows } from "../api";
+import { flowKeys, getFlows } from "../api";
 
-export const flowKeys = {
-    all: ["flows"] as const,
-
-    lists: () => [...flowKeys.all, "list"] as const,
-
-    detail: (id: number | null) => [...flowKeys.all, "detail", id] as const,
-};
-
-export function useFlows() {
+export function useFlows(page: number, size: number) {
     return useQuery({
-        queryKey: flowKeys.lists(),
-        queryFn: getFlows,
+        queryKey: [...flowKeys.lists(), page, size],
+        queryFn: () => getFlows(page, size),
     });
 }

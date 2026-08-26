@@ -1,18 +1,26 @@
 import { Space } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 
 import type { FlowFunction } from "@/entities/flowFunction";
 import { useDeleteFlowFunction, useFlowFunction, useFlowFunctions } from "@/entities/flowFunction";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { getPaginationParams } from "@/shared/lib/pagination/getPaginationParams.ts";
 
 import { FunctionDrawer } from "./components/FunctionDrawer";
 import { FunctionsTable } from "./components/FunctionsTable";
 
 export function FlowFunctionsPage() {
-    const { data = [], isLoading } = useFlowFunctions();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { page, pageSize } = getPaginationParams(searchParams);
+
     const { t } = useTranslation("app");
+
+    const apiPage = page - 1;
+    const { data, isLoading } = useFlowFunctions(apiPage, pageSize);
+
     const deleteFlowFunction = useDeleteFlowFunction();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -20,6 +28,13 @@ export function FlowFunctionsPage() {
 
     const { data: editingFunction } = useFlowFunction(editingFunctionId);
     const { handleError } = useMutationErrorHandler();
+
+    const handlePageChange = (nextPage: number, nextPageSize: number) => {
+        setSearchParams({
+            page: String(nextPage),
+            size: String(nextPageSize),
+        });
+    };
 
     function handleCreate() {
         setEditingFunctionId(null);
@@ -53,8 +68,15 @@ export function FlowFunctionsPage() {
             <EntityToolbar entity={t("navigation.function")} onAdd={handleCreate} />
 
             <FunctionsTable
-                data={data}
+                data={data?.content ?? []}
                 loading={isLoading}
+                pagination={{
+                    current: page,
+                    pageSize,
+                    total: data?.totalElements ?? 0,
+                    showSizeChanger: false,
+                    onChange: handlePageChange,
+                }}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />

@@ -1,4 +1,4 @@
-import { api } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { Airport, AirportDetail, AirportFormValues } from "../model";
 
@@ -47,17 +47,23 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
     };
 }
 
-export async function getAirports(): Promise<Airport[]> {
-    const response = await api
+export async function getAirports(page: number, size: number): Promise<PageResponse<Airport>> {
+    return await api
         .get(AIRPORTS_ENDPOINT, {
             searchParams: {
-                page: 0,
-                size: 50,
+                page,
+                size,
             },
         })
         .json<AirportListResponse>();
+}
 
-    return response.content;
+export async function getAllAirports(locale: string): Promise<Airport[]> {
+    return getAllPages(getAirports, (a, b) =>
+        a.name.localeCompare(b.name, locale, {
+            sensitivity: "base",
+        }),
+    );
 }
 
 export async function getAirport(id: number): Promise<AirportDetail> {

@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { flowFunctionKeys } from "@/entities/flowFunction";
 import { getFlowFunction, getFlowFunctions } from "@/entities/flowFunction/api/flowFunction.api";
+import { QUERY_STALE_TIME } from "@/shared/constants/query.ts";
 
-export function useFlowFunctions() {
+export function useFlowFunctions(page: number, size: number) {
     return useQuery({
-        queryKey: flowFunctionKeys.lists(),
-        queryFn: getFlowFunctions,
+        queryKey: [...flowFunctionKeys.lists(), page, size],
+        queryFn: () => getFlowFunctions(page, size),
+        staleTime: QUERY_STALE_TIME,
     });
 }
 

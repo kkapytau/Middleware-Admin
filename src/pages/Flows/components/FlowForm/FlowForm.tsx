@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Input } from "antd";
+import { Form } from "antd";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { createFlowFormSchema, defaultFlowFormValues, type FlowFormValues } from "@/entities/flow";
+import { FormInput } from "@/shared/components/form";
 
 import styles from "./FlowForm.module.scss";
 
@@ -39,32 +40,18 @@ export function FlowForm({ defaultValues, onSubmit }: FlowFormProps) {
 
     return (
         <Form id="flow-form" layout="vertical" onFinish={handleFormFinish} className={styles.form}>
-            <Controller
-                name="code"
+            <FormInput
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.flowCode")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} placeholder={t("form.flowCodePlaceholder")} />
-                    </Form.Item>
-                )}
+                name="code"
+                label={t("form.flowCode")}
+                placeholder={t("form.flowCodePlaceholder")}
             />
 
-            <Controller
-                name="name"
+            <FormInput
                 control={control}
-                render={({ field, fieldState }) => (
-                    <Form.Item
-                        label={t("form.flowName")}
-                        validateStatus={fieldState.error ? "error" : undefined}
-                        help={fieldState.error?.message}
-                    >
-                        <Input {...field} placeholder={t("form.flowNamePlaceholder")} />
-                    </Form.Item>
-                )}
+                name="name"
+                label={t("form.flowName")}
+                placeholder={t("form.flowNamePlaceholder")}
             />
         </Form>
     );

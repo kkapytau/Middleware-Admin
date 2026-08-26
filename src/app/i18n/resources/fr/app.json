@@ -12,7 +12,9 @@
         "function": "Fonction",
         "flow": "Flux",
         "flows": "Flux",
-        "continents": "Continents"
+        "continents": "Continents",
+        "flowRule": "Règle de flux",
+        "flowRules": "Règles de flux"
     },
 
     "login": {
@@ -40,11 +42,19 @@
         "flowNameMaxLength": "Le nom ne doit pas dépasser 100 caractères",
         "flowCodePattern": "Le code du flow ne peut contenir que des lettres, des chiffres, des underscores et des tirets.",
         "cityCodeLength": "Le code de la ville doit contenir exactement 3 caractères.",
-        "cityCodePattern": "Le code de la ville ne peut contenir que des lettres majuscules."
+        "cityCodePattern": "Le code de la ville ne peut contenir que des lettres majuscules.",
+        "flowRuleConfigJson": "La configuration doit être un JSON valide.",
+        "flowRuleConfigObject": "La configuration doit être un objet JSON valide.",
+        "flowRuleNameMaxLength": "Le nom de la règle de flux doit comporter au maximum 255 caractères.",
+        "flowRuleConfigUrl": "La configuration doit contenir un champ URL non vide."
     },
     "errors": {
         "deleteConflict": "Cet élément ne peut pas être supprimé car il est référencé par d'autres enregistrements.",
         "createConflict": "Un enregistrement portant le même nom ou code existe déjà."
+    },
+    "filters": {
+        "title": "Filtres",
+        "reset": "Réinitialiser"
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -98,6 +108,19 @@
         "code": "Code",
         "enterCode": "Entrez le code",
         "enterName": "Entrez le nom",
-        "name": "Nom"
+        "name": "Nom",
+
+        "flowRuleName": "Nom de la règle de flux",
+        "flow": "Flux",
+        "enabled": "Activé",
+        "flowRuleNamePlaceholder": "Saisissez le nom de la règle de flux",
+        "flowPlaceholder": "Sélectionnez un flux",
+        "flowRuleConfig": "Configuration",
+        "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
+        "flowRuleConfigHelp": "Saisissez un objet JSON valide contenant un champ URL non vide."
+    },
+    "common": {
+        "yes": "Oui",
+        "no": "Non"
     }
 }

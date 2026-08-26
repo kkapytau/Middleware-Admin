@@ -36,6 +36,12 @@ export function ContinentsTable({ data, loading, onEdit, onDelete }: ContinentsT
     ];
 
     return (
-        <EntityTable<Continent> rowKey="id" columns={columns} dataSource={data} loading={loading} />
+        <EntityTable<Continent>
+            rowKey="id"
+            columns={columns}
+            dataSource={data}
+            loading={loading}
+            pagination={false}
+        />
     );
 }

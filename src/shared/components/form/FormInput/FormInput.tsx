@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
-import type { FormInputProps } from "./FormInput.types";
+import type { FormInputProps } from "@/shared/components/form/FormInput/FormInput.types.ts";
 
 export function FormInput<T extends FieldValues>({
     control,
@@ -10,6 +10,7 @@ export function FormInput<T extends FieldValues>({
     label,
     placeholder,
     disabled,
+    prefix,
 }: FormInputProps<T>) {
     return (
         <Controller
@@ -21,7 +22,12 @@ export function FormInput<T extends FieldValues>({
                     validateStatus={fieldState.error ? "error" : undefined}
                     help={fieldState.error?.message}
                 >
-                    <Input {...field} placeholder={placeholder} disabled={disabled} />
+                    <Input
+                        {...field}
+                        prefix={prefix}
+                        placeholder={placeholder}
+                        disabled={disabled}
+                    />
                 </Form.Item>
             )}
         />

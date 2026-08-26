@@ -1,4 +1,5 @@
 import { type TableProps } from "antd";
+import type { TablePaginationConfig } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { Airport } from "@/entities/airport";
@@ -9,13 +10,14 @@ interface AirportsTableProps {
     data: Airport[];
 
     loading: boolean;
+    pagination?: TablePaginationConfig;
 
     onEdit: (airport: Airport) => void;
 
     onDelete: (airport: Airport) => Promise<void>;
 }
 
-export function AirportsTable({ data, loading, onEdit, onDelete }: AirportsTableProps) {
+export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: AirportsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Airport>["columns"] = [
@@ -45,6 +47,7 @@ export function AirportsTable({ data, loading, onEdit, onDelete }: AirportsTable
             columns={columns}
             dataSource={data}
             loading={loading}
+            pagination={pagination}
         />
     );
 }

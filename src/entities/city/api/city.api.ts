@@ -1,4 +1,4 @@
-import { api } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { City, CityDetail, CityFormValues } from "../model";
 
@@ -26,17 +26,23 @@ interface CityDetailResponse {
 
 const CITIES_ENDPOINT = "internal/api/v1/cities";
 
-export async function getCities(): Promise<City[]> {
-    const response = await api
+export async function getCities(page: number, size: number): Promise<PageResponse<City>> {
+    return await api
         .get(CITIES_ENDPOINT, {
             searchParams: {
-                page: 0,
-                size: 50,
+                page,
+                size,
             },
         })
         .json<CityListResponse>();
+}
 
-    return response.content;
+export async function getAllCities(locale: string): Promise<City[]> {
+    return getAllPages(getCities, (a, b) =>
+        a.name.localeCompare(b.name, locale, {
+            sensitivity: "base",
+        }),
+    );
 }
 
 export async function getCity(id: number): Promise<CityDetail> {

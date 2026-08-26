@@ -15,7 +15,7 @@ export const airportsRoute: AppRoute = {
 
     access: "protected",
 
-    path: "/location/airports",
+    path: "/airports",
 
     titleKey: "navigation.airports",
 
@@ -35,7 +35,7 @@ export const countriesRoute: AppRoute = {
 
     access: "protected",
 
-    path: "/location/countries",
+    path: "/countries",
 
     titleKey: "navigation.countries",
 
@@ -55,7 +55,7 @@ export const continentsRoute: AppRoute = {
 
     access: "protected",
 
-    path: "/location/continents",
+    path: "/continents",
 
     titleKey: "navigation.continents",
 
@@ -75,7 +75,7 @@ export const citiesRoute: AppRoute = {
 
     access: "protected",
 
-    path: "/location/cities",
+    path: "/cities",
 
     titleKey: "navigation.cities",
 

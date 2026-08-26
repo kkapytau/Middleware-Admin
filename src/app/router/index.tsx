@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to="/location/airports" replace />,
+                element: <Navigate to="/airports" replace />,
             },
             ...protectedRoutes,
         ],

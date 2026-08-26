@@ -1,4 +1,4 @@
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
 import type { City } from "@/entities/city";
@@ -6,14 +6,22 @@ import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
 
 interface CityTableProps {
-    cities: City[];
+    data: City[];
     loading: boolean;
+    pagination?: TablePaginationConfig;
     deleting: boolean;
     onEdit: (city: City) => void;
     onDelete: (city: City) => Promise<void>;
 }
 
-export function CityTable({ cities, loading, deleting, onEdit, onDelete }: CityTableProps) {
+export function CityTable({
+    data,
+    loading,
+    deleting,
+    onEdit,
+    onDelete,
+    pagination,
+}: CityTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<City> = [
@@ -43,6 +51,12 @@ export function CityTable({ cities, loading, deleting, onEdit, onDelete }: CityT
     ];
 
     return (
-        <EntityTable<City> rowKey="id" columns={columns} dataSource={cities} loading={loading} />
+        <EntityTable<City>
+            rowKey="id"
+            columns={columns}
+            dataSource={data}
+            loading={loading}
+            pagination={pagination}
+        />
     );
 }

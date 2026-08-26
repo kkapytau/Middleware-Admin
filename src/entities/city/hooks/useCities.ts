@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { QUERY_STALE_TIME } from "@/shared/constants/query.ts";
+
 import { cityKeys, getCities, getCity } from "../api";
 
-export function useCities() {
+export function useCities(page: number, size: number) {
     return useQuery({
-        queryKey: cityKeys.list(),
-        queryFn: getCities,
+        queryKey: [...cityKeys.lists(), page, size],
+        queryFn: () => getCities(page, size),
+        staleTime: QUERY_STALE_TIME,
     });
 }
 
