@@ -1,10 +1,19 @@
 import { useTranslation } from "react-i18next";
 
-import { type Airport, useAirport, useCreateAirport, useUpdateAirport } from "@/entities/airport";
-import { type AirportFormValues, airportToFormValues } from "@/entities/airport/model";
+import {
+    type Airport,
+    type AirportRequestValues,
+    useAirport,
+    useCreateAirport,
+    useUpdateAirport,
+} from "@/entities/airport";
+import { type AirportFormValues } from "@/entities/airport/model";
 import { AirportForm } from "@/pages/Airports/components/AirportForm";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
+import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
 
 interface AirportDrawerProps {
     open: boolean;
@@ -23,29 +32,19 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
 
     const { data: airportDetail, isLoading: isLoadingAirport } = useAirport(airportId);
 
-    const isEditing = Boolean(airport);
-    const isSubmitting = createAirport.isPending || updateAirport.isPending;
+    const transformValues = (values: AirportFormValues): AirportRequestValues => ({
+        ...values,
+        translations: mapTranslationsToApi(values.translations),
+    });
 
-    async function handleSubmit(values: AirportFormValues): Promise<void> {
-        try {
-            if (airport) {
-                await updateAirport.mutateAsync({
-                    id: airport.id,
-                    values,
-                });
-            } else {
-                await createAirport.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    }
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
+        entity: airport,
+        createMutation: createAirport,
+        updateMutation: updateAirport,
+        transform: transformValues,
+        onClose,
+        handleError,
+    });
 
     return (
         <EntityDrawer
@@ -66,7 +65,19 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
         >
             <AirportForm
                 id="airport-form"
-                defaultValues={airportDetail ? airportToFormValues(airportDetail) : undefined}
+                defaultValues={
+                    airportDetail
+                        ? {
+                              code: airportDetail.code,
+                              name: airportDetail.name,
+                              cityId: airportDetail.cityId,
+                              latitude: airportDetail.latitude,
+                              longitude: airportDetail.longitude,
+                              metropolitan: airportDetail.metropolitan,
+                              translations: mapTranslationsToForm(airportDetail.translations),
+                          }
+                        : undefined
+                }
                 onSubmit={handleSubmit}
             />
         </EntityDrawer>

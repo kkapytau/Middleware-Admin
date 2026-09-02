@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import {
+    type FlowFunction,
     type FlowFunctionDetail,
     type FlowFunctionFormValues,
     useCreateFlowFunction,
@@ -9,6 +10,8 @@ import {
 import { FunctionForm } from "@/pages/Functions/components/FunctionForm";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { identity } from "@/shared/lib/identity/identity";
 
 interface FunctionDrawerProps {
     open: boolean;
@@ -23,30 +26,17 @@ export function FunctionDrawer({ open, flowFunction, onClose }: FunctionDrawerPr
     const updateFlowFunction = useUpdateFlowFunction();
     const { handleError } = useMutationErrorHandler();
 
-    const isEditing = Boolean(flowFunction);
-
-    const isSubmitting = createFlowFunction.isPending || updateFlowFunction.isPending;
-
-    const handleSubmit = async (values: FlowFunctionFormValues) => {
-        try {
-            if (flowFunction) {
-                await updateFlowFunction.mutateAsync({
-                    id: flowFunction.id,
-                    values,
-                });
-            } else {
-                await createFlowFunction.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    };
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation<
+        FlowFunction,
+        FlowFunctionFormValues
+    >({
+        entity: flowFunction,
+        createMutation: createFlowFunction,
+        updateMutation: updateFlowFunction,
+        transform: identity,
+        onClose,
+        handleError,
+    });
 
     return (
         <EntityDrawer

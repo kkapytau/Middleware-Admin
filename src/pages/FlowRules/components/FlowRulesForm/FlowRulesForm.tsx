@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, Input, Switch } from "antd";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useAllFlows } from "@/entities/flow";
@@ -11,6 +11,7 @@ import {
     type FlowRuleFormValues,
 } from "@/entities/flowRule";
 import { FormInput, FormSelect } from "@/shared/components/form";
+import { useEntityForm } from "@/shared/hooks";
 
 import styles from "./FlowRulesForm.module.scss";
 
@@ -25,11 +26,6 @@ export function FlowRulesForm({ defaultValues, onSubmit }: FlowRuleFormProps) {
     const flowRuleFormSchema = createFlowRuleFormSchema({
         required: t("validation.required"),
         flowRuleNameMaxLength: t("validation.flowRuleNameMaxLength"),
-    });
-
-    const { control, handleSubmit } = useForm<FlowRuleFormValues>({
-        defaultValues: defaultValues ?? defaultFlowRuleFormValues,
-        resolver: zodResolver(flowRuleFormSchema),
     });
 
     const { data: flows = [], isLoading: flowsLoading } = useAllFlows();
@@ -76,6 +72,12 @@ export function FlowRulesForm({ defaultValues, onSubmit }: FlowRuleFormProps) {
             });
         })();
     };
+
+    const { control, handleSubmit } = useEntityForm<FlowRuleFormValues>({
+        defaultValues: defaultFlowRuleFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(flowRuleFormSchema),
+    });
 
     return (
         <Form

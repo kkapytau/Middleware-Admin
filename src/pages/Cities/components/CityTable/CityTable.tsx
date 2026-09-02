@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import type { City } from "@/entities/city";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
+import {
+    LOCATION_ACTIONS_COLUMN_WIDTH,
+    LOCATION_CODE_COLUMN_WIDTH,
+} from "@/shared/constants/formView";
 
 interface CityTableProps {
     data: City[];
@@ -29,16 +33,17 @@ export function CityTable({
             title: t("columns.code"),
             dataIndex: "code",
             key: "code",
+            width: LOCATION_CODE_COLUMN_WIDTH,
         },
         {
-            title: t("columns.city"),
+            title: t("columns.name"),
             dataIndex: "name",
             key: "name",
         },
         {
             title: t("actions.actions"),
             key: "actions",
-            width: 180,
+            width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, city) => (
                 <EntityActions
                     record={city}

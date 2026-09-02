@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import type { Country } from "@/entities/country";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
+import {
+    LOCATION_ACTIONS_COLUMN_WIDTH,
+    LOCATION_CODE_COLUMN_WIDTH,
+} from "@/shared/constants/formView";
 
 interface CountriesTableProps {
     data: Country[];
@@ -26,6 +30,7 @@ export function CountriesTable({
             title: t("columns.code"),
             dataIndex: "code",
             key: "code",
+            width: LOCATION_CODE_COLUMN_WIDTH,
         },
         {
             title: t("columns.name"),
@@ -35,7 +40,7 @@ export function CountriesTable({
         {
             title: t("actions.actions"),
             key: "actions",
-            width: 180,
+            width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, record) => (
                 <EntityActions record={record} onEdit={onEdit} onDelete={onDelete} />
             ),

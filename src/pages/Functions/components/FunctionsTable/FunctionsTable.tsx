@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { FlowFunction } from "@/entities/flowFunction";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
+import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants/formView";
 
 interface FunctionsTableProps {
     data: FlowFunction[];
@@ -31,7 +32,7 @@ export function FunctionsTable({
         {
             title: t("actions.actions"),
             key: "actions",
-            width: 180,
+            width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flowFunction) => (
                 <EntityActions record={flowFunction} onEdit={onEdit} onDelete={onDelete} />
             ),

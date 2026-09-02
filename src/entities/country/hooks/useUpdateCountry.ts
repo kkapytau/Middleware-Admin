@@ -8,15 +8,10 @@ export function useUpdateCountry() {
 
     return useMutation({
         mutationFn: (params: UpdateCountryParams) => updateCountry(params),
-        onSuccess: (_, { id }) => {
-            return Promise.all([
-                queryClient.invalidateQueries({
-                    queryKey: countryKeys.lists(),
-                }),
-                queryClient.invalidateQueries({
-                    queryKey: countryKeys.detail(id),
-                }),
-            ]);
+        onSuccess: () => {
+            return queryClient.invalidateQueries({
+                queryKey: countryKeys.all,
+            });
         },
     });
 }

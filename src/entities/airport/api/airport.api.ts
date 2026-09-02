@@ -1,6 +1,6 @@
 import { api, getAllPages, type PageResponse } from "@/shared/api";
 
-import type { Airport, AirportDetail, AirportFormValues } from "../model";
+import type { Airport, AirportDetail } from "../model";
 
 interface AirportListResponse {
     content: Array<{
@@ -44,6 +44,7 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
         latitude: response.coordinates.latitude,
         longitude: response.coordinates.longitude,
         metropolitan: response.metropolitan,
+        translations: response.translations,
     };
 }
 
@@ -72,30 +73,33 @@ export async function getAirport(id: number): Promise<AirportDetail> {
     return mapAirportDetail(response);
 }
 
-export async function createAirport(values: AirportFormValues): Promise<AirportDetail> {
+export async function createAirport(values: AirportRequestValues): Promise<AirportDetail> {
     if (values.cityId === null) {
         throw new Error("City is required");
     }
 
     const response = await api
         .post(AIRPORTS_ENDPOINT, {
-            json: {
-                code: values.code,
-                name: values.name,
-                cityId: values.cityId,
-                latitude: values.latitude,
-                longitude: values.longitude,
-                metropolitan: values.metropolitan,
-            },
+            json: values,
         })
         .json<AirportDetailResponse>();
 
     return mapAirportDetail(response);
 }
 
+export interface AirportRequestValues {
+    code: string;
+    name: string;
+    cityId: number;
+    latitude: number;
+    longitude: number;
+    metropolitan: boolean;
+    translations: Record<string, string>;
+}
+
 export interface UpdateAirportParams {
     id: number;
-    values: AirportFormValues;
+    values: AirportRequestValues;
 }
 
 export async function updateAirport({ id, values }: UpdateAirportParams): Promise<AirportDetail> {
@@ -105,14 +109,7 @@ export async function updateAirport({ id, values }: UpdateAirportParams): Promis
 
     const response = await api
         .put(`${AIRPORTS_ENDPOINT}/${id}`, {
-            json: {
-                code: values.code,
-                name: values.name,
-                cityId: values.cityId,
-                latitude: values.latitude,
-                longitude: values.longitude,
-                metropolitan: values.metropolitan,
-            },
+            json: values,
         })
         .json<AirportDetailResponse>();
 

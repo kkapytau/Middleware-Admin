@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { FlowRule } from "@/entities/flowRule";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
+import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants/formView";
 
 interface FlowRulesTableProps {
     data: FlowRule[];
@@ -44,7 +45,7 @@ export function FlowRulesTable({
         {
             title: t("actions.actions"),
             key: "actions",
-            width: 180,
+            width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flowRule) => (
                 <EntityActions
                     record={flowRule}

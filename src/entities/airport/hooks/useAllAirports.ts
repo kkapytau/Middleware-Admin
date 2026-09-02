@@ -5,12 +5,13 @@ import { OPTIONS_STALE_TIME } from "@/shared/constants/query";
 
 import { airportKeys, getAllAirports } from "../api";
 
-export function useAllAirports() {
+export function useAllAirports(enabled = true) {
     const { i18n } = useTranslation();
 
     return useQuery({
         queryKey: airportKeys.options(i18n.language),
         queryFn: () => getAllAirports(i18n.language),
         staleTime: OPTIONS_STALE_TIME,
+        enabled,
     });
 }

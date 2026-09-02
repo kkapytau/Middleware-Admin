@@ -3,12 +3,16 @@ import { useTranslation } from "react-i18next";
 import {
     type City,
     type CityFormValues,
+    type CityRequestValues,
     useCity,
     useCreateCity,
     useUpdateCity,
 } from "@/entities/city";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
+import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
 
 import { CityForm } from "../CityForm";
 
@@ -25,33 +29,23 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
     const updateCity = useUpdateCity();
     const { handleError } = useMutationErrorHandler();
 
-    const isEditing = Boolean(city);
+    const transformValues = (values: CityFormValues): CityRequestValues => ({
+        ...values,
+        translations: mapTranslationsToApi(values.translations),
+    });
+
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
+        entity: city,
+        createMutation: createCity,
+        updateMutation: updateCity,
+        transform: transformValues,
+        onClose,
+        handleError,
+    });
 
     const { data: cityDetail } = useCity(city?.id, {
         enabled: isEditing,
     });
-    const isSubmitting = createCity.isPending || updateCity.isPending;
-
-    const handleSubmit = async (values: CityFormValues) => {
-        try {
-            if (city) {
-                await updateCity.mutateAsync({
-                    id: city.id,
-                    values,
-                });
-            } else {
-                await createCity.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    };
 
     return (
         <EntityDrawer
@@ -76,7 +70,7 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
                               code: cityDetail.code,
                               name: cityDetail.name,
                               countryId: cityDetail.country.id,
-                              translations: cityDetail.translations,
+                              translations: mapTranslationsToForm(cityDetail.translations),
                           }
                         : undefined
                 }

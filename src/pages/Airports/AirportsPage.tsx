@@ -1,24 +1,43 @@
 import { Space } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
 
 import { type Airport, useAirport, useAirports, useDeleteAirport } from "@/entities/airport";
+import { useAllAirports } from "@/entities/airport/hooks/useAllAirports.ts";
+import { CodeNameSearch } from "@/shared/components/CodeNameSearch";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
-import { useMutationErrorHandler } from "@/shared/hooks";
-import { getPaginationParams } from "@/shared/lib/pagination/getPaginationParams.ts";
+import { FilterButton } from "@/shared/components/FilterButton";
+import {
+    useCodeNameFiltering,
+    useCodeNameFilters,
+    useMutationErrorHandler,
+    useUrlPagination,
+} from "@/shared/hooks";
 
 import { AirportDrawer } from "./components/AirportDrawer";
 import { AirportsTable } from "./components/AirportsTable";
 
 export function AirportsPage() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const { page, pageSize } = getPaginationParams(searchParams);
-
     const { t } = useTranslation("app");
 
-    const apiPage = page - 1;
-    const { data, isLoading } = useAirports(apiPage, pageSize);
+    const {
+        filters,
+        hasActiveFilters,
+        activeFiltersCount,
+        shouldLoadAll,
+        open: searchOpen,
+        setOpen: setSearchOpen,
+        handleChange: handleFiltersChange,
+        handleReset: handleFiltersReset,
+    } = useCodeNameFilters();
+
+    const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
+
+    const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports(shouldLoadAll);
+
+    const filteredAirports = useCodeNameFiltering(allAirports, filters);
+
+    const { data, isLoading, isFetching } = useAirports(apiPage, pageSize);
 
     const deleteAirport = useDeleteAirport();
 
@@ -28,12 +47,9 @@ export function AirportsPage() {
     const { data: airportDetail } = useAirport(selectedAirportId);
     const { handleError } = useMutationErrorHandler();
 
-    const handlePageChange = (nextPage: number, nextPageSize: number) => {
-        setSearchParams({
-            page: String(nextPage),
-            size: String(nextPageSize),
-        });
-    };
+    const tableData = hasActiveFilters ? filteredAirports : (data?.content ?? []);
+
+    const tableLoading = hasActiveFilters ? allAirportsLoading : isLoading || isFetching;
 
     function handleCreate() {
         setSelectedAirportId(null);
@@ -64,17 +80,34 @@ export function AirportsPage() {
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-            <EntityToolbar entity={t("navigation.airports")} onAdd={handleCreate} />
+            <EntityToolbar
+                entity={t("navigation.airports")}
+                onAdd={handleCreate}
+                actions={
+                    <FilterButton
+                        label={t("filters.title")}
+                        activeCount={activeFiltersCount}
+                        open={searchOpen}
+                        onOpenChange={setSearchOpen}
+                    >
+                        <CodeNameSearch
+                            initialValues={filters}
+                            onChange={handleFiltersChange}
+                            onReset={handleFiltersReset}
+                        />
+                    </FilterButton>
+                }
+            />
 
             <AirportsTable
-                data={data?.content ?? []}
-                loading={isLoading}
+                data={tableData}
+                loading={tableLoading}
                 pagination={{
                     current: page,
                     pageSize,
-                    total: data?.totalElements ?? 0,
+                    total: hasActiveFilters ? filteredAirports.length : (data?.totalElements ?? 0),
                     showSizeChanger: false,
-                    onChange: handlePageChange,
+                    onChange: handlePaginationChange,
                 }}
                 onEdit={handleEdit}
                 onDelete={handleDelete}

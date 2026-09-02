@@ -16,7 +16,12 @@ export function EntityToolbar({ entity, onAdd, actions }: EntityToolbarProps) {
         <Flex justify="space-between" align="center">
             <Flex gap="small">{actions}</Flex>
 
-            <Button type="primary" icon={<PlusOutlined />} onClick={onAdd}>
+            <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={onAdd}
+                style={{ marginLeft: "auto" }}
+            >
                 {t("actions.addEntity", {
                     entity,
                 })}

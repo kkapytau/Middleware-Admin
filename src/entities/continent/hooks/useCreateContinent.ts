@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { continentKeys, createContinent } from "../api";
-import type { ContinentFormValues } from "../model";
+import { continentKeys, type ContinentRequestValues, createContinent } from "../api";
 
 export function useCreateContinent() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (values: ContinentFormValues) => createContinent(values),
+        mutationFn: (values: ContinentRequestValues) => createContinent(values),
         onSuccess: () => {
             return queryClient.invalidateQueries({
-                queryKey: continentKeys.lists(),
+                queryKey: continentKeys.all,
             });
         },
     });

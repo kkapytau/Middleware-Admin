@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { countryKeys, createCountry } from "../api";
-import type { CountryFormValues } from "../model";
+import { countryKeys, type CountryRequestValues, createCountry } from "../api";
 
 export function useCreateCountry() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (values: CountryFormValues) => createCountry(values),
+        mutationFn: (values: CountryRequestValues) => createCountry(values),
         onSuccess: () => {
             return queryClient.invalidateQueries({
-                queryKey: countryKeys.lists(),
+                queryKey: countryKeys.all,
             });
         },
     });

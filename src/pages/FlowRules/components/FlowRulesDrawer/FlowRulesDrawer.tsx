@@ -8,6 +8,8 @@ import {
 } from "@/entities/flowRule";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { identity } from "@/shared/lib/identity/identity";
 
 import { FlowRulesForm } from "../FlowRulesForm";
 
@@ -24,30 +26,17 @@ export function FlowRulesDrawer({ open, flowRule, onClose }: FlowRuleDrawerProps
     const updateFlowRule = useUpdateFlowRule();
     const { handleError } = useMutationErrorHandler();
 
-    const isEditing = Boolean(flowRule);
-
-    const isSubmitting = createFlowRule.isPending || updateFlowRule.isPending;
-
-    const handleSubmit = async (values: FlowRuleFormValues) => {
-        try {
-            if (flowRule) {
-                await updateFlowRule.mutateAsync({
-                    id: flowRule.id,
-                    values,
-                });
-            } else {
-                await createFlowRule.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    };
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation<
+        FlowRule,
+        FlowRuleFormValues
+    >({
+        entity: flowRule,
+        createMutation: createFlowRule,
+        updateMutation: updateFlowRule,
+        transform: identity,
+        onClose,
+        handleError,
+    });
 
     const defaultValues: FlowRuleFormValues | undefined = flowRule
         ? {

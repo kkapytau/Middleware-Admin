@@ -16,4 +16,8 @@ export interface FormInputProps<T extends FieldValues> {
     inputProps?: InputProps;
 
     prefix?: ReactNode;
+
+    maxLength?: number;
+
+    uppercase?: boolean;
 }

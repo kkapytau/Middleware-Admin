@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import type { AirportFormValues } from "@/entities/airport";
-
 interface AirportValidationMessages {
     required: string;
 
@@ -29,9 +27,7 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             .trim()
             .min(1, messages.required),
 
-        cityId: z.number().refine((value) => value !== null, {
-            error: messages.required,
-        }),
+        cityId: z.number().positive(messages.required),
 
         latitude: z
             .number({
@@ -48,14 +44,12 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             .max(180, messages.longitudeRange),
 
         metropolitan: z.boolean(),
+
+        translations: z.array(
+            z.object({
+                language: z.string(),
+                value: z.string(),
+            }),
+        ),
     });
 }
-
-export const defaultAirportFormValues: AirportFormValues = {
-    code: "",
-    name: "",
-    cityId: 0,
-    latitude: 0,
-    longitude: 0,
-    metropolitan: false,
-};

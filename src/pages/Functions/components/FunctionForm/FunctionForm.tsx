@@ -1,8 +1,7 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Flex, Form } from "antd";
-import { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -11,6 +10,7 @@ import {
     type FlowFunctionFormValues,
 } from "@/entities/flowFunction/model";
 import { FormInput } from "@/shared/components/form";
+import { useEntityForm } from "@/shared/hooks";
 
 interface FunctionFormProps {
     defaultValues?: FlowFunctionFormValues;
@@ -27,8 +27,13 @@ export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
         duplicateKey: t("validation.duplicateKey"),
     });
 
-    const { control, handleSubmit, reset } = useForm<FlowFunctionFormValues>({
-        defaultValues: defaultValues ?? defaultFlowFunctionFormValues,
+    const handleFormFinish = () => {
+        void handleSubmit(onSubmit)();
+    };
+
+    const { control, handleSubmit } = useEntityForm<FlowFunctionFormValues>({
+        defaultValues: defaultFlowFunctionFormValues,
+        initialValues: defaultValues,
         resolver: zodResolver(schema),
     });
 
@@ -36,14 +41,6 @@ export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
         control,
         name: "values",
     });
-
-    const handleFormFinish = () => {
-        void handleSubmit(onSubmit)();
-    };
-
-    useEffect(() => {
-        reset(defaultValues ?? defaultFlowFunctionFormValues);
-    }, [defaultValues, reset]);
 
     return (
         <Form

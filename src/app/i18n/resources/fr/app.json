@@ -46,7 +46,8 @@
         "flowRuleConfigJson": "La configuration doit être un JSON valide.",
         "flowRuleConfigObject": "La configuration doit être un objet JSON valide.",
         "flowRuleNameMaxLength": "Le nom de la règle de flux doit comporter au maximum 255 caractères.",
-        "flowRuleConfigUrl": "La configuration doit contenir un champ URL non vide."
+        "flowRuleConfigUrl": "La configuration doit contenir un champ URL non vide.",
+        "languagePattern": "Le code de langue doit contenir exactement 2 lettres."
     },
     "errors": {
         "deleteConflict": "Cet élément ne peut pas être supprimé car il est référencé par d'autres enregistrements.",
@@ -121,6 +122,17 @@
     },
     "common": {
         "yes": "Oui",
-        "no": "Non"
+        "no": "Non",
+        "cancel": "Annuler",
+        "done": "Terminé"
+    },
+    "translations": {
+        "title": "Gérer les traductions",
+        "languagePlaceholder": "Code de langue",
+        "valuePlaceholder": "Traduction",
+        "add": "Ajouter une traduction",
+        "empty": "Aucune traduction ajoutée",
+        "duplicateLanguage": "Cette langue est déjà utilisée",
+        "manage": "Gérer les traductions"
     }
 }

@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "antd";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { createFlowFormSchema, defaultFlowFormValues, type FlowFormValues } from "@/entities/flow";
 import { FormInput } from "@/shared/components/form";
+import { MAX_CODE_LENGTH } from "@/shared/constants/validation";
+import { useEntityForm } from "@/shared/hooks";
 
 import styles from "./FlowForm.module.scss";
 
@@ -25,18 +25,15 @@ export function FlowForm({ defaultValues, onSubmit }: FlowFormProps) {
         flowCodePattern: t("validation.flowCodePattern"),
     });
 
-    const { control, handleSubmit, reset } = useForm<FlowFormValues>({
-        defaultValues: defaultValues ?? defaultFlowFormValues,
-        resolver: zodResolver(flowFormSchema),
-    });
-
     const handleFormFinish = () => {
         void handleSubmit(onSubmit)();
     };
 
-    useEffect(() => {
-        reset(defaultValues ?? defaultFlowFormValues);
-    }, [defaultValues, reset]);
+    const { control, handleSubmit } = useEntityForm<FlowFormValues>({
+        defaultValues: defaultFlowFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(flowFormSchema),
+    });
 
     return (
         <Form id="flow-form" layout="vertical" onFinish={handleFormFinish} className={styles.form}>
@@ -45,6 +42,8 @@ export function FlowForm({ defaultValues, onSubmit }: FlowFormProps) {
                 name="code"
                 label={t("form.flowCode")}
                 placeholder={t("form.flowCodePlaceholder")}
+                maxLength={MAX_CODE_LENGTH + 1}
+                uppercase
             />
 
             <FormInput

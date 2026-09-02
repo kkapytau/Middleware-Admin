@@ -11,6 +11,11 @@ export function createContinentFormSchema(messages: ContinentValidationMessages)
 
         name: z.string().min(1, messages.required).max(50),
 
-        translations: z.record(z.string(), z.string()),
+        translations: z.array(
+            z.object({
+                language: z.string(),
+                value: z.string(),
+            }),
+        ),
     });
 }

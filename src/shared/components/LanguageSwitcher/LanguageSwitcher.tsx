@@ -25,7 +25,9 @@ export function LanguageSwitcher() {
             }}
             trigger={["click"]}
         >
-            <Button icon={<GlobalOutlined />}>{i18n.resolvedLanguage?.toUpperCase()}</Button>
+            <Button disabled icon={<GlobalOutlined />}>
+                {i18n.resolvedLanguage?.toUpperCase()}
+            </Button>
         </Dropdown>
     );
 }

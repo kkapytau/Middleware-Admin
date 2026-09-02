@@ -9,7 +9,7 @@ export function useDeleteCountry() {
         mutationFn: (id: number) => deleteCountry(id),
         onSuccess: () => {
             return queryClient.invalidateQueries({
-                queryKey: countryKeys.lists(),
+                queryKey: countryKeys.all,
             });
         },
     });

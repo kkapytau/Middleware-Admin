@@ -3,11 +3,15 @@ import { useTranslation } from "react-i18next";
 import {
     type CountryDetail,
     type CountryFormValues,
+    type CountryRequestValues,
     useCreateCountry,
     useUpdateCountry,
 } from "@/entities/country";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
+import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
 
 import { CountryForm } from "../CountryForm";
 
@@ -24,29 +28,19 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
     const updateCountry = useUpdateCountry();
     const { handleError } = useMutationErrorHandler();
 
-    const isEditing = Boolean(country);
-    const isSubmitting = createCountry.isPending || updateCountry.isPending;
+    const transformValues = (values: CountryFormValues): CountryRequestValues => ({
+        ...values,
+        translations: mapTranslationsToApi(values.translations),
+    });
 
-    const handleSubmit = async (values: CountryFormValues) => {
-        try {
-            if (country) {
-                await updateCountry.mutateAsync({
-                    id: country.id,
-                    values,
-                });
-            } else {
-                await createCountry.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    };
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
+        entity: country,
+        createMutation: createCountry,
+        updateMutation: updateCountry,
+        transform: transformValues,
+        onClose,
+        handleError,
+    });
 
     return (
         <EntityDrawer
@@ -71,7 +65,7 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
                               code: country.code,
                               name: country.name,
                               continentId: country.continent.id,
-                              translations: country.translations,
+                              translations: mapTranslationsToForm(country.translations),
                           }
                         : undefined
                 }

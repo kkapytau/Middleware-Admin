@@ -3,11 +3,15 @@ import { useTranslation } from "react-i18next";
 import {
     type ContinentDetail,
     type ContinentFormValues,
+    type ContinentRequestValues,
     useCreateContinent,
     useUpdateContinent,
 } from "@/entities/continent";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityMutation } from "@/shared/hooks";
+import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
+import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
 
 import { ContinentForm } from "../ContinentForm";
 
@@ -24,29 +28,19 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
     const updateContinent = useUpdateContinent();
     const { handleError } = useMutationErrorHandler();
 
-    const isEditing = Boolean(continent);
-    const isSubmitting = createContinent.isPending || updateContinent.isPending;
+    const transformValues = (values: ContinentFormValues): ContinentRequestValues => ({
+        ...values,
+        translations: mapTranslationsToApi(values.translations),
+    });
 
-    const handleSubmit = async (values: ContinentFormValues) => {
-        try {
-            if (continent) {
-                await updateContinent.mutateAsync({
-                    id: continent.id,
-                    values,
-                });
-            } else {
-                await createContinent.mutateAsync(values);
-            }
-
-            onClose();
-        } catch (error) {
-            if (handleError(error, t("errors.createConflict"))) {
-                return;
-            }
-
-            throw error;
-        }
-    };
+    const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
+        entity: continent,
+        createMutation: createContinent,
+        updateMutation: updateContinent,
+        transform: transformValues,
+        onClose,
+        handleError,
+    });
 
     return (
         <EntityDrawer
@@ -70,7 +64,7 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
                         ? {
                               code: continent.code,
                               name: continent.name,
-                              translations: continent.translations,
+                              translations: mapTranslationsToForm(continent.translations),
                           }
                         : undefined
                 }

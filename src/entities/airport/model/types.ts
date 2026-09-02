@@ -1,3 +1,5 @@
+import type { TranslationFormValue } from "@/shared/types/translations";
+
 export interface Airport {
     id: number;
     code: string;
@@ -12,6 +14,7 @@ export interface AirportDetail {
     latitude: number;
     longitude: number;
     metropolitan: boolean;
+    translations: Record<string, string>;
 }
 
 export interface AirportFormValues {
@@ -21,4 +24,15 @@ export interface AirportFormValues {
     latitude: number;
     longitude: number;
     metropolitan: boolean;
+    translations: TranslationFormValue[];
 }
+
+export const defaultAirportFormValues: AirportFormValues = {
+    code: "",
+    name: "",
+    cityId: 0,
+    latitude: 0,
+    longitude: 0,
+    metropolitan: false,
+    translations: [],
+};

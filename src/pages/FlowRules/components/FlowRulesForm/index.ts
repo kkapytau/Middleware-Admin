@@ -1,1 +1,1 @@
-export * from "./FlowRulesForm.tsx";
+export * from "./FlowRulesForm";

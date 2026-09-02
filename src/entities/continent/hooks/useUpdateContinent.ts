@@ -7,15 +7,10 @@ export function useUpdateContinent() {
 
     return useMutation({
         mutationFn: updateContinent,
-        onSuccess: (_, { id }) => {
-            return Promise.all([
-                queryClient.invalidateQueries({
-                    queryKey: continentKeys.lists(),
-                }),
-                queryClient.invalidateQueries({
-                    queryKey: continentKeys.detail(id),
-                }),
-            ]);
+        onSuccess: () => {
+            return queryClient.invalidateQueries({
+                queryKey: continentKeys.all,
+            });
         },
     });
 }

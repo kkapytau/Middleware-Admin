@@ -1,6 +1,6 @@
 import { api } from "@/shared/api";
 
-import type { Continent, ContinentDetail, ContinentFormValues } from "../model";
+import type { Continent, ContinentDetail } from "../model";
 
 interface ContinentListResponse {
     content: Array<{
@@ -38,37 +38,37 @@ export async function getContinents(): Promise<Continent[]> {
 }
 
 export async function getContinent(id: number): Promise<ContinentDetail> {
-    const response = await api.get(`${CONTINENTS_ENDPOINT}/${id}`).json<ContinentDetailResponse>();
-
-    return response;
+    return await api.get(`${CONTINENTS_ENDPOINT}/${id}`).json<ContinentDetailResponse>();
 }
 
-export async function createContinent(values: ContinentFormValues): Promise<ContinentDetail> {
-    const response = await api
+export async function createContinent(values: ContinentRequestValues): Promise<ContinentDetail> {
+    return await api
         .post(CONTINENTS_ENDPOINT, {
             json: values,
         })
         .json<ContinentDetailResponse>();
+}
 
-    return response;
+export interface ContinentRequestValues {
+    code: string;
+    name: string;
+    translations: Record<string, string>;
 }
 
 export interface UpdateContinentParams {
     id: number;
-    values: ContinentFormValues;
+    values: ContinentRequestValues;
 }
 
 export async function updateContinent({
     id,
     values,
 }: UpdateContinentParams): Promise<ContinentDetail> {
-    const response = await api
+    return await api
         .put(`${CONTINENTS_ENDPOINT}/${id}`, {
             json: values,
         })
         .json<ContinentDetailResponse>();
-
-    return response;
 }
 
 export async function deleteContinent(id: number): Promise<void> {

@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
-import type { FormInputProps } from "@/shared/components/form/FormInput/FormInput.types.ts";
+import type { FormInputProps } from "@/shared/components/form/FormInput/FormInput.types";
 
 export function FormInput<T extends FieldValues>({
     control,
@@ -11,6 +11,8 @@ export function FormInput<T extends FieldValues>({
     placeholder,
     disabled,
     prefix,
+    maxLength,
+    uppercase,
 }: FormInputProps<T>) {
     return (
         <Controller
@@ -27,6 +29,14 @@ export function FormInput<T extends FieldValues>({
                         prefix={prefix}
                         placeholder={placeholder}
                         disabled={disabled}
+                        maxLength={maxLength}
+                        onChange={(event) => {
+                            const value = uppercase
+                                ? event.target.value.toUpperCase()
+                                : event.target.value;
+
+                            field.onChange(value);
+                        }}
                     />
                 </Form.Item>
             )}

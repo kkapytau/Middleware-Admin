@@ -1,1 +1,1 @@
-export * from "./FlowRulesPage.tsx";
+export * from "./FlowRulesPage";

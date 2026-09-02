@@ -13,5 +13,5 @@ export const appRoutes: AppRoute[] = [
     flowRulesRoute,
 ];
 
-export * from "./getRouteByPath.ts";
+export * from "./getRouteByPath";
 export * from "./types";

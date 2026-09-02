@@ -1,6 +1,6 @@
 import { api, getAllPages, type PageResponse } from "@/shared/api";
 
-import type { Country, CountryDetail, CountryFormValues } from "../model";
+import type { Country, CountryDetail } from "../model";
 
 interface CountryListResponse {
     content: Array<{
@@ -65,7 +65,7 @@ export async function getCountry(id: number): Promise<CountryDetail> {
     return mapCountryDetail(response);
 }
 
-export async function createCountry(values: CountryFormValues): Promise<CountryDetail> {
+export async function createCountry(values: CountryRequestValues): Promise<CountryDetail> {
     const response = await api
         .post(COUNTRIES_ENDPOINT, {
             json: {
@@ -80,9 +80,16 @@ export async function createCountry(values: CountryFormValues): Promise<CountryD
     return mapCountryDetail(response);
 }
 
+export interface CountryRequestValues {
+    code: string;
+    name: string;
+    continentId: number;
+    translations: Record<string, string>;
+}
+
 export interface UpdateCountryParams {
     id: number;
-    values: CountryFormValues;
+    values: CountryRequestValues;
 }
 
 export async function updateCountry({ id, values }: UpdateCountryParams): Promise<CountryDetail> {

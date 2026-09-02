@@ -1,4 +1,4 @@
-export { useAllFlows } from "./useAllFlows.ts";
+export { useAllFlows } from "./useAllFlows";
 export { useCreateFlow } from "./useCreateFlow";
 export { useDeleteFlow } from "./useDeleteFlow";
 export { useFlows } from "./useFlows";

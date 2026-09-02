@@ -1,2 +1,2 @@
-export * from "./flowRule.schema.ts";
+export * from "./flowRule.schema";
 export * from "./types";

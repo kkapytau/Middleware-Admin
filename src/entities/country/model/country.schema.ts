@@ -13,6 +13,11 @@ export function createCountryFormSchema(messages: CountryValidationMessages) {
 
         continentId: z.number().positive(messages.required),
 
-        translations: z.record(z.string(), z.string()),
+        translations: z.array(
+            z.object({
+                language: z.string(),
+                value: z.string(),
+            }),
+        ),
     });
 }

@@ -1,3 +1,5 @@
+import type { TranslationFormValue } from "@/shared/types/translations";
+
 export interface City {
     id: number;
     code: string;
@@ -21,12 +23,12 @@ export interface CityFormValues {
     code: string;
     name: string;
     countryId: number;
-    translations: Record<string, string>;
+    translations: TranslationFormValue[];
 }
 
 export const defaultCityFormValues: CityFormValues = {
     code: "",
     name: "",
     countryId: 0,
-    translations: {},
+    translations: [],
 };

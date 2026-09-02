@@ -99,5 +99,5 @@ export const locationGroup: AppRoute = {
 
     showInNavigation: true,
 
-    children: [airportsRoute, countriesRoute, citiesRoute, continentsRoute],
+    children: [airportsRoute, citiesRoute, countriesRoute, continentsRoute],
 };

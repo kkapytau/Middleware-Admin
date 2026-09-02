@@ -1,7 +1,6 @@
 import { Space } from "antd";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
 
 import {
     type Country,
@@ -10,57 +9,41 @@ import {
     useCountry,
     useDeleteCountry,
 } from "@/entities/country";
-import { CountriesSearch, type CountryFilters } from "@/pages/Countries/components/CountriesSearch";
 import { CountriesTable } from "@/pages/Countries/components/CountriesTable";
 import { CountryDrawer } from "@/pages/Countries/components/CountryDrawer";
+import { CodeNameSearch } from "@/shared/components/CodeNameSearch";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
-import { useMutationErrorHandler } from "@/shared/hooks";
-import { hasActiveFilters as hasAnyValue } from "@/shared/lib/activeFilter/hasActiveFilters";
-import { getPaginationParams } from "@/shared/lib/pagination/getPaginationParams";
-import { updateSearchParams } from "@/shared/lib/updateSearchParams/updateSearchParams";
+import {
+    useCodeNameFiltering,
+    useCodeNameFilters,
+    useMutationErrorHandler,
+    useUrlPagination,
+} from "@/shared/hooks";
 
 export function CountriesPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingCountryId, setEditingCountryId] = useState<number | null>(null);
-    const [searchOpen, setSearchOpen] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const { page, pageSize } = getPaginationParams(searchParams);
-
-    const filters = useMemo<CountryFilters>(
-        () => ({
-            code: searchParams.get("code") ?? "",
-            name: searchParams.get("name") ?? "",
-        }),
-        [searchParams],
-    );
-
-    const hasActiveFilters = hasAnyValue(filters);
-    const shouldLoadAllCountries = searchOpen || hasActiveFilters;
-
-    const { data: allCountries = [], isLoading: allCountriesLoading } =
-        useAllCountries(shouldLoadAllCountries);
 
     const { t } = useTranslation("app");
 
-    const filteredCountries = useMemo(() => {
-        if (!hasActiveFilters) {
-            return [];
-        }
+    const {
+        filters,
+        hasActiveFilters,
+        activeFiltersCount,
+        shouldLoadAll,
+        open: searchOpen,
+        setOpen: setSearchOpen,
+        handleChange: handleFiltersChange,
+        handleReset: handleFiltersReset,
+    } = useCodeNameFilters();
 
-        const code = filters.code.trim().toLowerCase();
-        const name = filters.name.trim().toLowerCase();
+    const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-        return allCountries.filter((country) => {
-            const matchesCode = !code || country.code.toLowerCase().includes(code);
+    const { data: allCountries = [], isLoading: allCountriesLoading } =
+        useAllCountries(shouldLoadAll);
 
-            const matchesName = !name || country.name.toLowerCase().includes(name);
-
-            return matchesCode && matchesName;
-        });
-    }, [allCountries, filters, hasActiveFilters]);
-
-    const apiPage = page - 1;
+    const filteredCountries = useCodeNameFiltering(allCountries, filters);
 
     const { data, isLoading, isFetching } = useCountries(apiPage, pageSize);
 
@@ -72,35 +55,6 @@ export function CountriesPage() {
     const tableData = hasActiveFilters ? filteredCountries : (data?.content ?? []);
 
     const tableLoading = hasActiveFilters ? allCountriesLoading : isLoading || isFetching;
-
-    const handleFiltersChange = useCallback(
-        (nextFilters: CountryFilters) => {
-            updateSearchParams(setSearchParams, {
-                page: "1",
-                code: nextFilters.code.trim() || null,
-                name: nextFilters.name.trim() || null,
-            });
-        },
-        [setSearchParams],
-    );
-
-    const handleFiltersReset = useCallback(() => {
-        updateSearchParams(setSearchParams, {
-            page: "1",
-            code: null,
-            name: null,
-        });
-    }, [setSearchParams]);
-
-    const handlePaginationChange = useCallback(
-        (nextPage: number, nextPageSize: number) => {
-            updateSearchParams(setSearchParams, {
-                page: String(nextPage),
-                size: String(nextPageSize),
-            });
-        },
-        [setSearchParams],
-    );
 
     const handleCreate = () => {
         setEditingCountryId(null);
@@ -129,8 +83,6 @@ export function CountriesPage() {
         }
     };
 
-    const activeFiltersCount = [filters.code, filters.name].filter(Boolean).length;
-
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
@@ -143,7 +95,7 @@ export function CountriesPage() {
                         open={searchOpen}
                         onOpenChange={setSearchOpen}
                     >
-                        <CountriesSearch
+                        <CodeNameSearch
                             initialValues={filters}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}

@@ -1,6 +1,6 @@
 import { api, getAllPages, type PageResponse } from "@/shared/api";
 
-import type { City, CityDetail, CityFormValues } from "../model";
+import type { City, CityDetail } from "../model";
 
 interface CityListResponse {
     content: City[];
@@ -49,7 +49,7 @@ export async function getCity(id: number): Promise<CityDetail> {
     return api.get(`${CITIES_ENDPOINT}/${id}`).json<CityDetailResponse>();
 }
 
-export async function createCity(values: CityFormValues): Promise<CityDetail> {
+export async function createCity(values: CityRequestValues): Promise<CityDetail> {
     return api
         .post(CITIES_ENDPOINT, {
             json: values,
@@ -57,9 +57,16 @@ export async function createCity(values: CityFormValues): Promise<CityDetail> {
         .json<CityDetailResponse>();
 }
 
+export interface CityRequestValues {
+    code: string;
+    name: string;
+    countryId: number;
+    translations: Record<string, string>;
+}
+
 export interface UpdateCityParams {
     id: number;
-    values: CityFormValues;
+    values: CityRequestValues;
 }
 
 export async function updateCity({ id, values }: UpdateCityParams): Promise<CityDetail> {
