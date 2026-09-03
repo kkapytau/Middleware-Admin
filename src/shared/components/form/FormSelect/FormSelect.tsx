@@ -26,7 +26,7 @@ export function FormSelect<T extends FieldValues>({
                     help={fieldState.error?.message}
                 >
                     <Select
-                        value={field.value || undefined}
+                        value={field.value ?? undefined}
                         onChange={field.onChange}
                         placeholder={placeholder}
                         disabled={disabled}

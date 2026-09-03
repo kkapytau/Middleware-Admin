@@ -2,6 +2,10 @@ import type { SelectProps } from "antd";
 import type { ReactNode } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
+type FormSelectOption = Omit<NonNullable<SelectProps["options"]>[number], "value"> & {
+    value?: string | number | boolean | null;
+};
+
 export interface FormSelectProps<T extends FieldValues> {
     control: Control<T>;
 
@@ -13,7 +17,7 @@ export interface FormSelectProps<T extends FieldValues> {
 
     disabled?: boolean;
 
-    options?: SelectProps["options"];
+    options?: FormSelectOption[];
 
     loading?: boolean;
 

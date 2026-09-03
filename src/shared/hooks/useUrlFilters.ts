@@ -1,28 +1,34 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { hasActiveFilters as hasAnyValue } from "@/shared/lib/activeFilter/hasActiveFilters";
-import { updateSearchParams } from "@/shared/lib/updateSearchParams/updateSearchParams";
+import {
+    getActiveFiltersCount,
+    getFiltersFromSearchParams,
+    getSearchParamsFromFilters,
+} from "@/shared/lib";
+import { updateSearchParams } from "@/shared/lib";
+import type { FilterFieldConfig } from "@/shared/types";
 
 export interface UseUrlFiltersOptions<TFilters extends object> {
     emptyFilters: TFilters;
-    getFilters: (searchParams: URLSearchParams) => TFilters;
-    getSearchParams: (filters: TFilters) => Record<string, string | null>;
+    fields: FilterFieldConfig[];
 }
 
 export function useUrlFilters<TFilters extends object>({
     emptyFilters,
-    getFilters,
-    getSearchParams,
+    fields,
 }: UseUrlFiltersOptions<TFilters>) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [open, setOpen] = useState(false);
 
-    const filters = useMemo(() => getFilters(searchParams), [searchParams, getFilters]);
+    const filters = useMemo(
+        () => getFiltersFromSearchParams(searchParams, fields, emptyFilters),
+        [searchParams, fields, emptyFilters],
+    );
 
-    const hasActiveFilters = hasAnyValue(filters);
+    const activeFiltersCount = getActiveFiltersCount(filters, fields);
 
-    const activeFiltersCount = Object.values(filters).filter(Boolean).length;
+    const hasActiveFilters = activeFiltersCount > 0;
 
     const shouldLoadAll = open || hasActiveFilters;
 
@@ -30,18 +36,18 @@ export function useUrlFilters<TFilters extends object>({
         (nextFilters: TFilters) => {
             updateSearchParams(setSearchParams, {
                 page: "1",
-                ...getSearchParams(nextFilters),
+                ...getSearchParamsFromFilters(nextFilters, fields),
             });
         },
-        [getSearchParams, setSearchParams],
+        [fields, setSearchParams],
     );
 
     const handleReset = useCallback(() => {
         updateSearchParams(setSearchParams, {
             page: "1",
-            ...getSearchParams(emptyFilters),
+            ...getSearchParamsFromFilters(emptyFilters, fields),
         });
-    }, [emptyFilters, getSearchParams, setSearchParams]);
+    }, [emptyFilters, fields, setSearchParams]);
 
     return {
         filters,

@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router";
 
-import { ProtectedLayout } from "@/app/layouts/ProtectedLayout";
-import { PublicLayout } from "@/app/layouts/PublicLayout";
+import { ProtectedLayout } from "@/app/layouts";
+import { PublicLayout } from "@/app/layouts";
 import { appRoutes } from "@/app/routes";
 
 import { buildRouteObjects } from "./buildRouteObjects";

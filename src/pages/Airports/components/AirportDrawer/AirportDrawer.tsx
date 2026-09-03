@@ -8,12 +8,12 @@ import {
     useUpdateAirport,
 } from "@/entities/airport";
 import { type AirportFormValues } from "@/entities/airport/model";
-import { AirportForm } from "@/pages/Airports/components/AirportForm";
+import { AirportForm } from "@/pages/Airports/components";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
-import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
-import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
+import { mapTranslationsToApi } from "@/shared/lib";
+import { mapTranslationsToForm } from "@/shared/lib";
 
 interface AirportDrawerProps {
     open: boolean;

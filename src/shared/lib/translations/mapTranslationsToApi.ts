@@ -1,4 +1,4 @@
-import type { TranslationFormValue } from "@/shared/types/translations";
+import type { TranslationFormValue } from "@/shared/types";
 
 export function mapTranslationsToApi(translations: TranslationFormValue[]): Record<string, string> {
     return Object.fromEntries(

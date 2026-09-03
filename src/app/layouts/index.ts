@@ -1,1 +1,2 @@
-export { AppLayout } from "./AppLayout";
+export * from "./ProtectedLayout";
+export * from "./PublicLayout";

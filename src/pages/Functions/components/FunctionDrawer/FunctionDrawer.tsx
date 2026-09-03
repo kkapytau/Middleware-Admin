@@ -7,11 +7,11 @@ import {
     useCreateFlowFunction,
     useUpdateFlowFunction,
 } from "@/entities/flowFunction";
-import { FunctionForm } from "@/pages/Functions/components/FunctionForm";
+import { FunctionForm } from "@/pages/Functions/components";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
-import { identity } from "@/shared/lib/identity/identity";
+import { identity } from "@/shared/lib";
 
 interface FunctionDrawerProps {
     open: boolean;

@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { getPaginationParams } from "@/shared/lib/pagination/getPaginationParams";
-import { updateSearchParams } from "@/shared/lib/updateSearchParams/updateSearchParams";
+import { getPaginationParams } from "@/shared/lib";
+import { updateSearchParams } from "@/shared/lib";
 
 export function useUrlPagination() {
     const [searchParams, setSearchParams] = useSearchParams();

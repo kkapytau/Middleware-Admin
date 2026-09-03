@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { createFlowFormSchema, defaultFlowFormValues, type FlowFormValues } from "@/entities/flow";
 import { FormInput } from "@/shared/components/form";
-import { MAX_CODE_LENGTH } from "@/shared/constants/validation";
+import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useEntityForm } from "@/shared/hooks";
 
 import styles from "./FlowForm.module.scss";

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router";
 
 import { logout } from "@/app/auth";
 import { appRoutes, getRouteByPath } from "@/app/routes";
-import { LanguageSwitcher } from "@/shared/components/LanguageSwitcher";
+import { LanguageSwitcher } from "@/shared/components";
 
 import styles from "./AppHeader.module.scss";
 

@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
-import type { FormInputProps } from "@/shared/components/form/FormInput/FormInput.types";
+import type { FormInputProps } from "./FormInput.types";
 
 export function FormInput<T extends FieldValues>({
     control,

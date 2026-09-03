@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { QUERY_STALE_TIME } from "@/shared/constants/query";
+import { QUERY_STALE_TIME } from "@/shared/constants";
 
 import { countryKeys, getCountries, getCountry } from "../api";
 

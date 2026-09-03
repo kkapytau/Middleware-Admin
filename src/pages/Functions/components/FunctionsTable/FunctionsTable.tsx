@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { FlowFunction } from "@/entities/flowFunction";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
-import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants/formView";
+import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface FunctionsTableProps {
     data: FlowFunction[];

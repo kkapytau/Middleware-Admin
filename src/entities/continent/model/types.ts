@@ -1,4 +1,4 @@
-import type { TranslationFormValue } from "@/shared/types/translations";
+import type { TranslationFormValue } from "@/shared/types";
 
 export interface Continent {
     id: number;

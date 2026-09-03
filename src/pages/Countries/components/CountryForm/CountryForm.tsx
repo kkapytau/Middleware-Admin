@@ -10,7 +10,7 @@ import {
 } from "@/entities/country";
 import { FormInput, FormSelect } from "@/shared/components/form";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
-import { MAX_CODE_LENGTH } from "@/shared/constants/validation";
+import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useEntityForm, useTranslationsForm } from "@/shared/hooks";
 
 interface CountryFormProps {

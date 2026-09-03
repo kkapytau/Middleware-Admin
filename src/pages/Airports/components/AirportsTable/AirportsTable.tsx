@@ -5,10 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { Airport } from "@/entities/airport";
 import { EntityActions } from "@/shared/components/EntityActions";
 import { EntityTable } from "@/shared/components/EntityTable";
-import {
-    LOCATION_ACTIONS_COLUMN_WIDTH,
-    LOCATION_CODE_COLUMN_WIDTH,
-} from "@/shared/constants/formView";
+import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/shared/constants";
 
 interface AirportsTableProps {
     data: Airport[];
@@ -48,7 +45,7 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
 
     return (
         <EntityTable<Airport>
-            rowKey="airportCode"
+            rowKey="code"
             columns={columns}
             dataSource={data}
             loading={loading}

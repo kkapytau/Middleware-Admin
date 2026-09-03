@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { FormInput } from "@/shared/components/form";
-import { createTranslationsSchema } from "@/shared/components/TranslationsModal/translations.modal.schema";
-import { MAX_CODE_LENGTH } from "@/shared/constants/validation";
-import { type TranslationFormValue } from "@/shared/types/translations";
+import { FormInput } from "@/shared/components";
+import { createTranslationsSchema } from "@/shared/components";
+import { MAX_CODE_LENGTH } from "@/shared/constants";
+import { type TranslationFormValue } from "@/shared/types";
 
 interface TranslationsFormValues {
     translations: TranslationFormValue[];

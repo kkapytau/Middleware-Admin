@@ -3,7 +3,7 @@ export interface FlowFunction {
     name: string;
 }
 
-export interface FlowFunctionValue {
+interface FlowFunctionValue {
     key: string;
     value: string;
 }

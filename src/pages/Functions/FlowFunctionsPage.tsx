@@ -7,8 +7,8 @@ import { useDeleteFlowFunction, useFlowFunction, useFlowFunctions } from "@/enti
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { useMutationErrorHandler, useUrlPagination } from "@/shared/hooks";
 
-import { FunctionDrawer } from "./components/FunctionDrawer";
-import { FunctionsTable } from "./components/FunctionsTable";
+import { FunctionDrawer } from "./components";
+import { FunctionsTable } from "./components";
 
 export function FlowFunctionsPage() {
     const { t } = useTranslation("app");

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 
 import { type AppRoute, appRoutes } from "@/app/routes";
-import { AppLogo } from "@/shared/components/AppLogo";
+import { AppLogo } from "@/shared/components";
 
 import styles from "./AppSidebar.module.scss";
 

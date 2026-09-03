@@ -3,23 +3,25 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Airport, useAirport, useAirports, useDeleteAirport } from "@/entities/airport";
-import { useAllAirports } from "@/entities/airport/hooks/useAllAirports.ts";
-import { CodeNameSearch } from "@/shared/components/CodeNameSearch";
+import { useAllAirports } from "@/entities/airport/hooks/useAllAirports";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
+import { FilterSearch } from "@/shared/components/FilterSearch";
+import { CODE_NAME_FILTER_FIELDS, EMPTY_CODE_NAME_FILTERS } from "@/shared/config/filters";
 import {
-    useCodeNameFiltering,
-    useCodeNameFilters,
+    useFilter,
     useMutationErrorHandler,
+    useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
 
-import { AirportDrawer } from "./components/AirportDrawer";
-import { AirportsTable } from "./components/AirportsTable";
+import { AirportDrawer } from "./components";
+import { AirportsTable } from "./components";
 
 export function AirportsPage() {
     const { t } = useTranslation("app");
 
+    const filterFields = CODE_NAME_FILTER_FIELDS;
     const {
         filters,
         hasActiveFilters,
@@ -29,13 +31,16 @@ export function AirportsPage() {
         setOpen: setSearchOpen,
         handleChange: handleFiltersChange,
         handleReset: handleFiltersReset,
-    } = useCodeNameFilters();
+    } = useUrlFilters({
+        fields: filterFields,
+        emptyFilters: EMPTY_CODE_NAME_FILTERS,
+    });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
     const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports(shouldLoadAll);
 
-    const filteredAirports = useCodeNameFiltering(allAirports, filters);
+    const filteredAirports = useFilter(allAirports, filters, filterFields);
 
     const { data, isLoading, isFetching } = useAirports(apiPage, pageSize);
 
@@ -90,8 +95,10 @@ export function AirportsPage() {
                         open={searchOpen}
                         onOpenChange={setSearchOpen}
                     >
-                        <CodeNameSearch
+                        <FilterSearch
+                            fields={filterFields}
                             initialValues={filters}
+                            emptyValues={EMPTY_CODE_NAME_FILTERS}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
                         />

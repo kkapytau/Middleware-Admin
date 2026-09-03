@@ -4,7 +4,7 @@ import { type Flow, type FlowFormValues, useCreateFlow, useUpdateFlow } from "@/
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
-import { identity } from "@/shared/lib/identity/identity";
+import { identity } from "@/shared/lib";
 
 import { FlowForm } from "../FlowForm";
 

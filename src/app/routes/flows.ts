@@ -1,4 +1,4 @@
-import { FlowsPage } from "@/pages/Flows/FlowsPage";
+import { FlowsPage } from "@/pages/Flows";
 
 import type { AppRoute } from "./types";
 

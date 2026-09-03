@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Control, FieldValues, UseFormSetValue } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
-import type { TranslationFormValue } from "@/shared/types/translations";
+import type { TranslationFormValue } from "@/shared/types";
 
 interface TranslationFormFields extends FieldValues {
     translations: TranslationFormValue[];

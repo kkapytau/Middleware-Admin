@@ -10,8 +10,8 @@ import {
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
 import { useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
-import { mapTranslationsToApi } from "@/shared/lib/translations/mapTranslationsToApi";
-import { mapTranslationsToForm } from "@/shared/lib/translations/mapTranslationsToForm";
+import { mapTranslationsToApi } from "@/shared/lib";
+import { mapTranslationsToForm } from "@/shared/lib";
 
 import { ContinentForm } from "../ContinentForm";
 

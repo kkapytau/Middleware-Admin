@@ -4,11 +4,11 @@ import { AirportsPage } from "@/pages/Airports";
 import { CitiesPage } from "@/pages/Cities";
 import { ContinentsPage } from "@/pages/Continents";
 import { CountriesPage } from "@/pages/Countries";
-import { permissions } from "@/shared/types/permissions";
+import { permissions } from "@/shared/types";
 
 import type { AppRoute } from "./types";
 
-export const airportsRoute: AppRoute = {
+const airportsRoute: AppRoute = {
     key: "airports",
 
     type: "page",
@@ -28,7 +28,7 @@ export const airportsRoute: AppRoute = {
     component: AirportsPage,
 };
 
-export const countriesRoute: AppRoute = {
+const countriesRoute: AppRoute = {
     key: "countries",
 
     type: "page",
@@ -48,7 +48,7 @@ export const countriesRoute: AppRoute = {
     component: CountriesPage,
 };
 
-export const continentsRoute: AppRoute = {
+const continentsRoute: AppRoute = {
     key: "continents",
 
     type: "page",
@@ -68,7 +68,7 @@ export const continentsRoute: AppRoute = {
     component: ContinentsPage,
 };
 
-export const citiesRoute: AppRoute = {
+const citiesRoute: AppRoute = {
     key: "cities",
 
     type: "page",

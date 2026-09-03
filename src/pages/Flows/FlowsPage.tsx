@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Flow, useAllFlows, useDeleteFlow, useFlows } from "@/entities/flow";
-import { CodeNameSearch } from "@/shared/components/CodeNameSearch";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
+import { FilterSearch } from "@/shared/components/FilterSearch";
+import { CODE_NAME_FILTER_FIELDS, EMPTY_CODE_NAME_FILTERS } from "@/shared/config/filters";
 import {
-    useCodeNameFiltering,
-    useCodeNameFilters,
+    useFilter,
     useMutationErrorHandler,
+    useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
 
@@ -19,6 +20,7 @@ import { FlowsTable } from "./components/FlowsTable";
 export function FlowsPage() {
     const { t } = useTranslation("app");
 
+    const filterFields = CODE_NAME_FILTER_FIELDS;
     const {
         filters,
         hasActiveFilters,
@@ -28,13 +30,16 @@ export function FlowsPage() {
         setOpen: setSearchOpen,
         handleChange: handleFiltersChange,
         handleReset: handleFiltersReset,
-    } = useCodeNameFilters();
+    } = useUrlFilters({
+        fields: filterFields,
+        emptyFilters: EMPTY_CODE_NAME_FILTERS,
+    });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
     const { data: allFlows = [], isLoading: allFlowsLoading } = useAllFlows(shouldLoadAll);
 
-    const filteredFlows = useCodeNameFiltering(allFlows, filters);
+    const filteredFlows = useFilter(allFlows, filters, filterFields);
 
     const { data, isLoading, isFetching } = useFlows(apiPage, pageSize);
 
@@ -87,8 +92,10 @@ export function FlowsPage() {
                         open={searchOpen}
                         onOpenChange={setSearchOpen}
                     >
-                        <CodeNameSearch
+                        <FilterSearch
+                            fields={filterFields}
                             initialValues={filters}
+                            emptyValues={EMPTY_CODE_NAME_FILTERS}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
                         />
