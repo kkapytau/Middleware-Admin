@@ -24,7 +24,6 @@ interface AirportDetailResponse {
         latitude: number;
         longitude: number;
     };
-    metropolitan: boolean;
     city: {
         id: number;
         code: string;
@@ -43,7 +42,6 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
         cityId: response.city.id,
         latitude: response.coordinates.latitude,
         longitude: response.coordinates.longitude,
-        metropolitan: response.metropolitan,
         translations: response.translations,
     };
 }
@@ -93,7 +91,6 @@ export interface AirportRequestValues {
     cityId: number;
     latitude: number;
     longitude: number;
-    metropolitan: boolean;
     translations: Record<string, string>;
 }
 

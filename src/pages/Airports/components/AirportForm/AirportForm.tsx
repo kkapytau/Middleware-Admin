@@ -8,7 +8,7 @@ import {
     defaultAirportFormValues,
 } from "@/entities/airport/model";
 import { useAllCities } from "@/entities/city";
-import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
+import { FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useEntityForm, useTranslationsForm } from "@/shared/hooks";
@@ -108,10 +108,6 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
                         label={t("form.longitude")}
                         placeholder={t("form.enterLongitude")}
                     />
-
-                    <FormCheckbox control={control} name="metropolitan">
-                        {t("form.metropolitan")}
-                    </FormCheckbox>
 
                     <Flex justify="flex-start">
                         <Button type="default" onClick={() => setTranslationsOpen(true)}>

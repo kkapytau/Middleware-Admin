@@ -6,21 +6,21 @@ import { useDebouncedValue } from "@/shared/hooks/useDebouncedValue";
 import { getFilterValue } from "@/shared/lib";
 import type { FilterFieldConfig } from "@/shared/types";
 
-interface UseFilterSearchParams<TFilters extends object> {
-    fields: FilterFieldConfig[];
+interface UseFilterSearchParams<TItem extends object, TFilters extends object> {
+    fields: FilterFieldConfig<TItem>[];
     initialValues: TFilters;
     emptyValues: TFilters;
     onChange: (values: TFilters) => void;
     onReset: () => void;
 }
 
-export function useFilterSearch<TFilters extends object>({
+export function useFilterSearch<TItem extends object, TFilters extends object>({
     fields,
     initialValues,
     emptyValues,
     onChange,
     onReset,
-}: UseFilterSearchParams<TFilters>) {
+}: UseFilterSearchParams<TItem, TFilters>) {
     const { control, reset } = useForm<TFilters>({
         values: initialValues,
     });

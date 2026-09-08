@@ -9,15 +9,15 @@ import {
 import { updateSearchParams } from "@/shared/lib";
 import type { FilterFieldConfig } from "@/shared/types";
 
-export interface UseUrlFiltersOptions<TFilters extends object> {
+export interface UseUrlFiltersOptions<TItem extends object, TFilters extends object> {
     emptyFilters: TFilters;
-    fields: FilterFieldConfig[];
+    fields: FilterFieldConfig<TItem>[];
 }
 
-export function useUrlFilters<TFilters extends object>({
+export function useUrlFilters<TItem extends object, TFilters extends object>({
     emptyFilters,
     fields,
-}: UseUrlFiltersOptions<TFilters>) {
+}: UseUrlFiltersOptions<TItem, TFilters>) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [open, setOpen] = useState(false);
 

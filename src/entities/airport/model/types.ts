@@ -13,7 +13,6 @@ export interface AirportDetail {
     cityId: number;
     latitude: number;
     longitude: number;
-    metropolitan: boolean;
     translations: Record<string, string>;
 }
 
@@ -23,7 +22,6 @@ export interface AirportFormValues {
     cityId: number;
     latitude: number;
     longitude: number;
-    metropolitan: boolean;
     translations: TranslationFormValue[];
 }
 
@@ -33,6 +31,5 @@ export const defaultAirportFormValues: AirportFormValues = {
     cityId: 0,
     latitude: 0,
     longitude: 0,
-    metropolitan: false,
     translations: [],
 };

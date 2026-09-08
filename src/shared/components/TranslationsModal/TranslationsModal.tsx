@@ -1,14 +1,14 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Form, Modal, Typography } from "antd";
+import { Button, Flex, Form, Input, Modal, Typography } from "antd";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { FormInput } from "@/shared/components";
+import { useLocales } from "@/entities/locale";
 import { createTranslationsSchema } from "@/shared/components";
-import { MAX_CODE_LENGTH } from "@/shared/constants";
-import { type TranslationFormValue } from "@/shared/types";
+import { FormInput } from "@/shared/components";
+import { DEFAULT_PAGE, MAX_PAGE_SIZE } from "@/shared/constants";
+import type { TranslationFormValue } from "@/shared/types";
 
 interface TranslationsFormValues {
     translations: TranslationFormValue[];
@@ -24,31 +24,42 @@ interface TranslationsModalProps {
 export function TranslationsModal({ open, value, onDone, onCancel }: TranslationsModalProps) {
     const { t } = useTranslation("app");
 
+    const { data, isLoading } = useLocales(DEFAULT_PAGE - 1, MAX_PAGE_SIZE, false);
+
     const schema = createTranslationsSchema({
         required: t("validation.required"),
-        duplicateLanguage: t("translations.duplicateLanguage"),
-        languagePattern: t("validation.languagePattern"),
     });
 
     const { control, handleSubmit, reset } = useForm<TranslationsFormValues>({
         defaultValues: {
-            translations: value,
+            translations: [],
         },
         resolver: zodResolver(schema),
     });
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields } = useFieldArray({
         control,
         name: "translations",
     });
 
     useEffect(() => {
-        if (open) {
-            reset({
-                translations: value,
-            });
+        if (!open || isLoading) {
+            return;
         }
-    }, [open, value, reset]);
+
+        const existingTranslations = new Map(
+            value.map((translation) => [translation.language, translation.value]),
+        );
+
+        const locales = data?.content ?? [];
+
+        reset({
+            translations: locales.map((locale) => ({
+                language: locale.code,
+                value: existingTranslations.get(locale.code) ?? "",
+            })),
+        });
+    }, [open, isLoading, value, reset, data?.content]);
 
     const handleFormSubmit = (values: TranslationsFormValues) => {
         onDone(values.translations);
@@ -67,6 +78,7 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
                     key="done"
                     type="primary"
                     onClick={() => void handleSubmit(handleFormSubmit)()}
+                    disabled={isLoading}
                 >
                     {t("common.done")}
                 </Button>,
@@ -74,7 +86,7 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
         >
             <Form layout="vertical">
                 <Flex vertical gap="middle">
-                    {fields.length === 0 && (
+                    {fields.length === 0 && !isLoading && (
                         <Typography.Text type="secondary">
                             {t("translations.empty")}
                         </Typography.Text>
@@ -82,41 +94,15 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
 
                     {fields.map((field, index) => (
                         <Flex key={field.id} gap="small" align="start">
-                            <FormInput
-                                control={control}
-                                name={`translations.${index}.language`}
-                                placeholder={t("translations.languagePlaceholder")}
-                                maxLength={MAX_CODE_LENGTH}
-                                uppercase
-                            />
+                            <Input value={field.language} disabled style={{ width: 80 }} />
 
                             <FormInput
                                 control={control}
                                 name={`translations.${index}.value`}
                                 placeholder={t("translations.valuePlaceholder")}
                             />
-
-                            <Button
-                                type="text"
-                                danger
-                                icon={<DeleteOutlined />}
-                                onClick={() => remove(index)}
-                            />
                         </Flex>
                     ))}
-
-                    <Button
-                        type="dashed"
-                        icon={<PlusOutlined />}
-                        onClick={() =>
-                            append({
-                                language: "",
-                                value: "",
-                            })
-                        }
-                    >
-                        {t("translations.add")}
-                    </Button>
                 </Flex>
             </Form>
         </Modal>

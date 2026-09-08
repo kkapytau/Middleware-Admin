@@ -42,7 +42,8 @@
     },
     "filters": {
         "title": "Filters",
-        "reset": "Reset"
+        "reset": "Reset",
+        "all": "All"
     },
     "navigation": {
         "login": "Login",
@@ -58,7 +59,9 @@
         "continents": "Continents",
         "continent": "Continent",
         "flowRule": "Flow Rule",
-        "flowRules": "Flow Rules"
+        "flowRules": "Flow Rules",
+        "locales": "Locales",
+        "systemSettings": "System Settings"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -82,7 +85,8 @@
         "country": "Country",
         "continent": "Continent",
         "metropolitan": "Metropolitan",
-        "name": "Name"
+        "name": "Name",
+        "deleted": "Deleted"
     },
     "form": {
         "airportCode": "Airport Code",
@@ -125,7 +129,9 @@
         "flowPlaceholder": "Select flow",
         "flowRuleConfig": "Configuration",
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
-        "flowRuleConfigHelp": "Enter a valid JSON object containing a non-empty URL field."
+        "flowRuleConfigHelp": "Enter a valid JSON object containing a non-empty URL field.",
+
+        "deleted": "Deleted"
     },
     "common": {
         "yes": "Yes",

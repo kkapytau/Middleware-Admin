@@ -5,22 +5,31 @@ export interface CodeNameFilters {
     name: string;
 }
 
+export interface FlowRuleFilters {
+    name: string;
+    flowName: string;
+    enabled: boolean | undefined;
+}
+
 export type FilterValue = string | boolean | undefined;
 
-interface TextFilterFieldConfig {
+interface TextFilterFieldConfig<TItem = object> {
     name: string;
     type: "text";
     labelKey: AppTranslationKey;
     placeholderKey?: AppTranslationKey;
+    getValue?: (item: TItem) => string;
 }
 
-interface BooleanFilterFieldConfig {
+interface BooleanFilterFieldConfig<TItem = object> {
     name: string;
     type: "boolean";
     labelKey: AppTranslationKey;
     allLabelKey: AppTranslationKey;
     trueLabelKey: AppTranslationKey;
     falseLabelKey: AppTranslationKey;
+    getValue?: (item: TItem) => boolean;
 }
 
-export type FilterFieldConfig = TextFilterFieldConfig | BooleanFilterFieldConfig;
+export type FilterFieldConfig<TItem = object> =
+    TextFilterFieldConfig<TItem> | BooleanFilterFieldConfig<TItem>;

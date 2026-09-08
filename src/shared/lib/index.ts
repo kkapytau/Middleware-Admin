@@ -2,6 +2,7 @@ export * from "./filters/activeFilter/getActiveFiltersCount";
 export * from "./filters/activeFilter/isFilterValueActive";
 export * from "./filters/getFiltersFromSearchParams";
 export * from "./filters/getFilterValueFromSearchParams";
+export * from "./filters/getItemFilterValue";
 export * from "./filters/getSearchParamsFromFilters";
 export * from "./identity/identity";
 export * from "./pagination/getPaginationParams";

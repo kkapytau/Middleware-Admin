@@ -14,7 +14,9 @@
         "flows": "Flux",
         "continents": "Continents",
         "flowRule": "Règle de flux",
-        "flowRules": "Règles de flux"
+        "flowRules": "Règles de flux",
+        "locales": "Paramètres régionaux",
+        "systemSettings": "Paramètres système"
     },
 
     "login": {
@@ -55,7 +57,8 @@
     },
     "filters": {
         "title": "Filtres",
-        "reset": "Réinitialiser"
+        "reset": "Réinitialiser",
+        "all": "tout"
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -79,7 +82,8 @@
         "country": "Pays",
         "continent": "Continent",
         "metropolitan": "Métropolitain",
-        "name": "Nom"
+        "name": "Nom",
+        "deleted": "Supprimé"
     },
     "form": {
         "airportCode": "Code Aéroport",
@@ -118,7 +122,9 @@
         "flowPlaceholder": "Sélectionnez un flux",
         "flowRuleConfig": "Configuration",
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
-        "flowRuleConfigHelp": "Saisissez un objet JSON valide contenant un champ URL non vide."
+        "flowRuleConfigHelp": "Saisissez un objet JSON valide contenant un champ URL non vide.",
+
+        "deleted": "Supprimé"
     },
     "common": {
         "yes": "Oui",

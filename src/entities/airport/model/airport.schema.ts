@@ -43,8 +43,6 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             .min(-180, messages.longitudeRange)
             .max(180, messages.longitudeRange),
 
-        metropolitan: z.boolean(),
-
         translations: z.array(
             z.object({
                 language: z.string(),

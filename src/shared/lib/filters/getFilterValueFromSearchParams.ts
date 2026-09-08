@@ -1,8 +1,8 @@
 import type { FilterFieldConfig, FilterValue } from "@/shared/types";
 
-export function getFilterValueFromSearchParams(
+export function getFilterValueFromSearchParams<TItem extends object>(
     searchParams: URLSearchParams,
-    field: FilterFieldConfig,
+    field: FilterFieldConfig<TItem>,
 ): FilterValue {
     const value = searchParams.get(field.name);
 

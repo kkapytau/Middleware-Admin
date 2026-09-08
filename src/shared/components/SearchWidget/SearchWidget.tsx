@@ -11,7 +11,7 @@ export function SearchWidget({ children, onReset }: SearchWidgetProps) {
     const { t } = useTranslation("app");
 
     return (
-        <Flex vertical gap="middle" style={{ width: 480 }}>
+        <Flex vertical gap="middle">
             <Typography.Text strong>{t("filters.title")}</Typography.Text>
 
             {children}

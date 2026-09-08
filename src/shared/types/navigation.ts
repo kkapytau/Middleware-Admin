@@ -7,4 +7,6 @@ export type NavigationKey =
     | "navigation.functions"
     | "navigation.flows"
     | "navigation.continents"
-    | "navigation.flowRules";
+    | "navigation.flowRules"
+    | "navigation.systemSettings"
+    | "navigation.locales";

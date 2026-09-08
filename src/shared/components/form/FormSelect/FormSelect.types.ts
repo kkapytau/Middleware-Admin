@@ -24,4 +24,6 @@ export interface FormSelectProps<T extends FieldValues> {
     allowClear?: boolean;
 
     showSearch?: boolean;
+
+    allowFalsyValue?: boolean;
 }

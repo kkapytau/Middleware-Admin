@@ -14,6 +14,7 @@ export function FormSelect<T extends FieldValues>({
     loading,
     allowClear,
     showSearch,
+    allowFalsyValue,
 }: FormSelectProps<T>) {
     return (
         <Controller
@@ -26,7 +27,9 @@ export function FormSelect<T extends FieldValues>({
                     help={fieldState.error?.message}
                 >
                     <Select
-                        value={field.value ?? undefined}
+                        value={
+                            allowFalsyValue ? (field.value ?? undefined) : field.value || undefined
+                        }
                         onChange={field.onChange}
                         placeholder={placeholder}
                         disabled={disabled}

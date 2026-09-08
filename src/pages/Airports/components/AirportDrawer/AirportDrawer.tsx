@@ -73,7 +73,6 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
                               cityId: airportDetail.cityId,
                               latitude: airportDetail.latitude,
                               longitude: airportDetail.longitude,
-                              metropolitan: airportDetail.metropolitan,
                               translations: mapTranslationsToForm(airportDetail.translations),
                           }
                         : undefined

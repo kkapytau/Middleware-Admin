@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 
-import { getFilterValue } from "@/shared/lib";
+import { getFilterValue, getItemFilterValue } from "@/shared/lib";
 import { isFilterValueActive } from "@/shared/lib";
 import type { FilterFieldConfig, FilterValue } from "@/shared/types";
 
-function matchesFilter(
+function matchesFilter<TItem extends object>(
     itemValue: FilterValue,
     filterValue: FilterValue,
-    field: FilterFieldConfig,
+    field: FilterFieldConfig<TItem>,
 ): boolean {
     switch (field.type) {
         case "text": {
@@ -30,7 +30,7 @@ function matchesFilter(
 export function useFilter<TItem extends object, TFilters extends object>(
     items: TItem[],
     filters: TFilters,
-    fields: FilterFieldConfig[],
+    fields: FilterFieldConfig<TItem>[],
 ) {
     return useMemo(() => {
         const activeFields = fields.filter((field) =>
@@ -44,7 +44,7 @@ export function useFilter<TItem extends object, TFilters extends object>(
         return items.filter((item) =>
             activeFields.every((field) =>
                 matchesFilter(
-                    getFilterValue(item, field.name),
+                    getItemFilterValue(item, field),
                     getFilterValue(filters, field.name),
                     field,
                 ),

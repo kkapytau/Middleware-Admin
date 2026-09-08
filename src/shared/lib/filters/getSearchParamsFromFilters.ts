@@ -1,8 +1,8 @@
 import type { FilterFieldConfig, FilterValue } from "@/shared/types";
 
-export function getSearchParamsFromFilters<TFilters extends object>(
+export function getSearchParamsFromFilters<TItem extends object, TFilters extends object>(
     filters: TFilters,
-    fields: FilterFieldConfig[],
+    fields: FilterFieldConfig<TItem>[],
 ): Record<string, string | null> {
     return Object.fromEntries(
         fields.map((field) => {
