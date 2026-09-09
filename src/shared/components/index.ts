@@ -1,4 +1,5 @@
 export * from "./AppLogo";
+export * from "./DownloadButton";
 export * from "./EntityActions";
 export * from "./EntityDrawer";
 export * from "./EntityTable";

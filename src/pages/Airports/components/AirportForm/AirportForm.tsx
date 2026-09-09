@@ -8,7 +8,7 @@ import {
     defaultAirportFormValues,
 } from "@/entities/airport/model";
 import { useAllCities } from "@/entities/city";
-import { FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
+import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useEntityForm, useTranslationsForm } from "@/shared/hooks";
@@ -16,10 +16,11 @@ import { useEntityForm, useTranslationsForm } from "@/shared/hooks";
 interface AirportFormProps {
     id?: string;
     defaultValues?: AirportFormValues;
+    isEditing: boolean;
     onSubmit: (values: AirportFormValues) => void | Promise<void>;
 }
 
-export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
+export function AirportForm({ id, defaultValues, onSubmit, isEditing }: AirportFormProps) {
     const { t } = useTranslation("app");
 
     const { data: cities = [], isLoading: citiesLoading } = useAllCities();
@@ -108,6 +109,12 @@ export function AirportForm({ id, defaultValues, onSubmit }: AirportFormProps) {
                         label={t("form.longitude")}
                         placeholder={t("form.enterLongitude")}
                     />
+
+                    {isEditing && (
+                        <FormCheckbox control={control} name="deleted">
+                            {t("form.deleted")}
+                        </FormCheckbox>
+                    )}
 
                     <Flex justify="flex-start">
                         <Button type="default" onClick={() => setTranslationsOpen(true)}>

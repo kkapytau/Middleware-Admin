@@ -76,7 +76,8 @@
         "actions": "Actions",
         "addPair": "Add pair",
         "editEntity": "Edit {{entity}}",
-        "error": "Error"
+        "error": "Error",
+        "download": "Download"
     },
     "columns": {
         "airport": "Airport",

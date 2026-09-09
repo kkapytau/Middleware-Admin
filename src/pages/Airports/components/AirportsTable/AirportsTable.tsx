@@ -1,4 +1,4 @@
-import { type TableProps } from "antd";
+import { Checkbox, type TableProps } from "antd";
 import type { TablePaginationConfig } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 
@@ -34,6 +34,12 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
             key: "name",
         },
         {
+            title: t("columns.deleted"),
+            dataIndex: "deleted",
+            key: "deleted",
+            render: (deleted: boolean) => <Checkbox checked={deleted} disabled />,
+        },
+        {
             title: t("actions.actions"),
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
@@ -45,7 +51,7 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
 
     return (
         <EntityTable<Airport>
-            rowKey="code"
+            rowKey="id"
             columns={columns}
             dataSource={data}
             loading={loading}

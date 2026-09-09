@@ -2,18 +2,26 @@ import { Space } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { type Airport, useAirport, useAirports, useDeleteAirport } from "@/entities/airport";
+import {
+    type Airport,
+    useAirport,
+    useAirports,
+    useDeleteAirport,
+    useDownloadAirports,
+} from "@/entities/airport";
 import { useAllAirports } from "@/entities/airport/hooks/useAllAirports";
+import { DownloadButton } from "@/shared/components";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
-import { CODE_NAME_FILTER_FIELDS, EMPTY_CODE_NAME_FILTERS } from "@/shared/config/filters";
+import { AIRPORT_FILTER_FIELDS, EMPTY_AIRPORT_FILTERS } from "@/shared/config/filters";
 import {
     useFilter,
     useMutationErrorHandler,
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
+import { downloadBlob } from "@/shared/lib";
 
 import { AirportDrawer } from "./components";
 import { AirportsTable } from "./components";
@@ -21,7 +29,8 @@ import { AirportsTable } from "./components";
 export function AirportsPage() {
     const { t } = useTranslation("app");
 
-    const filterFields = CODE_NAME_FILTER_FIELDS;
+    const filterFields = AIRPORT_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_AIRPORT_FILTERS;
     const {
         filters,
         hasActiveFilters,
@@ -33,10 +42,12 @@ export function AirportsPage() {
         handleReset: handleFiltersReset,
     } = useUrlFilters({
         fields: filterFields,
-        emptyFilters: EMPTY_CODE_NAME_FILTERS,
+        emptyFilters: emptyFilterFields,
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
+
+    const downloadAirports = useDownloadAirports();
 
     const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports(shouldLoadAll);
 
@@ -83,26 +94,41 @@ export function AirportsPage() {
         }
     };
 
+    const handleDownload = async () => {
+        const blob = await downloadAirports.mutateAsync();
+
+        downloadBlob(blob, "airports.csv");
+    };
+
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
                 entity={t("navigation.airports")}
                 onAdd={handleCreate}
                 actions={
-                    <FilterButton
-                        label={t("filters.title")}
-                        activeCount={activeFiltersCount}
-                        open={searchOpen}
-                        onOpenChange={setSearchOpen}
-                    >
-                        <FilterSearch
-                            fields={filterFields}
-                            initialValues={filters}
-                            emptyValues={EMPTY_CODE_NAME_FILTERS}
-                            onChange={handleFiltersChange}
-                            onReset={handleFiltersReset}
+                    <>
+                        <FilterButton
+                            label={t("filters.title")}
+                            activeCount={activeFiltersCount}
+                            open={searchOpen}
+                            onOpenChange={setSearchOpen}
+                        >
+                            <FilterSearch
+                                fields={filterFields}
+                                initialValues={filters}
+                                emptyValues={emptyFilterFields}
+                                onChange={handleFiltersChange}
+                                onReset={handleFiltersReset}
+                            />
+                        </FilterButton>
+
+                        <DownloadButton
+                            loading={downloadAirports.isPending}
+                            onClick={() => {
+                                void handleDownload();
+                            }}
                         />
-                    </FilterButton>
+                    </>
                 }
             />
 

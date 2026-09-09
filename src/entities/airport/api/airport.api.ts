@@ -7,6 +7,7 @@ interface AirportListResponse {
         id: number;
         code: string;
         name: string;
+        deleted: boolean;
     }>;
     page: number;
     size: number;
@@ -19,6 +20,7 @@ interface AirportDetailResponse {
     id: number;
     code: string;
     name: string;
+    deleted: boolean;
     translations: Record<string, string>;
     coordinates: {
         latitude: number;
@@ -39,6 +41,7 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
         id: response.id,
         code: response.code,
         name: response.name,
+        deleted: response.deleted,
         cityId: response.city.id,
         latitude: response.coordinates.latitude,
         longitude: response.coordinates.longitude,
@@ -78,7 +81,14 @@ export async function createAirport(values: AirportRequestValues): Promise<Airpo
 
     const response = await api
         .post(AIRPORTS_ENDPOINT, {
-            json: values,
+            json: {
+                code: values.code,
+                name: values.name,
+                cityId: values.cityId,
+                latitude: values.latitude,
+                longitude: values.longitude,
+                translations: values.translations,
+            },
         })
         .json<AirportDetailResponse>();
 
@@ -92,6 +102,7 @@ export interface AirportRequestValues {
     latitude: number;
     longitude: number;
     translations: Record<string, string>;
+    deleted: boolean;
 }
 
 export interface UpdateAirportParams {
@@ -119,4 +130,10 @@ export async function deleteAirport(id: number): Promise<void> {
             ids: String(id),
         },
     });
+}
+
+const AIRPORTS_EXPORT_ENDPOINT = "internal/api/v1/airports/export";
+
+export async function downloadAirports(): Promise<Blob> {
+    return api.get(AIRPORTS_EXPORT_ENDPOINT).blob();
 }

@@ -49,5 +49,7 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
                 value: z.string(),
             }),
         ),
+
+        deleted: z.boolean(),
     });
 }

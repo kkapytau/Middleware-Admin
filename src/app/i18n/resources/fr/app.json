@@ -73,7 +73,8 @@
         "actions": "Actions",
         "addPair": "Ajouter une paire",
         "editEntity": "Modifier {{entity}}",
-        "error": "Erreur"
+        "error": "Erreur",
+        "download": "Télécharger"
     },
     "columns": {
         "airport": "Aéroport",

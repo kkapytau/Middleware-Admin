@@ -4,12 +4,14 @@ export interface Airport {
     id: number;
     code: string;
     name: string;
+    deleted: boolean;
 }
 
 export interface AirportDetail {
     id: number;
     code: string;
     name: string;
+    deleted: boolean;
     cityId: number;
     latitude: number;
     longitude: number;
@@ -23,6 +25,7 @@ export interface AirportFormValues {
     latitude: number;
     longitude: number;
     translations: TranslationFormValue[];
+    deleted: boolean;
 }
 
 export const defaultAirportFormValues: AirportFormValues = {
@@ -32,4 +35,5 @@ export const defaultAirportFormValues: AirportFormValues = {
     latitude: 0,
     longitude: 0,
     translations: [],
+    deleted: false,
 };
