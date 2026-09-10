@@ -1,29 +1,43 @@
-import { Button, Drawer, Space } from "antd";
+import { Button, Drawer, Form, Space } from "antd";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
+import { usePermissions } from "@/app/auth";
+
 import styles from "./EntityDrawer.module.scss";
 
-interface EntityDrawerProps {
+type EntityDrawerProps<TFormValues> = {
     open: boolean;
     loading?: boolean;
-    title: string;
+    title: ReactNode;
     formId: string;
     submitting?: boolean;
     onClose: () => void;
+    onSubmit: (values: TFormValues) => Promise<void>;
     children: ReactNode;
-}
+};
 
-export function EntityDrawer({
+export function EntityDrawer<TFormValues>({
     open,
     loading = false,
     title,
     formId,
     submitting = false,
     onClose,
+    onSubmit,
     children,
-}: EntityDrawerProps) {
+}: EntityDrawerProps<TFormValues>) {
     const { t } = useTranslation("app");
+
+    const { canUpdate } = usePermissions();
+
+    const handleFormFinish = (values: TFormValues) => {
+        if (!canUpdate) {
+            return;
+        }
+
+        void onSubmit(values);
+    };
 
     return (
         <Drawer
@@ -39,14 +53,23 @@ export function EntityDrawer({
                             {t("actions.cancel")}
                         </Button>
 
-                        <Button type="primary" htmlType="submit" form={formId} loading={submitting}>
-                            {t("actions.save")}
-                        </Button>
+                        {canUpdate && (
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                form={formId}
+                                loading={submitting}
+                            >
+                                {t("actions.save")}
+                            </Button>
+                        )}
                     </Space>
                 </div>
             }
         >
-            {children}
+            <Form id={formId} layout="vertical" disabled={!canUpdate} onFinish={handleFormFinish}>
+                {children}
+            </Form>
         </Drawer>
     );
 }

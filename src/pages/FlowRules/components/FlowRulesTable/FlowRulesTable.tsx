@@ -18,7 +18,6 @@ interface FlowRulesTableProps {
 export function FlowRulesTable({
     data,
     loading,
-    deletingFlowRuleId,
     onEdit,
     onDelete,
     pagination,
@@ -47,12 +46,7 @@ export function FlowRulesTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flowRule) => (
-                <EntityActions
-                    record={flowRule}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    deleting={deletingFlowRuleId === flowRule.id}
-                />
+                <EntityActions record={flowRule} onEdit={onEdit} onDelete={onDelete} />
             ),
         },
     ];

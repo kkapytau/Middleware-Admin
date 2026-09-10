@@ -1,42 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "antd";
+import type { Control } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-    createLocaleFormSchema,
-    defaultLocaleFormValues,
-    type LocaleFormValues,
-} from "@/entities/locale";
+import { type LocaleFormValues } from "@/entities/locale";
 import { FormCheckbox, FormInput } from "@/shared/components/form";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
-import { useEntityForm } from "@/shared/hooks";
 
 interface LocaleFormProps {
     isEditing: boolean;
-    defaultValues?: LocaleFormValues;
-    onSubmit: (values: LocaleFormValues) => Promise<void>;
+    control: Control<LocaleFormValues>;
 }
 
-export function LocaleForm({ isEditing, defaultValues, onSubmit }: LocaleFormProps) {
+export function LocaleForm({ isEditing, control }: LocaleFormProps) {
     const { t } = useTranslation("app");
 
-    const localeFormSchema = createLocaleFormSchema({
-        required: t("validation.required"),
-        codePattern: t("validation.codeUppercaseLength"),
-    });
-
-    const handleFormFinish = () => {
-        void handleSubmit(onSubmit)();
-    };
-
-    const { control, handleSubmit } = useEntityForm<LocaleFormValues>({
-        defaultValues: defaultLocaleFormValues,
-        initialValues: defaultValues,
-        resolver: zodResolver(localeFormSchema),
-    });
-
     return (
-        <Form id="locale-form" layout="vertical" onFinish={handleFormFinish}>
+        <>
             <FormInput
                 control={control}
                 name="code"
@@ -59,6 +37,6 @@ export function LocaleForm({ isEditing, defaultValues, onSubmit }: LocaleFormPro
                     {t("form.deleted")}
                 </FormCheckbox>
             )}
-        </Form>
+        </>
     );
 }

@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import type { RouteObject } from "react-router";
 
+import { ProtectedRoute } from "@/app/router/ProtectedRoute";
 import type { AppRoute } from "@/app/routes";
 
 export function buildRouteObjects(routes: AppRoute[]): RouteObject[] {
@@ -10,10 +11,16 @@ export function buildRouteObjects(routes: AppRoute[]): RouteObject[] {
         }
 
         const Component = route.component;
+        const element = createElement(Component);
 
         return {
             path: route.path,
-            element: createElement(Component),
+            element: route.permission
+                ? createElement(ProtectedRoute, {
+                      permission: route.permission,
+                      children: element,
+                  })
+                : element,
         };
     });
 }

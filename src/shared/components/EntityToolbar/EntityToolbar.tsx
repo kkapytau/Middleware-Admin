@@ -3,6 +3,8 @@ import { Button, Flex } from "antd";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
+import { usePermissions } from "@/app/auth";
+
 interface EntityToolbarProps {
     entity: string;
     onAdd: () => void;
@@ -12,20 +14,24 @@ interface EntityToolbarProps {
 export function EntityToolbar({ entity, onAdd, actions }: EntityToolbarProps) {
     const { t } = useTranslation("app");
 
+    const { canCreate } = usePermissions();
+
     return (
         <Flex justify="space-between" align="center">
             <Flex gap="small">{actions}</Flex>
 
-            <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={onAdd}
-                style={{ marginLeft: "auto" }}
-            >
-                {t("actions.addEntity", {
-                    entity,
-                })}
-            </Button>
+            {canCreate && (
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}
+                    style={{ marginLeft: "auto" }}
+                >
+                    {t("actions.addEntity", {
+                        entity,
+                    })}
+                </Button>
+            )}
         </Flex>
     );
 }

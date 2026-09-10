@@ -1,8 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
     type Airport,
     type AirportRequestValues,
+    createAirportFormSchema,
+    defaultAirportFormValues,
     useAirport,
     useCreateAirport,
     useUpdateAirport,
@@ -10,7 +14,7 @@ import {
 import { type AirportFormValues } from "@/entities/airport/model";
 import { AirportForm } from "@/pages/Airports/components";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityForm, useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
 import { mapTranslationsToApi } from "@/shared/lib";
 import { mapTranslationsToForm } from "@/shared/lib";
@@ -46,12 +50,49 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
         handleError,
     });
 
+    const defaultValues = useMemo<AirportFormValues | undefined>(
+        () =>
+            airportDetail
+                ? {
+                      code: airportDetail.code,
+                      name: airportDetail.name,
+                      cityId: airportDetail.cityId,
+                      latitude: airportDetail.latitude,
+                      longitude: airportDetail.longitude,
+                      translations: mapTranslationsToForm(airportDetail.translations),
+                      deleted: airportDetail.deleted,
+                  }
+                : undefined,
+        [airportDetail],
+    );
+
+    const airportFormSchema = createAirportFormSchema({
+        required: t("validation.required"),
+        airportCodeLength: t("validation.airportCodeLength"),
+        latitudeRange: t("validation.latitudeRange"),
+        longitudeRange: t("validation.longitudeRange"),
+    });
+
+    const {
+        control,
+        setValue,
+        handleSubmit: handleRHFSubmit,
+    } = useEntityForm<AirportFormValues>({
+        open,
+        defaultValues: defaultAirportFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(airportFormSchema),
+    });
+
+    const handleFormFinish = () => handleRHFSubmit(handleSubmit)();
+
     return (
         <EntityDrawer
             open={open}
             loading={isEditing && isLoadingAirport}
             submitting={isSubmitting}
             formId="airport-form"
+            onSubmit={handleFormFinish}
             title={
                 isEditing
                     ? t("actions.editEntity", {
@@ -63,24 +104,7 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
             }
             onClose={onClose}
         >
-            <AirportForm
-                id="airport-form"
-                isEditing={isEditing}
-                defaultValues={
-                    airportDetail
-                        ? {
-                              code: airportDetail.code,
-                              name: airportDetail.name,
-                              cityId: airportDetail.cityId,
-                              latitude: airportDetail.latitude,
-                              longitude: airportDetail.longitude,
-                              translations: mapTranslationsToForm(airportDetail.translations),
-                              deleted: airportDetail.deleted,
-                          }
-                        : undefined
-                }
-                onSubmit={handleSubmit}
-            />
+            <AirportForm isEditing={isEditing} control={control} setValue={setValue} />
         </EntityDrawer>
     );
 }

@@ -1,8 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { type Flow, type FlowFormValues, useCreateFlow, useUpdateFlow } from "@/entities/flow";
+import {
+    createFlowFormSchema,
+    defaultFlowFormValues,
+    type Flow,
+    type FlowFormValues,
+    useCreateFlow,
+    useUpdateFlow,
+} from "@/entities/flow";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityForm, useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
 import { identity } from "@/shared/lib";
 
@@ -30,10 +39,39 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
         handleError,
     });
 
+    const defaultValues = useMemo<FlowFormValues | undefined>(
+        () =>
+            flow
+                ? {
+                      code: flow.code,
+                      name: flow.name,
+                  }
+                : undefined,
+        [flow],
+    );
+
+    const flowFormSchema = createFlowFormSchema({
+        required: t("validation.required"),
+        flowCodeMinLength: t("validation.flowCodeMinLength"),
+        flowCodeMaxLength: t("validation.flowCodeMaxLength"),
+        flowNameMaxLength: t("validation.flowNameMaxLength"),
+        flowCodePattern: t("validation.flowCodePattern"),
+    });
+
+    const { control, handleSubmit: handleRHFSubmit } = useEntityForm<FlowFormValues>({
+        open,
+        defaultValues: defaultFlowFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(flowFormSchema),
+    });
+
+    const handleFormFinish = () => handleRHFSubmit(handleSubmit)();
+
     return (
         <EntityDrawer
             open={open}
             submitting={isSubmitting}
+            onSubmit={handleFormFinish}
             formId="flow-form"
             title={
                 isEditing
@@ -46,7 +84,7 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
             }
             onClose={onClose}
         >
-            <FlowForm defaultValues={flow} onSubmit={handleSubmit} />
+            <FlowForm control={control} />
         </EntityDrawer>
     );
 }

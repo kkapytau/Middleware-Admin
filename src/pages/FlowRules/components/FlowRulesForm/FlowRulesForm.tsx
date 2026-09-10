@@ -1,91 +1,28 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, Input, Switch } from "antd";
-import { useState } from "react";
+import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useAllFlows } from "@/entities/flow";
-import {
-    createFlowRuleFormSchema,
-    defaultFlowRuleFormValues,
-    type FlowRuleFormValues,
-} from "@/entities/flowRule";
+import type { FlowRuleFormValues } from "@/entities/flowRule";
 import { FormInput, FormSelect } from "@/shared/components/form";
-import { useEntityForm } from "@/shared/hooks";
-
-import styles from "./FlowRulesForm.module.scss";
 
 interface FlowRuleFormProps {
-    defaultValues?: FlowRuleFormValues;
-    onSubmit: (values: FlowRuleFormValues) => Promise<void>;
+    control: Control<FlowRuleFormValues>;
 }
 
-export function FlowRulesForm({ defaultValues, onSubmit }: FlowRuleFormProps) {
+export function FlowRulesForm({ control }: FlowRuleFormProps) {
     const { t } = useTranslation("app");
 
-    const flowRuleFormSchema = createFlowRuleFormSchema({
-        required: t("validation.required"),
-        flowRuleNameMaxLength: t("validation.flowRuleNameMaxLength"),
-    });
-
     const { data: flows = [], isLoading: flowsLoading } = useAllFlows();
-
-    const [configValue, setConfigValue] = useState(() =>
-        JSON.stringify(defaultValues?.config ?? defaultFlowRuleFormValues.config, null, 2),
-    );
-
-    const [configError, setConfigError] = useState<string>();
 
     const flowsOptions = flows.map((flow) => ({
         value: flow.id,
         label: `${flow.code} — ${flow.name}`,
     }));
 
-    const handleFormFinish = () => {
-        void handleSubmit(async (values) => {
-            let config: Record<string, unknown>;
-
-            try {
-                const parsed: unknown = JSON.parse(configValue);
-
-                if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-                    setConfigError(t("validation.flowRuleConfigObject"));
-                    return;
-                }
-
-                config = parsed as Record<string, unknown>;
-            } catch {
-                setConfigError(t("validation.flowRuleConfigJson"));
-                return;
-            }
-
-            if (typeof config.URL !== "string" || config.URL.trim().length === 0) {
-                setConfigError(t("validation.flowRuleConfigUrl"));
-                return;
-            }
-
-            setConfigError(undefined);
-
-            await onSubmit({
-                ...values,
-                config,
-            });
-        })();
-    };
-
-    const { control, handleSubmit } = useEntityForm<FlowRuleFormValues>({
-        defaultValues: defaultFlowRuleFormValues,
-        initialValues: defaultValues,
-        resolver: zodResolver(flowRuleFormSchema),
-    });
-
     return (
-        <Form
-            id="flow-rule-form"
-            layout="vertical"
-            onFinish={handleFormFinish}
-            className={styles.form}
-        >
+        <>
             <FormInput
                 control={control}
                 name="name"
@@ -114,25 +51,45 @@ export function FlowRulesForm({ defaultValues, onSubmit }: FlowRuleFormProps) {
                 )}
             />
 
-            <Form.Item
-                label={t("form.flowRuleConfig")}
-                validateStatus={configError ? "error" : undefined}
-                help={configError ?? t("form.flowRuleConfigHelp")}
-            >
-                <Input.TextArea
-                    value={configValue}
-                    onChange={(event) => {
-                        setConfigValue(event.target.value);
-                        setConfigError(undefined);
-                    }}
-                    autoSize={{
-                        minRows: 10,
-                        maxRows: 24,
-                    }}
-                    placeholder={t("form.flowRuleConfigPlaceholder")}
-                    spellCheck={false}
-                />
-            </Form.Item>
-        </Form>
+            <Controller
+                name="config"
+                control={control}
+                render={({ field, fieldState }) => (
+                    <Form.Item
+                        label={t("form.flowRuleConfig")}
+                        validateStatus={fieldState.error ? "error" : undefined}
+                        help={fieldState.error?.message ?? t("form.flowRuleConfigHelp")}
+                    >
+                        <Input.TextArea
+                            value={JSON.stringify(field.value, null, 2)}
+                            onChange={(event) => {
+                                try {
+                                    const parsed: unknown = JSON.parse(event.target.value);
+
+                                    if (
+                                        typeof parsed !== "object" ||
+                                        parsed === null ||
+                                        Array.isArray(parsed)
+                                    ) {
+                                        field.onChange(event.target.value);
+                                        return;
+                                    }
+
+                                    field.onChange(parsed);
+                                } catch {
+                                    field.onChange(event.target.value);
+                                }
+                            }}
+                            autoSize={{
+                                minRows: 10,
+                                maxRows: 24,
+                            }}
+                            placeholder={t("form.flowRuleConfigPlaceholder")}
+                            spellCheck={false}
+                        />
+                    </Form.Item>
+                )}
+            />
+        </>
     );
 }

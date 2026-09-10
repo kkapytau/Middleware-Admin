@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
-import type { NavigationKey, Permission } from "@/shared/types";
+import { type Permission } from "@/app/auth";
+import type { NavigationKey } from "@/shared/types";
 
 type RouteAccess = "public" | "protected";
 
@@ -13,9 +14,9 @@ interface BaseRoute {
 
     icon?: ComponentType;
 
-    permissions?: Permission[];
-
     showInNavigation?: boolean;
+
+    permission?: Permission;
 }
 
 interface PageRoute extends BaseRoute {

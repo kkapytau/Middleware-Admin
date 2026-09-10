@@ -58,7 +58,8 @@
     "filters": {
         "title": "Filtres",
         "reset": "Réinitialiser",
-        "all": "tout"
+        "all": "tout",
+        "close": "Fermer"
     },
     "actions": {
         "addEntity": "Ajouter {{entity}}",
@@ -74,7 +75,8 @@
         "addPair": "Ajouter une paire",
         "editEntity": "Modifier {{entity}}",
         "error": "Erreur",
-        "download": "Télécharger"
+        "download": "Télécharger",
+        "view": "Voir"
     },
     "columns": {
         "airport": "Aéroport",

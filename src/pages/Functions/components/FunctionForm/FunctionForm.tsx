@@ -1,41 +1,17 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Flex, Form } from "antd";
-import { useFieldArray } from "react-hook-form";
+import { type Control, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-    createFlowFunctionFormSchema,
-    defaultFlowFunctionFormValues,
-    type FlowFunctionFormValues,
-} from "@/entities/flowFunction/model";
+import { type FlowFunctionFormValues } from "@/entities/flowFunction/model";
 import { FormInput } from "@/shared/components/form";
-import { useEntityForm } from "@/shared/hooks";
 
 interface FunctionFormProps {
-    defaultValues?: FlowFunctionFormValues;
-    onSubmit: (values: FlowFunctionFormValues) => Promise<void>;
+    control: Control<FlowFunctionFormValues>;
 }
 
-export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
+export function FunctionForm({ control }: FunctionFormProps) {
     const { t } = useTranslation("app");
-
-    const schema = createFlowFunctionFormSchema({
-        functionNameRequired: t("validation.functionNameRequired"),
-        keyRequired: t("validation.keyRequired"),
-        valueRequired: t("validation.valueRequired"),
-        duplicateKey: t("validation.duplicateKey"),
-    });
-
-    const handleFormFinish = () => {
-        void handleSubmit(onSubmit)();
-    };
-
-    const { control, handleSubmit } = useEntityForm<FlowFunctionFormValues>({
-        defaultValues: defaultFlowFunctionFormValues,
-        initialValues: defaultValues,
-        resolver: zodResolver(schema),
-    });
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -43,14 +19,7 @@ export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
     });
 
     return (
-        <Form
-            id="function-form"
-            layout="horizontal"
-            labelCol={{ flex: "110px" }}
-            wrapperCol={{ flex: 1 }}
-            colon={false}
-            onFinish={handleFormFinish}
-        >
+        <>
             <FormInput
                 control={control}
                 name="name"
@@ -98,6 +67,6 @@ export function FunctionForm({ defaultValues, onSubmit }: FunctionFormProps) {
                     </Button>
                 </Flex>
             </Form.Item>
-        </Form>
+        </>
     );
 }

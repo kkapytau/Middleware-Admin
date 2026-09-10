@@ -119,6 +119,7 @@ export function AirportsPage() {
                                 emptyValues={emptyFilterFields}
                                 onChange={handleFiltersChange}
                                 onReset={handleFiltersReset}
+                                onClose={() => setSearchOpen(false)}
                             />
                         </FilterButton>
 

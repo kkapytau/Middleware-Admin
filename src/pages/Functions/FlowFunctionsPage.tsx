@@ -101,6 +101,7 @@ export function FlowFunctionsPage() {
                             emptyValues={EMPTY_FUNCTION_FILTERS}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
+                            onClose={() => setSearchOpen(false)}
                         />
                     </FilterButton>
                 }

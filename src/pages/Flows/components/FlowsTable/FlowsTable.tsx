@@ -15,14 +15,7 @@ interface FlowsTableProps {
     onDelete: (flow: Flow) => Promise<void>;
 }
 
-export function FlowsTable({
-    data,
-    loading,
-    deletingFlowId,
-    onEdit,
-    onDelete,
-    pagination,
-}: FlowsTableProps) {
+export function FlowsTable({ data, loading, onEdit, onDelete, pagination }: FlowsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<Flow> = [
@@ -41,12 +34,7 @@ export function FlowsTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flow) => (
-                <EntityActions
-                    record={flow}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    deleting={deletingFlowId === flow.id}
-                />
+                <EntityActions record={flow} onEdit={onEdit} onDelete={onDelete} />
             ),
         },
     ];

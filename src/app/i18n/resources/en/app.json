@@ -43,7 +43,8 @@
     "filters": {
         "title": "Filters",
         "reset": "Reset",
-        "all": "All"
+        "all": "All",
+        "close": "Close"
     },
     "navigation": {
         "login": "Login",
@@ -77,7 +78,8 @@
         "addPair": "Add pair",
         "editEntity": "Edit {{entity}}",
         "error": "Error",
-        "download": "Download"
+        "download": "Download",
+        "view": "View"
     },
     "columns": {
         "airport": "Airport",

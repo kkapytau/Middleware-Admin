@@ -1,27 +1,33 @@
 import { useEffect } from "react";
-import { type DefaultValues, type FieldValues, useForm, type UseFormProps } from "react-hook-form";
+import { type DefaultValues, type FieldValues, type Resolver, useForm } from "react-hook-form";
 
 interface UseEntityFormParams<T extends FieldValues> {
     defaultValues: DefaultValues<T>;
-    initialValues?: DefaultValues<T>;
-    resolver: UseFormProps<T>["resolver"];
+    initialValues?: T;
+    resolver?: Resolver<T>;
+    open: boolean;
 }
 
 export function useEntityForm<T extends FieldValues>({
     defaultValues,
     initialValues,
     resolver,
+    open,
 }: UseEntityFormParams<T>) {
     const form = useForm<T>({
-        defaultValues: initialValues ?? defaultValues,
+        defaultValues,
         resolver,
     });
 
     const { reset } = form;
 
     useEffect(() => {
+        if (!open) {
+            return;
+        }
+
         reset(initialValues ?? defaultValues);
-    }, [defaultValues, initialValues, reset]);
+    }, [open, initialValues, defaultValues, reset]);
 
     return form;
 }

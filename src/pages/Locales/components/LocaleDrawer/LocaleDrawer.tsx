@@ -1,6 +1,11 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { FlowRuleFormValues } from "@/entities/flowRule";
 import {
+    createLocaleFormSchema,
+    defaultLocaleFormValues,
     type Locale,
     type LocaleFormValues,
     type LocaleRequestValues,
@@ -9,7 +14,7 @@ import {
 } from "@/entities/locale";
 import { LocaleForm } from "@/pages/Locales/components/LocaleForm";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useEntityMutation, useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/shared/hooks";
 
 interface LocaleDrawerProps {
     open: boolean;
@@ -39,9 +44,37 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
         handleError,
     });
 
+    const defaultValues = useMemo<LocaleFormValues | undefined>(
+        () =>
+            locale
+                ? {
+                      code: locale.code,
+                      name: locale.name,
+                      deleted: locale.deleted,
+                  }
+                : undefined,
+        [locale],
+    );
+
+    const localeFormSchema = createLocaleFormSchema({
+        required: t("validation.required"),
+        codePattern: t("validation.codeUppercaseLength"),
+    });
+
+    const { control, handleSubmit: handleRHFSubmit } = useEntityForm<LocaleFormValues>({
+        open,
+        defaultValues: defaultLocaleFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(localeFormSchema),
+    });
+
+    const handleFormFinish = (_values: FlowRuleFormValues): Promise<void> =>
+        handleRHFSubmit(handleSubmit)();
+
     return (
         <EntityDrawer
             open={open}
+            onSubmit={handleFormFinish}
             submitting={isSubmitting}
             formId="locale-form"
             title={
@@ -55,19 +88,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
             }
             onClose={onClose}
         >
-            <LocaleForm
-                isEditing={isEditing}
-                defaultValues={
-                    locale
-                        ? {
-                              code: locale.code,
-                              name: locale.name,
-                              deleted: locale.deleted,
-                          }
-                        : undefined
-                }
-                onSubmit={handleSubmit}
-            />
+            <LocaleForm isEditing={isEditing} control={control} />
         </EntityDrawer>
     );
 }

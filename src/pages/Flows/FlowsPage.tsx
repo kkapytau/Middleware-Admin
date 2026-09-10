@@ -98,6 +98,7 @@ export function FlowsPage() {
                             emptyValues={EMPTY_CODE_NAME_FILTERS}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
+                            onClose={() => setSearchOpen(false)}
                         />
                     </FilterButton>
                 }

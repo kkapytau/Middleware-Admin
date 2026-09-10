@@ -1,14 +1,18 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
     type ContinentDetail,
     type ContinentFormValues,
     type ContinentRequestValues,
+    createContinentFormSchema,
+    defaultContinentFormValues,
     useCreateContinent,
     useUpdateContinent,
 } from "@/entities/continent";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityForm, useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
 import { mapTranslationsToApi } from "@/shared/lib";
 import { mapTranslationsToForm } from "@/shared/lib";
@@ -42,11 +46,42 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
         handleError,
     });
 
+    const defaultValues = useMemo<ContinentFormValues | undefined>(
+        () =>
+            continent
+                ? {
+                      code: continent.code,
+                      name: continent.name,
+                      translations: mapTranslationsToForm(continent.translations),
+                  }
+                : undefined,
+        [continent],
+    );
+
+    const continentFormSchema = createContinentFormSchema({
+        required: t("validation.required"),
+        codePattern: t("validation.codeUppercaseLength"),
+    });
+
+    const {
+        control,
+        setValue,
+        handleSubmit: handleRHFSubmit,
+    } = useEntityForm<ContinentFormValues>({
+        open,
+        defaultValues: defaultContinentFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(continentFormSchema),
+    });
+
+    const handleFormFinish = () => handleRHFSubmit(handleSubmit)();
+
     return (
         <EntityDrawer
             open={open}
             submitting={isSubmitting}
             formId="continent-form"
+            onSubmit={handleFormFinish}
             title={
                 isEditing
                     ? t("actions.editEntity", {
@@ -58,18 +93,7 @@ export function ContinentDrawer({ open, continent, onClose }: ContinentDrawerPro
             }
             onClose={onClose}
         >
-            <ContinentForm
-                defaultValues={
-                    continent
-                        ? {
-                              code: continent.code,
-                              name: continent.name,
-                              translations: mapTranslationsToForm(continent.translations),
-                          }
-                        : undefined
-                }
-                onSubmit={handleSubmit}
-            />
+            <ContinentForm control={control} setValue={setValue} />
         </EntityDrawer>
     );
 }

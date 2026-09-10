@@ -15,14 +15,7 @@ interface CityTableProps {
     onDelete: (city: City) => Promise<void>;
 }
 
-export function CityTable({
-    data,
-    loading,
-    deleting,
-    onEdit,
-    onDelete,
-    pagination,
-}: CityTableProps) {
+export function CityTable({ data, loading, onEdit, onDelete, pagination }: CityTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<City> = [
@@ -42,12 +35,7 @@ export function CityTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, city) => (
-                <EntityActions
-                    record={city}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    deleting={deleting}
-                />
+                <EntityActions record={city} onEdit={onEdit} onDelete={onDelete} />
             ),
         },
     ];

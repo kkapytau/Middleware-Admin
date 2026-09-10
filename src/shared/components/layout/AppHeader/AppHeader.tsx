@@ -1,9 +1,9 @@
 import { LogoutOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
-import { logout } from "@/app/auth";
+import { useAuth } from "@/app/auth";
 import { appRoutes, getRouteByPath } from "@/app/routes";
 import { LanguageSwitcher } from "@/shared/components";
 
@@ -15,15 +15,9 @@ export function AppHeader() {
     const { t } = useTranslation("app");
 
     const location = useLocation();
-    const navigate = useNavigate();
+    const { signOut } = useAuth();
 
     const currentRoute = getRouteByPath(appRoutes, location.pathname);
-
-    function handleLogout() {
-        logout();
-
-        void navigate("/login", { replace: true });
-    }
 
     return (
         <Header className={styles.header}>
@@ -34,7 +28,7 @@ export function AppHeader() {
             <Space size={12}>
                 <LanguageSwitcher />
 
-                <Button icon={<LogoutOutlined />} onClick={handleLogout}>
+                <Button icon={<LogoutOutlined />} onClick={signOut}>
                     {t("actions.logout")}
                 </Button>
             </Space>

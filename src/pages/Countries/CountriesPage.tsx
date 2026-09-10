@@ -106,6 +106,7 @@ export function CountriesPage() {
                             emptyValues={EMPTY_CODE_NAME_FILTERS}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
+                            onClose={() => setSearchOpen(false)}
                         />
                     </FilterButton>
                 }

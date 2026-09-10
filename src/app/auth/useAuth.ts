@@ -1,18 +1,25 @@
-import { useCallback } from "react";
+import type { UserRole } from "@/app/auth";
+import { AUTH_STATUS } from "@/app/auth";
 
-import { isAuthenticated, login, logout } from "./index";
+import { useAuthContext } from "./context";
 
 export function useAuth() {
-    const signIn = useCallback((token: string) => {
-        login(token);
-    }, []);
+    const { status, user, signIn, signOut } = useAuthContext();
 
-    const signOut = useCallback(() => {
-        logout();
-    }, []);
+    const roles = user?.roles ?? [];
+
+    const hasRole = (role: UserRole) => roles.includes(role);
+
+    const hasAnyRole = (...requiredRoles: UserRole[]) =>
+        requiredRoles.some((role) => roles.includes(role));
 
     return {
-        isAuthenticated: isAuthenticated(),
+        isAuthenticated: status === AUTH_STATUS.AUTHENTICATED,
+        isLoading: status === AUTH_STATUS.LOADING,
+        user,
+        roles,
+        hasRole,
+        hasAnyRole,
         signIn,
         signOut,
     };

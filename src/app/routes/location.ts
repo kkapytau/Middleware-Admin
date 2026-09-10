@@ -4,7 +4,6 @@ import { AirportsPage } from "@/pages/Airports";
 import { CitiesPage } from "@/pages/Cities";
 import { ContinentsPage } from "@/pages/Continents";
 import { CountriesPage } from "@/pages/Countries";
-import { permissions } from "@/shared/types";
 
 import type { AppRoute } from "./types";
 
@@ -22,8 +21,6 @@ const airportsRoute: AppRoute = {
     icon: EnvironmentOutlined,
 
     showInNavigation: true,
-
-    permissions: [permissions.airport.read],
 
     component: AirportsPage,
 };
@@ -43,8 +40,6 @@ const countriesRoute: AppRoute = {
 
     showInNavigation: true,
 
-    permissions: [permissions.country.read],
-
     component: CountriesPage,
 };
 
@@ -63,8 +58,6 @@ const continentsRoute: AppRoute = {
 
     showInNavigation: true,
 
-    permissions: [permissions.country.read],
-
     component: ContinentsPage,
 };
 
@@ -82,8 +75,6 @@ const citiesRoute: AppRoute = {
     icon: EnvironmentOutlined,
 
     showInNavigation: true,
-
-    permissions: [permissions.city.read],
 
     component: CitiesPage,
 };

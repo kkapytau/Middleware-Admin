@@ -14,6 +14,7 @@ interface FilterSearchProps<TItem extends object, TFilters extends object> {
     emptyValues: TFilters;
     onChange: (values: TFilters) => void;
     onReset: () => void;
+    onClose: () => void;
 }
 
 export function FilterSearch<TItem extends object, TFilters extends object>({
@@ -22,6 +23,7 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
     emptyValues,
     onChange,
     onReset,
+    onClose,
 }: FilterSearchProps<TItem, TFilters>) {
     const { t } = useTranslation("app");
 
@@ -34,7 +36,7 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
     });
 
     return (
-        <SearchWidget onReset={handleReset}>
+        <SearchWidget onReset={handleReset} onClose={onClose}>
             <Flex gap="middle">
                 {fields.map((field) => {
                     switch (field.type) {
@@ -54,9 +56,11 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
 
                         case "boolean":
                             return (
-                                <div style={field.type === "boolean" ? { width: 150 } : undefined}>
+                                <div
+                                    key={field.name}
+                                    style={field.type === "boolean" ? { width: 150 } : undefined}
+                                >
                                     <FormSelect
-                                        key={field.name}
                                         control={control}
                                         name={field.name as Path<TFilters>}
                                         label={t(field.labelKey)}

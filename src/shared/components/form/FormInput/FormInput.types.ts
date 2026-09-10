@@ -19,5 +19,7 @@ export interface FormInputProps<T extends FieldValues> {
 
     maxLength?: number;
 
+    minLength?: number;
+
     uppercase?: boolean;
 }

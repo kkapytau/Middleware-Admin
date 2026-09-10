@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 
+import type { UserRole } from "@/app/auth";
+import { hasPermission, useAuth } from "@/app/auth";
 import { type AppRoute, appRoutes } from "@/app/routes";
 import { AppLogo } from "@/shared/components";
 
@@ -16,32 +18,56 @@ type MenuItem = Required<MenuProps>["items"][number];
 function buildMenuItems(
     routes: AppRoute[],
     t: ReturnType<typeof useTranslation<"app">>["t"],
+    roles: readonly UserRole[],
 ): MenuItem[] {
-    return routes
-        .filter((route) => route.showInNavigation !== false)
-        .map((route) => {
-            const Icon = route.icon;
+    return routes.flatMap((route) => {
+        if (route.showInNavigation === false) {
+            return [];
+        }
 
-            return {
-                key: route.type === "page" ? route.path : route.key,
+        if (route.permission && !hasPermission(roles, route.permission)) {
+            return [];
+        }
 
+        const Icon = route.icon;
+
+        if (route.type === "group") {
+            const children = buildMenuItems(route.children, t, roles);
+
+            if (children.length === 0) {
+                return [];
+            }
+
+            return [
+                {
+                    key: route.key,
+                    label: t(route.titleKey),
+                    icon: Icon ? <Icon /> : undefined,
+                    children,
+                },
+            ];
+        }
+
+        return [
+            {
+                key: route.path,
                 label: t(route.titleKey),
-
                 icon: Icon ? <Icon /> : undefined,
-
-                children: route.type === "group" ? buildMenuItems(route.children, t) : undefined,
-            };
-        });
+            },
+        ];
+    });
 }
 
 export function AppSidebar() {
     const { t } = useTranslation("app");
 
+    const { roles } = useAuth();
+
     const location = useLocation();
 
     const navigate = useNavigate();
 
-    const menuItems = useMemo(() => buildMenuItems(appRoutes, t), [t]);
+    const menuItems = useMemo(() => buildMenuItems(appRoutes, t, roles), [t, roles]);
 
     return (
         <Sider width={260} className={styles.sidebar}>

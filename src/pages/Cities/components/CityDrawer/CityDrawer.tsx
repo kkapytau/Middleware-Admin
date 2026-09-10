@@ -1,15 +1,19 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
     type City,
     type CityFormValues,
     type CityRequestValues,
+    createCityFormSchema,
+    defaultCityFormValues,
     useCity,
     useCreateCity,
     useUpdateCity,
 } from "@/entities/city";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useMutationErrorHandler } from "@/shared/hooks";
+import { useEntityForm, useMutationErrorHandler } from "@/shared/hooks";
 import { useEntityMutation } from "@/shared/hooks";
 import { mapTranslationsToApi } from "@/shared/lib";
 import { mapTranslationsToForm } from "@/shared/lib";
@@ -47,9 +51,42 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
         enabled: isEditing,
     });
 
+    const defaultValues = useMemo<CityFormValues | undefined>(
+        () =>
+            cityDetail
+                ? {
+                      code: cityDetail.code,
+                      name: cityDetail.name,
+                      countryId: cityDetail.country.id,
+                      translations: mapTranslationsToForm(cityDetail.translations),
+                  }
+                : undefined,
+        [cityDetail],
+    );
+
+    const cityFormSchema = createCityFormSchema({
+        required: t("validation.required"),
+        cityCodeLength: t("validation.cityCodeLength"),
+        cityCodePattern: t("validation.cityCodePattern"),
+    });
+
+    const {
+        control,
+        setValue,
+        handleSubmit: handleRHFSubmit,
+    } = useEntityForm<CityFormValues>({
+        open,
+        defaultValues: defaultCityFormValues,
+        initialValues: defaultValues,
+        resolver: zodResolver(cityFormSchema),
+    });
+
+    const handleFormFinish = () => handleRHFSubmit(handleSubmit)();
+
     return (
         <EntityDrawer
             open={open}
+            onSubmit={handleFormFinish}
             title={
                 isEditing
                     ? t("actions.editEntity", {
@@ -63,19 +100,7 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
             formId="city-form"
             onClose={onClose}
         >
-            <CityForm
-                defaultValues={
-                    cityDetail
-                        ? {
-                              code: cityDetail.code,
-                              name: cityDetail.name,
-                              countryId: cityDetail.country.id,
-                              translations: mapTranslationsToForm(cityDetail.translations),
-                          }
-                        : undefined
-                }
-                onSubmit={handleSubmit}
-            />
+            <CityForm control={control} setValue={setValue} />
         </EntityDrawer>
     );
 }
