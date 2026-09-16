@@ -6,7 +6,10 @@ interface CountryListResponse {
     content: Array<{
         id: number;
         code: string;
+        codeNumeric: string;
         name: string;
+        isCountry: boolean;
+        isMarket: boolean;
     }>;
     page: number;
     size: number;
@@ -18,12 +21,21 @@ interface CountryListResponse {
 interface CountryDetailResponse {
     id: number;
     code: string;
+    codeNumeric: string;
     name: string;
+    isCountry: boolean;
+    isMarket: boolean;
     translations: Record<string, string>;
-    continent: {
+    currency: {
         id: number;
         code: string;
         name: string;
+        deleted: boolean;
+    };
+    marketGroup: {
+        id: number;
+        code: string;
+        disabled: boolean;
         translations: Record<string, string>;
     };
 }
@@ -34,28 +46,45 @@ function mapCountryDetail(response: CountryDetailResponse): CountryDetail {
     return {
         id: response.id,
         code: response.code,
+        codeNumeric: response.codeNumeric,
         name: response.name,
+        isCountry: response.isCountry,
+        isMarket: response.isMarket,
         translations: response.translations,
-        continent: response.continent,
+        currency: response.currency,
+        marketGroup: response.marketGroup,
     };
 }
 
-export async function getCountries(page: number, size: number): Promise<PageResponse<Country>> {
+export async function getCountries(
+    page: number,
+    size: number,
+    isCountry?: boolean,
+    isMarket?: boolean,
+): Promise<PageResponse<Country>> {
     return api
         .get(COUNTRIES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
+                ...(isCountry !== undefined && { isCountry }),
+                ...(isMarket !== undefined && { isMarket }),
             },
         })
         .json<CountryListResponse>();
 }
 
-export async function getAllCountries(locale: string): Promise<Country[]> {
-    return getAllPages(getCountries, (a, b) =>
-        a.name.localeCompare(b.name, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllCountries(
+    locale: string,
+    isCountry?: boolean,
+    isMarket?: boolean,
+): Promise<Country[]> {
+    return getAllPages(
+        (page, size) => getCountries(page, size, isCountry, isMarket),
+        (a, b) =>
+            a.name.localeCompare(b.name, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 
@@ -65,26 +94,34 @@ export async function getCountry(id: number): Promise<CountryDetail> {
     return mapCountryDetail(response);
 }
 
+export interface CountryRequestValues {
+    code: string;
+    codeNumeric: string;
+    name: string;
+    currencyId: number;
+    marketGroupId: number;
+    isCountry: boolean;
+    isMarket: boolean;
+    translations: Record<string, string>;
+}
+
 export async function createCountry(values: CountryRequestValues): Promise<CountryDetail> {
     const response = await api
         .post(COUNTRIES_ENDPOINT, {
             json: {
                 code: values.code,
+                codeNumeric: values.codeNumeric,
                 name: values.name,
-                continentId: values.continentId,
+                currencyId: values.currencyId,
+                marketGroupId: values.marketGroupId,
+                isCountry: values.isCountry,
+                isMarket: values.isMarket,
                 translations: values.translations,
             },
         })
         .json<CountryDetailResponse>();
 
     return mapCountryDetail(response);
-}
-
-export interface CountryRequestValues {
-    code: string;
-    name: string;
-    continentId: number;
-    translations: Record<string, string>;
 }
 
 export interface UpdateCountryParams {
@@ -97,8 +134,12 @@ export async function updateCountry({ id, values }: UpdateCountryParams): Promis
         .put(`${COUNTRIES_ENDPOINT}/${id}`, {
             json: {
                 code: values.code,
+                codeNumeric: values.codeNumeric,
                 name: values.name,
-                continentId: values.continentId,
+                currencyId: values.currencyId,
+                marketGroupId: values.marketGroupId,
+                isCountry: values.isCountry,
+                isMarket: values.isMarket,
                 translations: values.translations,
             },
         })
@@ -113,4 +154,10 @@ export async function deleteCountry(id: number): Promise<void> {
             ids: String(id),
         },
     });
+}
+
+const COUNTRIES_EXPORT_ENDPOINT = "/internal/api/v1/countries/export";
+
+export async function downloadCountries(): Promise<Blob> {
+    return api.get(COUNTRIES_EXPORT_ENDPOINT).blob();
 }

@@ -34,7 +34,12 @@
         "flowRuleConfigObject": "Configuration must be a valid JSON object.",
         "flowRuleNameMaxLength": "Flow rule name must be 255 characters or fewer.",
         "flowRuleConfigUrl": "Configuration must contain a non-empty URL field.",
-        "languagePattern": "Language code must contain exactly 2 letters."
+        "languagePattern": "Language code must contain exactly 2 letters.",
+        "currencyCodePattern": "Currency code must consist of exactly 3 uppercase letters.",
+        "marketGroupCodePattern": "Market group code must start with an uppercase letter or digit and contain only uppercase letters, digits, spaces, underscores, or hyphens.",
+        "areaCodePattern": "Area code must contain 1–10 uppercase letters or digits.",
+        "geographicTypeCodePattern": "Geographic type code must be 1–50 characters long, start with an uppercase letter or digit, and contain only uppercase letters, digits, spaces, underscores, and hyphens.",
+        "codeNumeric": "Code must contain exactly 3 digits"
     },
     "errors": {
         "deleteConflict": "This item cannot be deleted because it is referenced by other records.",
@@ -62,7 +67,12 @@
         "flowRule": "Flow Rule",
         "flowRules": "Flow Rules",
         "locales": "Locales",
-        "systemSettings": "System Settings"
+        "area": "Area",
+        "areas": "Areas",
+        "geographicTypes": "Geographic Types",
+        "systemSettings": "System Settings",
+        "currencies": "Currencies",
+        "marketGroups": "Market Groups"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -89,7 +99,11 @@
         "continent": "Continent",
         "metropolitan": "Metropolitan",
         "name": "Name",
-        "deleted": "Deleted"
+        "deleted": "Deleted",
+        "disabled": "Disabled",
+        "codeNumeric": "Numeric Code",
+        "isCountry": "Country",
+        "isMarket": "Market"
     },
     "form": {
         "airportCode": "Airport Code",
@@ -134,7 +148,20 @@
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
         "flowRuleConfigHelp": "Enter a valid JSON object containing a non-empty URL field.",
 
-        "deleted": "Deleted"
+        "deleted": "Deleted",
+        "disabled": "Disabled",
+
+        "geographicType": "Geographic Type",
+        "selectGeographicType": "Select geographic type",
+
+        "codeNumeric": "Numeric Code",
+        "enterCodeNumeric": "Enter numeric code",
+        "currency": "Currency",
+        "selectCurrency": "Select currency",
+        "marketGroup": "Market Group",
+        "selectMarketGroup": "Select market group",
+        "isCountry": "Is Country",
+        "isMarket": "Is Market"
     },
     "common": {
         "yes": "Yes",

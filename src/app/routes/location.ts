@@ -1,9 +1,10 @@
-import { EnvironmentOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, EnvironmentOutlined } from "@ant-design/icons";
 
 import { AirportsPage } from "@/pages/Airports";
+import { AreasPage } from "@/pages/Areas";
 import { CitiesPage } from "@/pages/Cities";
-import { ContinentsPage } from "@/pages/Continents";
 import { CountriesPage } from "@/pages/Countries";
+import { MarketGroupsPage } from "@/pages/MarketGroups";
 
 import type { AppRoute } from "./types";
 
@@ -43,22 +44,22 @@ const countriesRoute: AppRoute = {
     component: CountriesPage,
 };
 
-const continentsRoute: AppRoute = {
-    key: "continents",
+const areasRoute: AppRoute = {
+    key: "areas",
 
     type: "page",
 
     access: "protected",
 
-    path: "/continents",
+    path: "/areas",
 
-    titleKey: "navigation.continents",
+    titleKey: "navigation.areas",
 
     icon: EnvironmentOutlined,
 
     showInNavigation: true,
 
-    component: ContinentsPage,
+    component: AreasPage,
 };
 
 const citiesRoute: AppRoute = {
@@ -79,6 +80,24 @@ const citiesRoute: AppRoute = {
     component: CitiesPage,
 };
 
+const marketGroupsRoute: AppRoute = {
+    key: "marketGroups",
+
+    type: "page",
+
+    access: "protected",
+
+    path: "/marketGroups",
+
+    titleKey: "navigation.marketGroups",
+
+    icon: AppstoreOutlined,
+
+    showInNavigation: true,
+
+    component: MarketGroupsPage,
+};
+
 export const locationGroup: AppRoute = {
     key: "location",
 
@@ -90,5 +109,5 @@ export const locationGroup: AppRoute = {
 
     showInNavigation: true,
 
-    children: [airportsRoute, citiesRoute, countriesRoute, continentsRoute],
+    children: [airportsRoute, citiesRoute, countriesRoute, areasRoute, marketGroupsRoute],
 };

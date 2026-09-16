@@ -14,7 +14,10 @@ import { DownloadButton } from "@/shared/components";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
-import { AIRPORT_FILTER_FIELDS, EMPTY_AIRPORT_FILTERS } from "@/shared/config/filters";
+import {
+    CODE_NAME_DISABLED_FILTER_FIELDS,
+    EMPTY_CODE_NAME_DISABLED_FILTERS,
+} from "@/shared/config/filters";
 import {
     useFilter,
     useMutationErrorHandler,
@@ -29,8 +32,10 @@ import { AirportsTable } from "./components";
 export function AirportsPage() {
     const { t } = useTranslation("app");
 
-    const filterFields = AIRPORT_FILTER_FIELDS;
-    const emptyFilterFields = EMPTY_AIRPORT_FILTERS;
+    const downloadAirports = useDownloadAirports();
+
+    const filterFields = CODE_NAME_DISABLED_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_CODE_NAME_DISABLED_FILTERS;
     const {
         filters,
         hasActiveFilters,
@@ -46,8 +51,6 @@ export function AirportsPage() {
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
-
-    const downloadAirports = useDownloadAirports();
 
     const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports(shouldLoadAll);
 

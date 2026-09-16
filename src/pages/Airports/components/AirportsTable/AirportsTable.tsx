@@ -34,7 +34,7 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
             key: "name",
         },
         {
-            title: t("columns.deleted"),
+            title: t("columns.disabled"),
             dataIndex: "deleted",
             key: "deleted",
             render: (deleted: boolean) => <Checkbox checked={deleted} disabled />,

@@ -6,29 +6,32 @@ import {
     type Country,
     useAllCountries,
     useCountries,
-    useCountry,
     useDeleteCountry,
+    useDownloadCountries,
 } from "@/entities/country";
 import { CountriesTable } from "@/pages/Countries/components/CountriesTable";
 import { CountryDrawer } from "@/pages/Countries/components/CountryDrawer";
+import { DownloadButton } from "@/shared/components";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
-import { CODE_NAME_FILTER_FIELDS, EMPTY_CODE_NAME_FILTERS } from "@/shared/config/filters";
+import { COUNTRY_FILTER_FIELDS, EMPTY_COUNTRY_FILTERS } from "@/shared/config/filters";
 import {
     useFilter,
     useMutationErrorHandler,
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-
+import { downloadBlob } from "@/shared/lib";
 export function CountriesPage() {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingCountryId, setEditingCountryId] = useState<number | null>(null);
-
+    const [editingCountry, setEditingCountry] = useState<Country | undefined>();
     const { t } = useTranslation("app");
 
-    const filterFields = CODE_NAME_FILTER_FIELDS;
+    const downloadCountries = useDownloadCountries();
+
+    const filterFields = COUNTRY_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_COUNTRY_FILTERS;
     const {
         filters,
         hasActiveFilters,
@@ -38,42 +41,38 @@ export function CountriesPage() {
         setOpen: setSearchOpen,
         handleChange: handleFiltersChange,
         handleReset: handleFiltersReset,
-    } = useUrlFilters({
-        fields: filterFields,
-        emptyFilters: EMPTY_CODE_NAME_FILTERS,
-    });
+    } = useUrlFilters({ fields: filterFields, emptyFilters: emptyFilterFields });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-    const { data: allCountries = [], isLoading: allCountriesLoading } =
-        useAllCountries(shouldLoadAll);
+    const { data: allCountries = [], isLoading: allCountriesLoading } = useAllCountries({
+        enabled: shouldLoadAll,
+    });
 
     const filteredCountries = useFilter(allCountries, filters, filterFields);
 
     const { data, isLoading, isFetching } = useCountries(apiPage, pageSize);
 
-    const { data: editingCountry } = useCountry(editingCountryId);
-
     const deleteCountry = useDeleteCountry();
+
     const { handleError } = useMutationErrorHandler();
 
     const tableData = hasActiveFilters ? filteredCountries : (data?.content ?? []);
-
     const tableLoading = hasActiveFilters ? allCountriesLoading : isLoading || isFetching;
 
     const handleCreate = () => {
-        setEditingCountryId(null);
+        setEditingCountry(undefined);
         setDrawerOpen(true);
     };
 
     const handleEdit = (country: Country) => {
-        setEditingCountryId(country.id);
+        setEditingCountry(country);
         setDrawerOpen(true);
     };
 
     const handleClose = () => {
         setDrawerOpen(false);
-        setEditingCountryId(null);
+        setEditingCountry(undefined);
     };
 
     const handleDelete = async (country: Country) => {
@@ -83,9 +82,14 @@ export function CountriesPage() {
             if (handleError(error, t("errors.deleteConflict"))) {
                 return;
             }
-
             throw error;
         }
+    };
+
+    const handleDownload = async () => {
+        const blob = await downloadCountries.mutateAsync();
+
+        downloadBlob(blob, "countries.csv");
     };
 
     return (
@@ -94,21 +98,31 @@ export function CountriesPage() {
                 entity={t("navigation.countries")}
                 onAdd={handleCreate}
                 actions={
-                    <FilterButton
-                        label={t("filters.title")}
-                        activeCount={activeFiltersCount}
-                        open={searchOpen}
-                        onOpenChange={setSearchOpen}
-                    >
-                        <FilterSearch
-                            fields={filterFields}
-                            initialValues={filters}
-                            emptyValues={EMPTY_CODE_NAME_FILTERS}
-                            onChange={handleFiltersChange}
-                            onReset={handleFiltersReset}
-                            onClose={() => setSearchOpen(false)}
+                    <>
+                        <FilterButton
+                            label={t("filters.title")}
+                            activeCount={activeFiltersCount}
+                            open={searchOpen}
+                            onOpenChange={setSearchOpen}
+                            placement="bottom"
+                        >
+                            <FilterSearch
+                                fields={filterFields}
+                                initialValues={filters}
+                                emptyValues={emptyFilterFields}
+                                onChange={handleFiltersChange}
+                                onReset={handleFiltersReset}
+                                onClose={() => setSearchOpen(false)}
+                            />
+                        </FilterButton>
+
+                        <DownloadButton
+                            loading={downloadCountries.isPending}
+                            onClick={() => {
+                                void handleDownload();
+                            }}
                         />
-                    </FilterButton>
+                    </>
                 }
             />
 

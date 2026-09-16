@@ -3,25 +3,24 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
-    type CountryDetail,
+    type Country,
     type CountryFormValues,
     type CountryRequestValues,
     createCountryFormSchema,
     defaultCountryFormValues,
+    useCountry,
     useCreateCountry,
     useUpdateCountry,
 } from "@/entities/country";
 import { EntityDrawer } from "@/shared/components/EntityDrawer";
-import { useEntityForm, useMutationErrorHandler } from "@/shared/hooks";
-import { useEntityMutation } from "@/shared/hooks";
-import { mapTranslationsToApi } from "@/shared/lib";
-import { mapTranslationsToForm } from "@/shared/lib";
+import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/shared/hooks";
+import { mapTranslationsToApi, mapTranslationsToForm } from "@/shared/lib";
 
 import { CountryForm } from "../CountryForm";
 
 interface CountryDrawerProps {
     open: boolean;
-    country?: CountryDetail;
+    country?: Country;
     onClose: () => void;
 }
 
@@ -31,6 +30,10 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
     const createCountry = useCreateCountry();
     const updateCountry = useUpdateCountry();
     const { handleError } = useMutationErrorHandler();
+
+    const countryId = country?.id ?? null;
+
+    const { data: countryDetail, isLoading: isLoadingCountry } = useCountry(countryId);
 
     const transformValues = (values: CountryFormValues): CountryRequestValues => ({
         ...values,
@@ -48,20 +51,25 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
 
     const defaultValues = useMemo<CountryFormValues | undefined>(
         () =>
-            country
+            countryDetail
                 ? {
-                      code: country.code,
-                      name: country.name,
-                      continentId: country.continent.id,
-                      translations: mapTranslationsToForm(country.translations),
+                      code: countryDetail.code,
+                      codeNumeric: countryDetail.codeNumeric,
+                      name: countryDetail.name,
+                      currencyId: countryDetail.currency?.id ?? 0,
+                      marketGroupId: countryDetail.marketGroup?.id ?? 0,
+                      isCountry: countryDetail.isCountry,
+                      isMarket: countryDetail.isMarket,
+                      translations: mapTranslationsToForm(countryDetail.translations),
                   }
                 : undefined,
-        [country],
+        [countryDetail],
     );
 
     const countryFormSchema = createCountryFormSchema({
         required: t("validation.required"),
         codePattern: t("validation.codeUppercaseLength"),
+        codeNumericPattern: t("validation.codeNumeric"),
     });
 
     const {
@@ -80,9 +88,10 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
     return (
         <EntityDrawer
             open={open}
+            loading={isEditing && isLoadingCountry}
             submitting={isSubmitting}
-            onSubmit={handleFormFinish}
             formId="country-form"
+            onSubmit={handleFormFinish}
             title={
                 isEditing
                     ? t("actions.editEntity", {

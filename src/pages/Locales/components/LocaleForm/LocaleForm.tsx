@@ -2,7 +2,7 @@ import type { Control } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { type LocaleFormValues } from "@/entities/locale";
-import { FormCheckbox, FormInput } from "@/shared/components/form";
+import { FormInput, FormSwitch } from "@/shared/components/form";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 
 interface LocaleFormProps {
@@ -33,9 +33,7 @@ export function LocaleForm({ isEditing, control }: LocaleFormProps) {
             />
 
             {isEditing && (
-                <FormCheckbox control={control} name="deleted">
-                    {t("form.deleted")}
-                </FormCheckbox>
+                <FormSwitch control={control} name="deleted" label={t("form.disabled")} />
             )}
         </>
     );

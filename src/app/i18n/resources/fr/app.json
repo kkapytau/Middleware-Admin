@@ -16,7 +16,12 @@
         "flowRule": "Règle de flux",
         "flowRules": "Règles de flux",
         "locales": "Paramètres régionaux",
-        "systemSettings": "Paramètres système"
+        "currencies": "Devises",
+        "marketGroups": "Groupes de marché",
+        "systemSettings": "Paramètres système",
+        "area": "Zone",
+        "areas": "Zones",
+        "geographicTypes": "Types géographiques"
     },
 
     "login": {
@@ -49,7 +54,12 @@
         "flowRuleConfigObject": "La configuration doit être un objet JSON valide.",
         "flowRuleNameMaxLength": "Le nom de la règle de flux doit comporter au maximum 255 caractères.",
         "flowRuleConfigUrl": "La configuration doit contenir un champ URL non vide.",
-        "languagePattern": "Le code de langue doit contenir exactement 2 lettres."
+        "areaCodePattern": "Le code de la zone doit contenir de 1 à 10 lettres majuscules ou chiffres.",
+        "geographicTypeCodePattern": "Le code du type géographique doit contenir de 1 à 50 caractères, commencer par une lettre majuscule ou un chiffre et ne contenir que des lettres majuscules, des chiffres, des espaces, des underscores et des tirets.",
+        "languagePattern": "Le code de langue doit contenir exactement 2 lettres.",
+        "currencyCodePattern": "Le code de devise doit être composé de 3 lettres majuscules exactement.",
+        "marketGroupCodePattern": "Le code du groupe de marché doit commencer par une lettre majuscule ou un chiffre et ne contenir que des lettres majuscules, des chiffres, des espaces, des underscores ou des tirets.",
+        "codeNumeric": "Le code doit contenir exactement 3 chiffres"
     },
     "errors": {
         "deleteConflict": "Cet élément ne peut pas être supprimé car il est référencé par d'autres enregistrements.",
@@ -86,7 +96,11 @@
         "continent": "Continent",
         "metropolitan": "Métropolitain",
         "name": "Nom",
-        "deleted": "Supprimé"
+        "deleted": "Supprimé",
+        "disabled": "Désactivé",
+        "codeNumeric": "Code numérique",
+        "isCountry": "Pays",
+        "isMarket": "Marché"
     },
     "form": {
         "airportCode": "Code Aéroport",
@@ -127,7 +141,20 @@
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
         "flowRuleConfigHelp": "Saisissez un objet JSON valide contenant un champ URL non vide.",
 
-        "deleted": "Supprimé"
+        "deleted": "Supprimé",
+        "disabled": "Désactivé",
+
+        "geographicType": "Type géographique",
+        "selectGeographicType": "Sélectionnez un type géographique",
+
+        "codeNumeric": "Code numérique",
+        "enterCodeNumeric": "Saisissez le code numérique",
+        "currency": "Devise",
+        "selectCurrency": "Sélectionnez une devise",
+        "marketGroup": "Groupe de marchés",
+        "selectMarketGroup": "Sélectionnez un groupe de marchés",
+        "isCountry": "Est un pays",
+        "isMarket": "Est un marché"
     },
     "common": {
         "yes": "Oui",

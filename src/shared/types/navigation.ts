@@ -6,7 +6,10 @@ export type NavigationKey =
     | "navigation.cities"
     | "navigation.functions"
     | "navigation.flows"
-    | "navigation.continents"
+    | "navigation.areas"
     | "navigation.flowRules"
     | "navigation.systemSettings"
-    | "navigation.locales";
+    | "navigation.locales"
+    | "navigation.geographicTypes"
+    | "navigation.currencies"
+    | "navigation.marketGroups";

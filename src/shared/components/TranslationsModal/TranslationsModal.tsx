@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { usePermissions } from "@/app/auth";
 import { useLocales } from "@/entities/locale";
 import { createTranslationsSchema } from "@/shared/components";
 import { FormInput } from "@/shared/components";
@@ -42,6 +43,8 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
         name: "translations",
     });
 
+    const { canUpdate } = usePermissions();
+
     useEffect(() => {
         if (!open || isLoading) {
             return;
@@ -74,14 +77,18 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
                 <Button key="cancel" onClick={onCancel}>
                     {t("common.cancel")}
                 </Button>,
-                <Button
-                    key="done"
-                    type="primary"
-                    onClick={() => void handleSubmit(handleFormSubmit)()}
-                    disabled={isLoading}
-                >
-                    {t("common.done")}
-                </Button>,
+                ...(canUpdate
+                    ? [
+                          <Button
+                              key="done"
+                              type="primary"
+                              onClick={() => void handleSubmit(handleFormSubmit)()}
+                              disabled={isLoading}
+                          >
+                              {t("common.done")}
+                          </Button>,
+                      ]
+                    : []),
             ]}
         >
             <Form layout="vertical">

@@ -1,6 +1,8 @@
-import { GlobalOutlined } from "@ant-design/icons";
+import { ApartmentOutlined, DollarOutlined, GlobalOutlined } from "@ant-design/icons";
 
 import type { AppRoute } from "@/app/routes/types";
+import { CurrenciesPage } from "@/pages/Currencies";
+import { GeographicTypesPage } from "@/pages/GeographicTypes";
 import { LocalesPage } from "@/pages/Locales";
 
 const localesRoute: AppRoute = {
@@ -21,6 +23,42 @@ const localesRoute: AppRoute = {
     component: LocalesPage,
 };
 
+const geographicTypesRoute: AppRoute = {
+    key: "geographicTypes",
+
+    type: "page",
+
+    access: "protected",
+
+    path: "/geographicTypes",
+
+    titleKey: "navigation.geographicTypes",
+
+    icon: ApartmentOutlined,
+
+    showInNavigation: true,
+
+    component: GeographicTypesPage,
+};
+
+const currenciesRoute: AppRoute = {
+    key: "currencies",
+
+    type: "page",
+
+    access: "protected",
+
+    path: "/currencies",
+
+    titleKey: "navigation.currencies",
+
+    icon: DollarOutlined,
+
+    showInNavigation: true,
+
+    component: CurrenciesPage,
+};
+
 export const systemSettingsGroup: AppRoute = {
     key: "system-settings",
 
@@ -32,5 +70,5 @@ export const systemSettingsGroup: AppRoute = {
 
     showInNavigation: true,
 
-    children: [localesRoute],
+    children: [localesRoute, geographicTypesRoute, currenciesRoute],
 };

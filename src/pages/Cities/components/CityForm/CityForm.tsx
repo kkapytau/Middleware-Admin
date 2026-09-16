@@ -17,7 +17,9 @@ interface CityFormProps {
 export function CityForm({ control, setValue }: CityFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: countries = [], isLoading: isLoadingCountries } = useAllCountries();
+    const { data: countries = [], isLoading: isLoadingCountries } = useAllCountries({
+        isCountry: true,
+    });
 
     const countryOptions = countries.map((country) => ({
         value: country.id,
@@ -65,7 +67,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
             />
 
             <Flex justify="flex-start">
-                <Button type="default" onClick={() => setTranslationsOpen(true)}>
+                <Button type="default" disabled={false} onClick={() => setTranslationsOpen(true)}>
                     🌐 {t("translations.manage")}
                 </Button>
             </Flex>

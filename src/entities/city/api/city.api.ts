@@ -84,3 +84,9 @@ export async function deleteCity(id: number): Promise<void> {
         },
     });
 }
+
+const COUNTRIES_EXPORT_ENDPOINT = "/internal/api/v1/cities/export";
+
+export async function downloadCities(): Promise<Blob> {
+    return api.get(COUNTRIES_EXPORT_ENDPOINT).blob();
+}

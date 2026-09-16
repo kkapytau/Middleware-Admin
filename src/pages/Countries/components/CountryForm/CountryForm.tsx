@@ -1,10 +1,11 @@
 import { Button, Flex } from "antd";
-import type { Control, UseFormSetValue } from "react-hook-form";
+import { type Control, type UseFormSetValue } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { useContinents } from "@/entities/continent";
 import { type CountryFormValues } from "@/entities/country";
-import { FormInput, FormSelect } from "@/shared/components/form";
+import { useAllCurrencies } from "@/entities/currency";
+import { useAllMarketGroups } from "@/entities/marketGroup";
+import { FormInput, FormSelect, FormSwitch } from "@/shared/components/form";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useTranslationsForm } from "@/shared/hooks";
@@ -17,11 +18,18 @@ interface CountryFormProps {
 export function CountryForm({ control, setValue }: CountryFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: continents = [], isLoading: isContinentsLoading } = useContinents();
+    const { data: currencies = [], isLoading: isCurrenciesLoading } = useAllCurrencies();
 
-    const continentsOptions = continents.map((continent) => ({
-        value: continent.id,
-        label: `${continent.code} - ${continent.name}`,
+    const { data: marketGroups = [], isLoading: isMarketGroupsLoading } = useAllMarketGroups();
+
+    const currenciesOptions = currencies.map((currency) => ({
+        value: currency.id,
+        label: currency.code,
+    }));
+
+    const marketGroupsOptions = marketGroups.map((marketGroup) => ({
+        value: marketGroup.id,
+        label: marketGroup.code,
     }));
 
     const {
@@ -48,6 +56,14 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
 
             <FormInput
                 control={control}
+                name="codeNumeric"
+                label={t("form.codeNumeric")}
+                placeholder={t("form.enterCodeNumeric")}
+                maxLength={3}
+            />
+
+            <FormInput
+                control={control}
                 name="name"
                 label={t("form.name")}
                 placeholder={t("form.enterName")}
@@ -55,14 +71,29 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
 
             <FormSelect
                 control={control}
-                name="continentId"
-                label={t("form.continent")}
-                placeholder={t("form.selectContinent")}
-                options={continentsOptions}
-                loading={isContinentsLoading}
+                name="currencyId"
+                label={t("form.currency")}
+                placeholder={t("form.selectCurrency")}
+                options={currenciesOptions}
+                loading={isCurrenciesLoading}
                 allowClear
                 showSearch
             />
+
+            <FormSelect
+                control={control}
+                name="marketGroupId"
+                label={t("form.marketGroup")}
+                placeholder={t("form.selectMarketGroup")}
+                options={marketGroupsOptions}
+                loading={isMarketGroupsLoading}
+                allowClear
+                showSearch
+            />
+
+            <FormSwitch control={control} name="isCountry" label={t("form.isCountry")} />
+
+            <FormSwitch control={control} name="isMarket" label={t("form.isMarket")} />
 
             <Flex justify="flex-start">
                 <Button type="default" onClick={() => setTranslationsOpen(true)}>

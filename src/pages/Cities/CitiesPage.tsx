@@ -2,9 +2,16 @@ import { Space } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { type City, useAllCities, useCities, useDeleteCity } from "@/entities/city";
+import {
+    type City,
+    useAllCities,
+    useCities,
+    useDeleteCity,
+    useDownloadCities,
+} from "@/entities/city";
 import { CityDrawer } from "@/pages/Cities/components/CityDrawer";
 import { CityTable } from "@/pages/Cities/components/CityTable";
+import { DownloadButton } from "@/shared/components";
 import { EntityToolbar } from "@/shared/components/EntityToolbar";
 import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
@@ -15,9 +22,12 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
+import { downloadBlob } from "@/shared/lib";
 
 export function CitiesPage() {
     const { t } = useTranslation("app");
+
+    const downloadCities = useDownloadCities();
 
     const filterFields = CODE_NAME_FILTER_FIELDS;
     const {
@@ -78,27 +88,42 @@ export function CitiesPage() {
         setEditingCity(undefined);
     };
 
+    const handleDownload = async () => {
+        const blob = await downloadCities.mutateAsync();
+
+        downloadBlob(blob, "cities.csv");
+    };
+
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
                 entity={t("navigation.city")}
                 onAdd={handleAdd}
                 actions={
-                    <FilterButton
-                        label={t("filters.title")}
-                        activeCount={activeFiltersCount}
-                        open={searchOpen}
-                        onOpenChange={setSearchOpen}
-                    >
-                        <FilterSearch
-                            fields={filterFields}
-                            initialValues={filters}
-                            emptyValues={EMPTY_CODE_NAME_FILTERS}
-                            onChange={handleFiltersChange}
-                            onReset={handleFiltersReset}
-                            onClose={() => setSearchOpen(false)}
+                    <>
+                        <FilterButton
+                            label={t("filters.title")}
+                            activeCount={activeFiltersCount}
+                            open={searchOpen}
+                            onOpenChange={setSearchOpen}
+                        >
+                            <FilterSearch
+                                fields={filterFields}
+                                initialValues={filters}
+                                emptyValues={EMPTY_CODE_NAME_FILTERS}
+                                onChange={handleFiltersChange}
+                                onReset={handleFiltersReset}
+                                onClose={() => setSearchOpen(false)}
+                            />
+                        </FilterButton>
+
+                        <DownloadButton
+                            loading={downloadCities.isPending}
+                            onClick={() => {
+                                void handleDownload();
+                            }}
                         />
-                    </FilterButton>
+                    </>
                 }
             />
 

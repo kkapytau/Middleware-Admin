@@ -30,7 +30,7 @@ export function LocaleTable({ data, loading, pagination, onEdit }: LocalesTableP
             key: "name",
         },
         {
-            title: t("columns.deleted"),
+            title: t("columns.disabled"),
             dataIndex: "deleted",
             key: "deleted",
             render: (deleted: boolean) => <Checkbox checked={deleted} disabled />,

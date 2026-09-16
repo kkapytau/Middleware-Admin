@@ -21,12 +21,17 @@ interface FlowRuleDetailResponse {
 
 const FLOW_RULES_ENDPOINT = "internal/api/v1/flow-rules";
 
-export async function getFlowRules(page: number, size: number): Promise<PageResponse<FlowRule>> {
+export async function getFlowRules(
+    page: number,
+    size: number,
+    deleted?: boolean,
+): Promise<PageResponse<FlowRule>> {
     return await api
         .get(FLOW_RULES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
+                ...(deleted !== undefined && { deleted }),
             },
         })
         .json<FlowRuleListResponse>();

@@ -1,5 +1,5 @@
 import { FilterOutlined } from "@ant-design/icons";
-import { Badge, Button, Popover } from "antd";
+import { Badge, Button, Popover, type PopoverProps } from "antd";
 import type { ReactNode } from "react";
 
 interface FilterButtonProps {
@@ -8,6 +8,7 @@ interface FilterButtonProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     children: ReactNode;
+    placement?: PopoverProps["placement"];
 }
 
 export function FilterButton({
@@ -15,12 +16,13 @@ export function FilterButton({
     activeCount = 0,
     open,
     onOpenChange,
+    placement = "bottomLeft",
     children,
 }: FilterButtonProps) {
     return (
         <Popover
             trigger="click"
-            placement="bottomLeft"
+            placement={placement}
             open={open}
             onOpenChange={onOpenChange}
             content={children}

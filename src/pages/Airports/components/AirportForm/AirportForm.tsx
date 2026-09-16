@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import type { AirportFormValues } from "@/entities/airport";
 import { useAllCities } from "@/entities/city";
-import { FormCheckbox, FormInput, FormNumberInput, FormSelect } from "@/shared/components/form";
+import { FormInput, FormNumberInput, FormSelect, FormSwitch } from "@/shared/components/form";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useTranslationsForm } from "@/shared/hooks";
@@ -80,13 +80,11 @@ export function AirportForm({ isEditing, control, setValue }: AirportFormProps) 
             />
 
             {isEditing && (
-                <FormCheckbox control={control} name="deleted">
-                    {t("form.deleted")}
-                </FormCheckbox>
+                <FormSwitch control={control} name="deleted" label={t("form.disabled")} />
             )}
 
             <Flex justify="flex-start">
-                <Button type="default" onClick={() => setTranslationsOpen(true)}>
+                <Button type="default" disabled={false} onClick={() => setTranslationsOpen(true)}>
                     🌐 {t("translations.manage")}
                 </Button>
             </Flex>
