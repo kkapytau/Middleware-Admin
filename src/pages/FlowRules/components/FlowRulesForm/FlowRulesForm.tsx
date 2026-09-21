@@ -42,10 +42,10 @@ export function FlowRulesForm({ control }: FlowRuleFormProps) {
             />
 
             <Controller
-                name="enabled"
+                name="disabled"
                 control={control}
                 render={({ field }) => (
-                    <Form.Item label={t("form.enabled")}>
+                    <Form.Item label={t("form.disabled")}>
                         <Switch checked={field.value} onChange={field.onChange} />
                     </Form.Item>
                 )}

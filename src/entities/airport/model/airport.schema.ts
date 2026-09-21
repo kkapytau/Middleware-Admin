@@ -50,6 +50,6 @@ export function createAirportFormSchema(messages: AirportValidationMessages) {
             }),
         ),
 
-        deleted: z.boolean(),
+        disabled: z.boolean(),
     });
 }

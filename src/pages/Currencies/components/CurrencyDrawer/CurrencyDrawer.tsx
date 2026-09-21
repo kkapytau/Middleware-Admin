@@ -31,7 +31,7 @@ export function CurrencyDrawer({ open, currency, onClose }: CurrencyDrawerProps)
 
     const transformValues = (values: CurrencyFormValues): CurrencyRequestValues => ({
         code: values.code,
-        deleted: values.deleted,
+        disabled: values.disabled,
     });
 
     const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
@@ -48,7 +48,7 @@ export function CurrencyDrawer({ open, currency, onClose }: CurrencyDrawerProps)
             currency
                 ? {
                       code: currency.code,
-                      deleted: currency.deleted,
+                      disabled: currency.disabled,
                   }
                 : undefined,
         [currency],

@@ -32,7 +32,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
     const transformValues = (values: LocaleFormValues): LocaleRequestValues => ({
         code: values.code,
         name: values.name,
-        deleted: values.deleted,
+        disabled: values.disabled,
     });
 
     const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
@@ -50,7 +50,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
                 ? {
                       code: locale.code,
                       name: locale.name,
-                      deleted: locale.deleted,
+                      disabled: locale.disabled,
                   }
                 : undefined,
         [locale],

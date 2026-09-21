@@ -1,15 +1,15 @@
 export interface GeographicType {
     id: number;
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export interface GeographicTypeFormValues {
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export const defaultGeographicTypeFormValues: GeographicTypeFormValues = {
     code: "",
-    deleted: false,
+    disabled: false,
 };

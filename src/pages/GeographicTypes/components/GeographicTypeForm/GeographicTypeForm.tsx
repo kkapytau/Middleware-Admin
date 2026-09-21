@@ -24,7 +24,7 @@ export function GeographicTypeForm({ isEditing, control }: GeographicTypeFormPro
             />
 
             {isEditing && (
-                <FormSwitch control={control} name="deleted" label={t("form.disabled")} />
+                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
             )}
         </>
     );

@@ -30,7 +30,7 @@ interface CountryDetailResponse {
         id: number;
         code: string;
         name: string;
-        deleted: boolean;
+        disabled: boolean;
     };
     marketGroup: {
         id: number;

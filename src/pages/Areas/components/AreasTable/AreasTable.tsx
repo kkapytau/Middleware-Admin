@@ -32,9 +32,9 @@ export function AreasTable({ data, loading, onEdit, onDelete, pagination }: Area
         },
         {
             title: t("columns.disabled"),
-            dataIndex: "deleted",
-            key: "deleted",
-            render: (deleted: boolean) => <Checkbox checked={deleted} disabled />,
+            dataIndex: "disabled",
+            key: "disabled",
+            render: (disabled: boolean) => <Checkbox checked={disabled} disabled />,
         },
         {
             title: t("actions.actions"),

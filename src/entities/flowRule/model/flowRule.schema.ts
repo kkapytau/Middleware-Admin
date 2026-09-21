@@ -13,7 +13,7 @@ export function createFlowRuleFormSchema(messages: FlowRuleValidationMessages) {
 
         flowId: z.number().positive(messages.required),
 
-        enabled: z.boolean().optional(),
+        disabled: z.boolean().optional(),
 
         config: z.record(z.string(), z.unknown()),
     });
@@ -22,7 +22,7 @@ export function createFlowRuleFormSchema(messages: FlowRuleValidationMessages) {
 export const defaultFlowRuleFormValues: FlowRuleFormValues = {
     name: "",
     flowId: 0,
-    enabled: true,
+    disabled: true,
     config: {
         URL: "",
     },

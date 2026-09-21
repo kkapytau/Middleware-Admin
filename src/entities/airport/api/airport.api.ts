@@ -7,7 +7,7 @@ interface AirportListResponse {
         id: number;
         code: string;
         name: string;
-        deleted: boolean;
+        disabled: boolean;
     }>;
     page: number;
     size: number;
@@ -20,7 +20,7 @@ interface AirportDetailResponse {
     id: number;
     code: string;
     name: string;
-    deleted: boolean;
+    disabled: boolean;
     translations: Record<string, string>;
     coordinates: {
         latitude: number;
@@ -41,7 +41,7 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
         id: response.id,
         code: response.code,
         name: response.name,
-        deleted: response.deleted,
+        disabled: response.disabled,
         cityId: response.city.id,
         latitude: response.coordinates.latitude,
         longitude: response.coordinates.longitude,
@@ -102,7 +102,7 @@ export interface AirportRequestValues {
     latitude: number;
     longitude: number;
     translations: Record<string, string>;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export interface UpdateAirportParams {

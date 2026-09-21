@@ -7,7 +7,7 @@ interface AreaListResponse {
         id: number;
         code: string;
         name: string;
-        deleted: boolean;
+        disabled: boolean;
     }>;
     page: number;
     size: number;
@@ -20,18 +20,18 @@ interface AreaDetailResponse {
     id: number;
     code: string;
     name: string;
-    deleted: boolean;
+    disabled: boolean;
     translations: Record<string, string>;
     geographicType: {
         id: number;
         code: string;
-        deleted: boolean;
+        disabled: boolean;
     };
     parent: {
         id: number;
         code: string;
         name: string;
-        deleted: boolean;
+        disabled: boolean;
     } | null;
 }
 
@@ -40,14 +40,14 @@ const AREAS_ENDPOINT = "internal/api/v1/areas";
 export async function getAreas(
     page: number,
     size: number,
-    deleted?: boolean,
+    disabled?: boolean,
 ): Promise<PageResponse<Area>> {
     return await api
         .get(AREAS_ENDPOINT, {
             searchParams: {
                 page,
                 size,
-                ...(deleted !== undefined && { deleted }),
+                ...(disabled !== undefined && { disabled }),
             },
         })
         .json<AreaListResponse>();
@@ -79,7 +79,7 @@ export interface AreaRequestValues {
     geographicTypeId: number;
     parentId?: number;
     translations: Record<string, string>;
-    deleted?: boolean;
+    disabled?: boolean;
 }
 
 export interface UpdateAreaParams {

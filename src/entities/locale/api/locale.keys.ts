@@ -3,8 +3,8 @@ export const localeKeys = {
 
     lists: () => [...localeKeys.all, "list"] as const,
 
-    list: (page: number, size: number, deleted?: boolean) =>
-        [...localeKeys.lists(), page, size, deleted] as const,
+    list: (page: number, size: number, disabled?: boolean) =>
+        [...localeKeys.lists(), page, size, disabled] as const,
 
     details: () => [...localeKeys.all, "detail"] as const,
 

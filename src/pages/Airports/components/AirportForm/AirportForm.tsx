@@ -80,7 +80,7 @@ export function AirportForm({ isEditing, control, setValue }: AirportFormProps) 
             />
 
             {isEditing && (
-                <FormSwitch control={control} name="deleted" label={t("form.disabled")} />
+                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
             )}
 
             <Flex justify="flex-start">

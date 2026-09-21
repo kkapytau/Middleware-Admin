@@ -12,4 +12,5 @@ export type NavigationKey =
     | "navigation.locales"
     | "navigation.geographicTypes"
     | "navigation.currencies"
-    | "navigation.marketGroups";
+    | "navigation.marketGroups"
+    | "navigation.timezones";

@@ -14,7 +14,7 @@ export const FLOW_RULE_FILTER_FIELDS: FilterFieldConfig<FlowRule>[] = [
         getValue: (rule) => rule.flow.name,
     },
     {
-        name: "enabled",
+        name: "disabled",
         type: "boolean",
         labelKey: "form.enabled",
         allLabelKey: "filters.all",
@@ -26,5 +26,5 @@ export const FLOW_RULE_FILTER_FIELDS: FilterFieldConfig<FlowRule>[] = [
 export const EMPTY_FLOW_RULE_FILTERS: FlowRuleFilters = {
     name: "",
     flowName: "",
-    enabled: undefined,
+    disabled: undefined,
 };

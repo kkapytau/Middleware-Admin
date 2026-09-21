@@ -35,9 +35,9 @@ export function GeographicTypesTable({
         },
         {
             title: t("columns.disabled"),
-            dataIndex: "deleted",
-            key: "deleted",
-            render: (deleted: boolean) => <Checkbox checked={deleted} disabled />,
+            dataIndex: "disabled",
+            key: "disabled",
+            render: (disabled: boolean) => <Checkbox checked={disabled} disabled />,
         },
         {
             title: t("actions.actions"),

@@ -6,7 +6,7 @@ interface CurrencyListResponse {
     content: Array<{
         id: number;
         code: string;
-        deleted: boolean;
+        disabled: boolean;
     }>;
     page: number;
     size: number;
@@ -18,7 +18,7 @@ interface CurrencyListResponse {
 interface CurrencyResponse {
     id: number;
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 const CURRENCIES_ENDPOINT = "internal/api/v1/currencies";
@@ -26,14 +26,14 @@ const CURRENCIES_ENDPOINT = "internal/api/v1/currencies";
 export async function getCurrencies(
     page: number,
     size: number,
-    deleted?: boolean,
+    disabled?: boolean,
 ): Promise<PageResponse<Currency>> {
     return await api
         .get(CURRENCIES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
-                ...(deleted !== undefined && { deleted }),
+                ...(disabled !== undefined && { disabled }),
             },
         })
         .json<CurrencyListResponse>();
@@ -53,7 +53,7 @@ export async function getAllCurrencies(locale: string): Promise<Currency[]> {
 
 export interface CurrencyRequestValues {
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export async function createCurrency(values: CurrencyRequestValues): Promise<Currency> {
@@ -67,7 +67,7 @@ export async function createCurrency(values: CurrencyRequestValues): Promise<Cur
 export interface UpdateCurrencyParams {
     id: number;
     values: {
-        deleted: boolean;
+        disabled: boolean;
     };
 }
 

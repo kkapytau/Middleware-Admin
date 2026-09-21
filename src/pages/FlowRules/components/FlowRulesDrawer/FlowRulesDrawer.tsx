@@ -48,7 +48,7 @@ export function FlowRulesDrawer({ open, flowRule, onClose }: FlowRuleDrawerProps
                 ? {
                       name: flowRule.name,
                       flowId: flowRule.flow.id,
-                      enabled: flowRule.enabled,
+                      disabled: flowRule.disabled,
                       config: flowRule.config,
                   }
                 : undefined,

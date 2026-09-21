@@ -4,10 +4,10 @@ import { QUERY_STALE_TIME } from "@/shared/constants";
 
 import { getMarketGroup, getMarketGroups, marketGroupKeys } from "../api";
 
-export function useMarketGroups(page: number, size: number, deleted?: boolean) {
+export function useMarketGroups(page: number, size: number, disabled?: boolean) {
     return useQuery({
-        queryKey: [...marketGroupKeys.lists(), page, size, deleted],
-        queryFn: () => getMarketGroups(page, size, deleted),
+        queryKey: [...marketGroupKeys.lists(), page, size, disabled],
+        queryFn: () => getMarketGroups(page, size, disabled),
         staleTime: QUERY_STALE_TIME,
     });
 }

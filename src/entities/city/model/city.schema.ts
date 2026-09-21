@@ -17,6 +17,10 @@ export function createCityFormSchema(messages: CityValidationMessages) {
 
         countryId: z.number().min(1, messages.required),
 
+        timeZoneId: z.number().refine((value) => value !== null, messages.required),
+
+        areaId: z.number().min(1, messages.required),
+
         translations: z.array(
             z.object({
                 language: z.string(),

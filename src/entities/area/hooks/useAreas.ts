@@ -4,10 +4,10 @@ import { QUERY_STALE_TIME } from "@/shared/constants";
 
 import { areaKeys, getArea, getAreas } from "../api";
 
-export function useAreas(page: number, size: number, deleted?: boolean) {
+export function useAreas(page: number, size: number, disabled?: boolean) {
     return useQuery({
-        queryKey: [...areaKeys.lists(), page, size, deleted],
-        queryFn: () => getAreas(page, size, deleted),
+        queryKey: [...areaKeys.lists(), page, size, disabled],
+        queryFn: () => getAreas(page, size, disabled),
         staleTime: QUERY_STALE_TIME,
     });
 }

@@ -53,7 +53,7 @@ export function AreaDrawer({ open, area, onClose }: AreaDrawerProps) {
                       code: area.code,
                       name: area.name,
                       geographicTypeId: area.geographicType.id,
-                      deleted: area.deleted,
+                      disabled: area.disabled,
                       translations: mapTranslationsToForm(area.translations),
                   }
                 : undefined,

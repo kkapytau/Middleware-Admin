@@ -31,7 +31,7 @@ export function GeographicTypeDrawer({ open, geographicType, onClose }: Geograph
 
     const transformValues = (values: GeographicTypeFormValues): GeographicTypeRequestValues => ({
         code: values.code,
-        deleted: values.deleted,
+        disabled: values.disabled,
     });
 
     const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
@@ -48,7 +48,7 @@ export function GeographicTypeDrawer({ open, geographicType, onClose }: Geograph
             geographicType
                 ? {
                       code: geographicType.code,
-                      deleted: geographicType.deleted,
+                      disabled: geographicType.disabled,
                   }
                 : undefined,
         [geographicType],

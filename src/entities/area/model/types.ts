@@ -4,7 +4,7 @@ export interface Area {
     id: number;
     code: string;
     name: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export interface AreaDetail extends Area {
@@ -12,7 +12,7 @@ export interface AreaDetail extends Area {
     geographicType: {
         id: number;
         code: string;
-        deleted: boolean;
+        disabled: boolean;
     };
     parent: Area | null;
 }
@@ -23,7 +23,7 @@ export interface AreaFormValues {
     geographicTypeId: number;
     parentId?: number;
     translations: TranslationFormValue[];
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export const defaultAreaFormValues: AreaFormValues = {
@@ -32,5 +32,5 @@ export const defaultAreaFormValues: AreaFormValues = {
     geographicTypeId: 0,
     parentId: undefined,
     translations: [],
-    deleted: false,
+    disabled: false,
 };

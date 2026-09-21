@@ -39,7 +39,10 @@
         "marketGroupCodePattern": "Market group code must start with an uppercase letter or digit and contain only uppercase letters, digits, spaces, underscores, or hyphens.",
         "areaCodePattern": "Area code must contain 1–10 uppercase letters or digits.",
         "geographicTypeCodePattern": "Geographic type code must be 1–50 characters long, start with an uppercase letter or digit, and contain only uppercase letters, digits, spaces, underscores, and hyphens.",
-        "codeNumeric": "Code must contain exactly 3 digits"
+        "codeNumeric": "Code must contain exactly 3 digits",
+        "timezoneCodeLength": "Timezone code must not exceed 64 characters",
+        "timezoneCodeFormat": "Timezone code must start with a letter and contain only letters, numbers, underscores, plus signs, slashes, and hyphens",
+        "utcOffsetFormat": "UTC offset must be in the format +HH:MM or -HH:MM"
     },
     "errors": {
         "deleteConflict": "This item cannot be deleted because it is referenced by other records.",
@@ -72,7 +75,8 @@
         "geographicTypes": "Geographic Types",
         "systemSettings": "System Settings",
         "currencies": "Currencies",
-        "marketGroups": "Market Groups"
+        "marketGroups": "Market Groups",
+        "timezones": "Timezones"
     },
     "actions": {
         "addEntity": "Add {{entity}}",
@@ -99,11 +103,11 @@
         "continent": "Continent",
         "metropolitan": "Metropolitan",
         "name": "Name",
-        "deleted": "Deleted",
         "disabled": "Disabled",
         "codeNumeric": "Numeric Code",
         "isCountry": "Country",
-        "isMarket": "Market"
+        "isMarket": "Market",
+        "utcOffset": "UTC Offset"
     },
     "form": {
         "airportCode": "Airport Code",
@@ -148,7 +152,6 @@
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
         "flowRuleConfigHelp": "Enter a valid JSON object containing a non-empty URL field.",
 
-        "deleted": "Deleted",
         "disabled": "Disabled",
 
         "geographicType": "Geographic Type",
@@ -161,7 +164,17 @@
         "marketGroup": "Market Group",
         "selectMarketGroup": "Select market group",
         "isCountry": "Is Country",
-        "isMarket": "Is Market"
+        "isMarket": "Is Market",
+
+        "timezoneCode": "Timezone Code",
+        "enterTimezoneCode": "Enter timezone code",
+        "utcOffset": "UTC Offset",
+        "enterUtcOffset": "Enter UTC offset",
+        "timezone": "Timezone",
+        "selectTimezone": "Select timezone",
+
+        "area": "Area",
+        "selectArea": "Select area"
     },
     "common": {
         "yes": "Yes",

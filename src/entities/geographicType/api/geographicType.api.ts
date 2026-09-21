@@ -6,7 +6,7 @@ interface GeographicTypeListResponse {
     content: Array<{
         id: number;
         code: string;
-        deleted: boolean;
+        disabled: boolean;
     }>;
     page: number;
     size: number;
@@ -18,7 +18,7 @@ interface GeographicTypeListResponse {
 interface GeographicTypeResponse {
     id: number;
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 const GEOGRAPHIC_TYPES_ENDPOINT = "internal/api/v1/geographic-types";
@@ -26,14 +26,14 @@ const GEOGRAPHIC_TYPES_ENDPOINT = "internal/api/v1/geographic-types";
 export async function getGeographicTypes(
     page: number,
     size: number,
-    deleted?: boolean,
+    disabled?: boolean,
 ): Promise<PageResponse<GeographicType>> {
     return await api
         .get(GEOGRAPHIC_TYPES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
-                ...(deleted !== undefined && { deleted }),
+                ...(disabled !== undefined && { disabled }),
             },
         })
         .json<GeographicTypeListResponse>();
@@ -53,7 +53,7 @@ export async function getAllGeographicTypes(locale: string): Promise<GeographicT
 
 export interface GeographicTypeRequestValues {
     code: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export async function createGeographicType(

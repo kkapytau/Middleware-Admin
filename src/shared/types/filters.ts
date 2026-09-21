@@ -8,7 +8,7 @@ export interface CodeNameFilters {
 export interface FlowRuleFilters {
     name: string;
     flowName: string;
-    enabled: boolean | undefined;
+    disabled: boolean | undefined;
 }
 
 export type FilterValue = string | boolean | undefined;

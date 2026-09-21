@@ -36,10 +36,10 @@ export function FlowRulesTable({
             render: (_, flowRule) => flowRule.flow.name,
         },
         {
-            title: t("form.enabled"),
-            dataIndex: "enabled",
-            key: "enabled",
-            render: (enabled: boolean) => (enabled ? t("common.yes") : t("common.no")),
+            title: t("form.disabled"),
+            dataIndex: "disabled",
+            key: "disabled",
+            render: (disabled: boolean) => (disabled ? t("common.yes") : t("common.no")),
         },
         {
             title: t("actions.actions"),

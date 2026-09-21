@@ -14,7 +14,7 @@ interface FlowRuleListResponse {
 interface FlowRuleDetailResponse {
     id: number;
     name: string;
-    enabled: boolean;
+    disabled: boolean;
     config: Record<string, unknown>;
     flow: FlowRule["flow"];
 }
@@ -24,14 +24,14 @@ const FLOW_RULES_ENDPOINT = "internal/api/v1/flow-rules";
 export async function getFlowRules(
     page: number,
     size: number,
-    deleted?: boolean,
+    disabled?: boolean,
 ): Promise<PageResponse<FlowRule>> {
     return await api
         .get(FLOW_RULES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
-                ...(deleted !== undefined && { deleted }),
+                ...(disabled !== undefined && { disabled }),
             },
         })
         .json<FlowRuleListResponse>();

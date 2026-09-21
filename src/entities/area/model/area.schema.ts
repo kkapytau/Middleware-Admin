@@ -22,6 +22,6 @@ export function createAreaFormSchema(messages: AreaValidationMessages) {
             }),
         ),
 
-        deleted: z.boolean(),
+        disabled: z.boolean(),
     });
 }

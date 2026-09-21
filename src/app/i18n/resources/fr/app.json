@@ -21,7 +21,8 @@
         "systemSettings": "Paramètres système",
         "area": "Zone",
         "areas": "Zones",
-        "geographicTypes": "Types géographiques"
+        "geographicTypes": "Types géographiques",
+        "timezones": "Fuseaux horaires"
     },
 
     "login": {
@@ -59,7 +60,10 @@
         "languagePattern": "Le code de langue doit contenir exactement 2 lettres.",
         "currencyCodePattern": "Le code de devise doit être composé de 3 lettres majuscules exactement.",
         "marketGroupCodePattern": "Le code du groupe de marché doit commencer par une lettre majuscule ou un chiffre et ne contenir que des lettres majuscules, des chiffres, des espaces, des underscores ou des tirets.",
-        "codeNumeric": "Le code doit contenir exactement 3 chiffres"
+        "codeNumeric": "Le code doit contenir exactement 3 chiffres",
+        "timezoneCodeLength": "Le code du fuseau horaire ne doit pas dépasser 64 caractères",
+        "timezoneCodeFormat": "Le code du fuseau horaire doit commencer par une lettre et ne peut contenir que des lettres, des chiffres, des traits de soulignement, des signes plus, des barres obliques et des tirets",
+        "utcOffsetFormat": "Le décalage UTC doit être au format +HH:MM ou -HH:MM"
     },
     "errors": {
         "deleteConflict": "Cet élément ne peut pas être supprimé car il est référencé par d'autres enregistrements.",
@@ -96,11 +100,11 @@
         "continent": "Continent",
         "metropolitan": "Métropolitain",
         "name": "Nom",
-        "deleted": "Supprimé",
         "disabled": "Désactivé",
         "codeNumeric": "Code numérique",
         "isCountry": "Pays",
-        "isMarket": "Marché"
+        "isMarket": "Marché",
+        "utcOffset": "Décalage UTC"
     },
     "form": {
         "airportCode": "Code Aéroport",
@@ -141,7 +145,6 @@
         "flowRuleConfigPlaceholder": "{\n  \"URL\": \"https://example.com\"\n}",
         "flowRuleConfigHelp": "Saisissez un objet JSON valide contenant un champ URL non vide.",
 
-        "deleted": "Supprimé",
         "disabled": "Désactivé",
 
         "geographicType": "Type géographique",
@@ -154,7 +157,17 @@
         "marketGroup": "Groupe de marchés",
         "selectMarketGroup": "Sélectionnez un groupe de marchés",
         "isCountry": "Est un pays",
-        "isMarket": "Est un marché"
+        "isMarket": "Est un marché",
+
+        "timezoneCode": "Code du fuseau horaire",
+        "enterTimezoneCode": "Saisissez le code du fuseau horaire",
+        "utcOffset": "Décalage UTC",
+        "enterUtcOffset": "Saisissez le décalage UTC",
+        "timezone": "Fuseau horaire",
+        "selectTimezone": "Sélectionnez un fuseau horaire",
+
+        "area": "Zone",
+        "selectArea": "Sélectionnez une zone"
     },
     "common": {
         "yes": "Oui",

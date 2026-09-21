@@ -7,9 +7,9 @@ export const CODE_DISABLED_FILTER_FIELDS: FilterFieldConfig[] = [
         labelKey: "columns.code",
     },
     {
-        name: "deleted",
+        name: "disabled",
         type: "boolean",
-        labelKey: "columns.deleted",
+        labelKey: "columns.disabled",
         allLabelKey: "filters.all",
         trueLabelKey: "common.yes",
         falseLabelKey: "common.no",
@@ -18,5 +18,5 @@ export const CODE_DISABLED_FILTER_FIELDS: FilterFieldConfig[] = [
 
 export const EMPTY_CODE_DISABLED_FILTERS = {
     code: "",
-    deleted: undefined,
+    disabled: undefined,
 };

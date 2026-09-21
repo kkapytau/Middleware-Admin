@@ -1,9 +1,15 @@
-import { ApartmentOutlined, DollarOutlined, GlobalOutlined } from "@ant-design/icons";
+import {
+    ApartmentOutlined,
+    ClockCircleOutlined,
+    DollarOutlined,
+    GlobalOutlined,
+} from "@ant-design/icons";
 
 import type { AppRoute } from "@/app/routes/types";
 import { CurrenciesPage } from "@/pages/Currencies";
 import { GeographicTypesPage } from "@/pages/GeographicTypes";
 import { LocalesPage } from "@/pages/Locales";
+import { TimezonesPage } from "@/pages/Timezones";
 
 const localesRoute: AppRoute = {
     key: "locales",
@@ -59,6 +65,24 @@ const currenciesRoute: AppRoute = {
     component: CurrenciesPage,
 };
 
+const timezonesRoute: AppRoute = {
+    key: "timezones",
+
+    type: "page",
+
+    access: "protected",
+
+    path: "/timezones",
+
+    titleKey: "navigation.timezones",
+
+    icon: ClockCircleOutlined,
+
+    showInNavigation: true,
+
+    component: TimezonesPage,
+};
+
 export const systemSettingsGroup: AppRoute = {
     key: "system-settings",
 
@@ -70,5 +94,5 @@ export const systemSettingsGroup: AppRoute = {
 
     showInNavigation: true,
 
-    children: [localesRoute, geographicTypesRoute, currenciesRoute],
+    children: [localesRoute, geographicTypesRoute, currenciesRoute, timezonesRoute],
 };

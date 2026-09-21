@@ -4,11 +4,11 @@ import { QUERY_STALE_TIME } from "@/shared/constants";
 
 import { currencyKeys, getCurrencies, getCurrency } from "../api";
 
-export function useCurrencies(page: number, size: number, deleted?: boolean) {
+export function useCurrencies(page: number, size: number, disabled?: boolean) {
     return useQuery({
-        queryKey: [...currencyKeys.lists(), page, size, deleted],
+        queryKey: [...currencyKeys.lists(), page, size, disabled],
 
-        queryFn: () => getCurrencies(page, size, deleted),
+        queryFn: () => getCurrencies(page, size, disabled),
 
         staleTime: QUERY_STALE_TIME,
     });

@@ -1,3 +1,5 @@
+import type { Area } from "@/entities/area";
+import type { Timezone } from "@/entities/timezone";
 import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { City, CityDetail } from "../model";
@@ -22,6 +24,8 @@ interface CityDetailResponse {
         name: string;
         translations: Record<string, string>;
     };
+    timeZone: Timezone;
+    area: Area;
 }
 
 const CITIES_ENDPOINT = "internal/api/v1/cities";
@@ -61,6 +65,8 @@ export interface CityRequestValues {
     code: string;
     name: string;
     countryId: number;
+    timeZoneId: number;
+    areaId: number;
     translations: Record<string, string>;
 }
 

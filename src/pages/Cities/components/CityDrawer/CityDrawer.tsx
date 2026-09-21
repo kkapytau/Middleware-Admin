@@ -58,6 +58,8 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
                       code: cityDetail.code,
                       name: cityDetail.name,
                       countryId: cityDetail.country.id,
+                      timeZoneId: cityDetail.timeZone.id,
+                      areaId: cityDetail.area.id,
                       translations: mapTranslationsToForm(cityDetail.translations),
                   }
                 : undefined,

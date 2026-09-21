@@ -25,7 +25,7 @@ export function CurrencyForm({ isEditing, control }: CurrencyFormProps) {
             />
 
             {isEditing && (
-                <FormSwitch control={control} name="deleted" label={t("form.disabled")} />
+                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
             )}
         </>
     );

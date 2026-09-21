@@ -7,7 +7,7 @@ interface LocaleListResponse {
         id: number;
         code: string;
         name: string;
-        deleted: boolean;
+        disabled: boolean;
     }>;
     page: number;
     size: number;
@@ -20,7 +20,7 @@ interface LocaleDetailResponse {
     id: number;
     code: string;
     name: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 const LOCALES_ENDPOINT = "internal/api/v1/locales";
@@ -30,21 +30,21 @@ function mapLocale(response: LocaleDetailResponse): Locale {
         id: response.id,
         code: response.code,
         name: response.name,
-        deleted: response.deleted,
+        disabled: response.disabled,
     };
 }
 
 export async function getLocales(
     page: number,
     size: number,
-    deleted?: boolean,
+    disabled?: boolean,
 ): Promise<PageResponse<Locale>> {
     return api
         .get(LOCALES_ENDPOINT, {
             searchParams: {
                 page,
                 size,
-                ...(deleted !== undefined && { deleted }),
+                ...(disabled !== undefined && { disabled }),
             },
         })
         .json<LocaleListResponse>();
@@ -59,7 +59,7 @@ export async function getLocale(id: number): Promise<Locale> {
 export interface LocaleRequestValues {
     code: string;
     name: string;
-    deleted: boolean;
+    disabled: boolean;
 }
 
 export async function createLocale(values: LocaleRequestValues): Promise<Locale> {
@@ -85,7 +85,7 @@ export async function updateLocale({ id, values }: UpdateLocaleParams): Promise<
         .put(`${LOCALES_ENDPOINT}/${id}`, {
             json: {
                 name: values.name,
-                deleted: values.deleted,
+                disabled: values.disabled,
             },
         })
         .json<LocaleDetailResponse>();

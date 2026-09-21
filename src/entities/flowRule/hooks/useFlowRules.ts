@@ -4,10 +4,10 @@ import { QUERY_STALE_TIME } from "@/shared/constants";
 
 import { flowRuleKeys, getFlowRule, getFlowRules } from "../api";
 
-export function useFlowRules(page: number, size: number, deleted?: boolean) {
+export function useFlowRules(page: number, size: number, disabled?: boolean) {
     return useQuery({
-        queryKey: [...flowRuleKeys.lists(), page, size, deleted],
-        queryFn: () => getFlowRules(page, size, deleted),
+        queryKey: [...flowRuleKeys.lists(), page, size, disabled],
+        queryFn: () => getFlowRules(page, size, disabled),
         staleTime: QUERY_STALE_TIME,
     });
 }

@@ -60,7 +60,7 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
                       latitude: airportDetail.latitude,
                       longitude: airportDetail.longitude,
                       translations: mapTranslationsToForm(airportDetail.translations),
-                      deleted: airportDetail.deleted,
+                      disabled: airportDetail.disabled,
                   }
                 : undefined,
         [airportDetail],
