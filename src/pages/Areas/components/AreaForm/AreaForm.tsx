@@ -18,8 +18,11 @@ interface AreaFormProps {
 export function AreaForm({ control, setValue, isEditing }: AreaFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: geographicTypes = [], isLoading: geographicTypesLoading } =
-        useAllGeographicTypes();
+    const { data: geographicTypes = [], isLoading: geographicTypesLoading } = useAllGeographicTypes(
+        {
+            disabled: false,
+        },
+    );
 
     const geographicTypeOptions = geographicTypes.map((geographicType) => ({
         value: geographicType.id,

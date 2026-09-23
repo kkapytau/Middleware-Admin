@@ -53,11 +53,13 @@ export async function getAreas(
         .json<AreaListResponse>();
 }
 
-export async function getAllAreas(locale: string): Promise<Area[]> {
-    return getAllPages(getAreas, (a, b) =>
-        a.name.localeCompare(b.name, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllAreas(locale: string, disabled?: boolean): Promise<Area[]> {
+    return getAllPages(
+        (page, size) => getAreas(page, size, disabled),
+        (a, b) =>
+            a.name.localeCompare(b.name, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

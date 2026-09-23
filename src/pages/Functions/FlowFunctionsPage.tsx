@@ -18,12 +18,11 @@ import { FunctionDrawer } from "./components";
 import { FunctionsTable } from "./components";
 
 export function FlowFunctionsPage() {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingFunctionId, setEditingFunctionId] = useState<number | null>(null);
-
     const { t } = useTranslation("app");
 
     const filterFields = NAME_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_FUNCTION_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -35,7 +34,7 @@ export function FlowFunctionsPage() {
         handleReset: handleFiltersReset,
     } = useUrlFilters({
         fields: filterFields,
-        emptyFilters: EMPTY_FUNCTION_FILTERS,
+        emptyFilters: emptyFilterFields,
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
@@ -48,6 +47,9 @@ export function FlowFunctionsPage() {
     const { data, isLoading, isFetching } = useFlowFunctions(apiPage, pageSize);
 
     const deleteFlowFunction = useDeleteFlowFunction();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [editingFunctionId, setEditingFunctionId] = useState<number | null>(null);
 
     const { data: editingFunction } = useFlowFunction(editingFunctionId);
     const { handleError } = useMutationErrorHandler();
@@ -98,7 +100,7 @@ export function FlowFunctionsPage() {
                         <FilterSearch
                             fields={filterFields}
                             initialValues={filters}
-                            emptyValues={EMPTY_FUNCTION_FILTERS}
+                            emptyValues={emptyFilterFields}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
                             onClose={() => setSearchOpen(false)}

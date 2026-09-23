@@ -10,14 +10,14 @@ import { LocaleDrawer } from "./components/LocaleDrawer";
 import { LocaleTable } from "./components/LocaleTable";
 
 export function LocalesPage() {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingLocaleId, setEditingLocaleId] = useState<number | null>(null);
-
     const { t } = useTranslation("app");
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
     const { data, isLoading, isFetching } = useLocales(apiPage, pageSize);
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [editingLocaleId, setEditingLocaleId] = useState<number | null>(null);
 
     const { data: editingLocale } = useLocale(editingLocaleId as number);
 

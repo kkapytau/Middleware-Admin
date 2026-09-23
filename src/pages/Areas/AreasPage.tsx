@@ -33,6 +33,7 @@ export function AreasPage() {
 
     const filterFields = CODE_NAME_DISABLED_FILTER_FIELDS;
     const emptyFilterFields = EMPTY_CODE_NAME_DISABLED_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -48,18 +49,21 @@ export function AreasPage() {
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
-    const { data: allAreas = [], isLoading: allAreasLoading } = useAllAreas(shouldLoadAll);
+
+    const { data: allAreas = [], isLoading: allAreasLoading } = useAllAreas({
+        enabled: shouldLoadAll,
+    });
+
+    const filteredAreas = useFilter(allAreas, filters, filterFields);
 
     const { data, isLoading, isFetching } = useAreas(apiPage, pageSize);
 
-    const filteredAreas = useFilter(allAreas, filters, filterFields);
+    const deleteArea = useDeleteArea();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingAreaId, setEditingAreaId] = useState<number | null>(null);
 
     const { data: editingArea } = useArea(editingAreaId);
-
-    const deleteArea = useDeleteArea();
     const { handleError } = useMutationErrorHandler();
 
     const tableData = hasActiveFilters ? filteredAreas : (data?.content ?? []);

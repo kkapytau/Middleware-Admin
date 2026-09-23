@@ -21,6 +21,8 @@ export function FlowsPage() {
     const { t } = useTranslation("app");
 
     const filterFields = CODE_NAME_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_CODE_NAME_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -32,7 +34,7 @@ export function FlowsPage() {
         handleReset: handleFiltersReset,
     } = useUrlFilters({
         fields: filterFields,
-        emptyFilters: EMPTY_CODE_NAME_FILTERS,
+        emptyFilters: emptyFilterFields,
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
@@ -47,6 +49,7 @@ export function FlowsPage() {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingFlow, setEditingFlow] = useState<Flow | undefined>();
+
     const { handleError } = useMutationErrorHandler();
 
     const tableData = hasActiveFilters ? filteredFlows : (data?.content ?? []);
@@ -95,7 +98,7 @@ export function FlowsPage() {
                         <FilterSearch
                             fields={filterFields}
                             initialValues={filters}
-                            emptyValues={EMPTY_CODE_NAME_FILTERS}
+                            emptyValues={emptyFilterFields}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
                             onClose={() => setSearchOpen(false)}

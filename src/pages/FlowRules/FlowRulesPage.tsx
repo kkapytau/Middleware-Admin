@@ -23,12 +23,11 @@ import { FlowRulesDrawer } from "./components/FlowRulesDrawer";
 import { FlowRulesTable } from "./components/FlowRulesTable";
 
 export function FlowRulesPage() {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingFlowRuleId, setEditingFlowRuleId] = useState<number>();
-
     const { t } = useTranslation("app");
 
     const filterFields = FLOW_RULE_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_FLOW_RULE_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -40,7 +39,7 @@ export function FlowRulesPage() {
         handleReset: handleFiltersReset,
     } = useUrlFilters({
         fields: filterFields,
-        emptyFilters: EMPTY_FLOW_RULE_FILTERS,
+        emptyFilters: emptyFilterFields,
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
@@ -52,6 +51,10 @@ export function FlowRulesPage() {
 
     const { data, isLoading, isFetching } = useFlowRules(apiPage, pageSize);
     const deleteFlowRule = useDeleteFlowRule();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [editingFlowRuleId, setEditingFlowRuleId] = useState<number>();
+
     const { handleError } = useMutationErrorHandler();
 
     const tableData = hasActiveFilters ? filteredFlowRules : (data?.content ?? []);
@@ -102,7 +105,7 @@ export function FlowRulesPage() {
                         <FilterSearch
                             fields={filterFields}
                             initialValues={filters}
-                            emptyValues={EMPTY_FLOW_RULE_FILTERS}
+                            emptyValues={emptyFilterFields}
                             onChange={handleFiltersChange}
                             onReset={handleFiltersReset}
                             onClose={() => setSearchOpen(false)}

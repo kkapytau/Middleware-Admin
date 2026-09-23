@@ -104,7 +104,8 @@
         "codeNumeric": "Code numérique",
         "isCountry": "Pays",
         "isMarket": "Marché",
-        "utcOffset": "Décalage UTC"
+        "utcOffset": "Décalage UTC",
+        "isRtl": "RTL"
     },
     "form": {
         "airportCode": "Code Aéroport",
@@ -167,7 +168,9 @@
         "selectTimezone": "Sélectionnez un fuseau horaire",
 
         "area": "Zone",
-        "selectArea": "Sélectionnez une zone"
+        "selectArea": "Sélectionnez une zone",
+
+        "isRtl": "De droite à gauche"
     },
     "common": {
         "yes": "Oui",

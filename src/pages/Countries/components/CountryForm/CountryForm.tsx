@@ -1,5 +1,6 @@
 import { Button, Flex } from "antd";
-import { type Control, type UseFormSetValue } from "react-hook-form";
+import { useEffect } from "react";
+import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { type CountryFormValues } from "@/entities/country";
@@ -18,9 +19,13 @@ interface CountryFormProps {
 export function CountryForm({ control, setValue }: CountryFormProps) {
     const { t } = useTranslation("app");
 
-    const { data: currencies = [], isLoading: isCurrenciesLoading } = useAllCurrencies();
+    const { data: currencies = [], isLoading: isCurrenciesLoading } = useAllCurrencies({
+        disabled: false,
+    });
 
-    const { data: marketGroups = [], isLoading: isMarketGroupsLoading } = useAllMarketGroups();
+    const { data: marketGroups = [], isLoading: isMarketGroupsLoading } = useAllMarketGroups({
+        disabled: false,
+    });
 
     const currenciesOptions = currencies.map((currency) => ({
         value: currency.id,
@@ -31,6 +36,29 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
         value: marketGroup.id,
         label: marketGroup.code,
     }));
+
+    const isCountry = useWatch({
+        control,
+        name: "isCountry",
+    });
+
+    const isMarket = useWatch({
+        control,
+        name: "isMarket",
+    });
+
+    useEffect(() => {
+        if (!isCountry) {
+            setValue("codeNumeric", "");
+            setValue("currencyId", null);
+        }
+    }, [isCountry, setValue]);
+
+    useEffect(() => {
+        if (!isMarket) {
+            setValue("marketGroupId", null);
+        }
+    }, [isMarket, setValue]);
 
     const {
         translations,
@@ -50,7 +78,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
                 name="code"
                 label={t("form.code")}
                 placeholder={t("form.enterCode")}
-                maxLength={MAX_CODE_LENGTH}
+                maxLength={MAX_CODE_LENGTH + 1}
                 uppercase
             />
 
@@ -60,6 +88,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
                 label={t("form.codeNumeric")}
                 placeholder={t("form.enterCodeNumeric")}
                 maxLength={3}
+                disabled={!isCountry}
             />
 
             <FormInput
@@ -78,6 +107,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
                 loading={isCurrenciesLoading}
                 allowClear
                 showSearch
+                disabled={!isCountry}
             />
 
             <FormSelect
@@ -89,6 +119,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
                 loading={isMarketGroupsLoading}
                 allowClear
                 showSearch
+                disabled={!isMarket}
             />
 
             <FormSwitch control={control} name="isCountry" label={t("form.isCountry")} />

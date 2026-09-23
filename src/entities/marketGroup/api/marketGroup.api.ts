@@ -44,11 +44,16 @@ export async function getMarketGroup(id: number): Promise<MarketGroupDetail> {
     return await api.get(`${MARKET_GROUPS_ENDPOINT}/${id}`).json<MarketGroupDetail>();
 }
 
-export async function getAllMarketGroups(locale: string): Promise<MarketGroup[]> {
-    return getAllPages(getMarketGroups, (a, b) =>
-        a.code.localeCompare(b.code, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllMarketGroups(
+    locale: string,
+    disabled?: boolean,
+): Promise<MarketGroup[]> {
+    return getAllPages(
+        (page, size) => getMarketGroups(page, size, disabled),
+        (a, b) =>
+            a.code.localeCompare(b.code, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

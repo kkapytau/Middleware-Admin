@@ -23,9 +23,13 @@ export function CityForm({ control, setValue }: CityFormProps) {
         isCountry: true,
     });
 
-    const { data: timezones = [], isLoading: isLoadingTimezones } = useAllTimezones();
+    const { data: timezones = [], isLoading: isLoadingTimezones } = useAllTimezones({
+        disabled: false,
+    });
 
-    const { data: areas = [], isLoading: isLoadingAreas } = useAllAreas();
+    const { data: areas = [], isLoading: isLoadingAreas } = useAllAreas({
+        disabled: false,
+    });
 
     const countryOptions = countries.map((country) => ({
         value: country.id,

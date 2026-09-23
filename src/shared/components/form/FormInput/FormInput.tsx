@@ -32,6 +32,7 @@ export function FormInput<T extends FieldValues>({
                         disabled={disabled}
                         maxLength={maxLength}
                         minLength={minLength}
+                        dir="auto"
                         onChange={(event) => {
                             const value = uppercase
                                 ? event.target.value.toUpperCase()

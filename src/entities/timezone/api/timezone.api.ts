@@ -38,10 +38,13 @@ export async function getTimezones(
         .json<TimezoneListResponse>();
 }
 
-export async function getAllTimezones(): Promise<Timezone[]> {
+export async function getAllTimezones(locale: string, disabled?: boolean): Promise<Timezone[]> {
     return getAllPages(
-        (page, size) => getTimezones(page, size, false),
-        (a, b) => a.code.localeCompare(b.code),
+        (page, size) => getTimezones(page, size, disabled),
+        (a, b) =>
+            a.code.localeCompare(b.code, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

@@ -5,7 +5,7 @@ import type { TranslationFormValue } from "@/shared/types";
 export interface Country {
     id: number;
     code: string;
-    codeNumeric: string;
+    codeNumeric: string | null;
     name: string;
     isCountry: boolean;
     isMarket: boolean;
@@ -13,16 +13,16 @@ export interface Country {
 
 export interface CountryDetail extends Country {
     translations: Record<string, string>;
-    currency: Currency;
-    marketGroup: MarketGroupDetail;
+    currency: Currency | null;
+    marketGroup: MarketGroupDetail | null;
 }
 
 export interface CountryFormValues {
     code: string;
     codeNumeric: string;
     name: string;
-    currencyId: number;
-    marketGroupId: number;
+    currencyId: number | null;
+    marketGroupId: number | null;
     isCountry: boolean;
     isMarket: boolean;
     translations: TranslationFormValue[];
@@ -32,8 +32,8 @@ export const defaultCountryFormValues: CountryFormValues = {
     code: "",
     codeNumeric: "",
     name: "",
-    currencyId: 0,
-    marketGroupId: 0,
+    currencyId: null,
+    marketGroupId: null,
     isCountry: false,
     isMarket: false,
     translations: [],

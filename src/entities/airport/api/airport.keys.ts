@@ -5,5 +5,6 @@ export const airportKeys = {
 
     detail: (id: number | null) => [...airportKeys.all, "detail", id] as const,
 
-    options: (locale: string) => [...airportKeys.all, "options", locale] as const,
+    options: (locale: string, disabled?: boolean) =>
+        [...airportKeys.all, "options", locale, disabled] as const,
 };

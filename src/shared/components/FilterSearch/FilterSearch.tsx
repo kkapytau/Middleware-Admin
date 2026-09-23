@@ -3,7 +3,7 @@ import { Flex } from "antd";
 import type { Path } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { FormInput, FormSelect } from "@/shared/components";
+import { BooleanFilterSelect, FormInput } from "@/shared/components";
 import { SearchWidget } from "@/shared/components";
 import { useFilterSearch } from "@/shared/hooks";
 import type { FilterFieldConfig } from "@/shared/types";
@@ -60,24 +60,14 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
                                     key={field.name}
                                     style={field.type === "boolean" ? { width: 150 } : undefined}
                                 >
-                                    <FormSelect
+                                    <BooleanFilterSelect
+                                        key={field.name}
                                         control={control}
                                         name={field.name as Path<TFilters>}
                                         label={t(field.labelKey)}
-                                        options={[
-                                            {
-                                                value: "",
-                                                label: t(field.allLabelKey),
-                                            },
-                                            {
-                                                value: true,
-                                                label: t(field.trueLabelKey),
-                                            },
-                                            {
-                                                value: false,
-                                                label: t(field.falseLabelKey),
-                                            },
-                                        ]}
+                                        allLabel={t(field.allLabelKey)}
+                                        trueLabel={t(field.trueLabelKey)}
+                                        falseLabel={t(field.falseLabelKey)}
                                     />
                                 </div>
                             );

@@ -49,8 +49,9 @@ export function MarketGroupsPage() {
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-    const { data: allMarketGroups = [], isLoading: allMarketGroupsLoading } =
-        useAllMarketGroups(shouldLoadAll);
+    const { data: allMarketGroups = [], isLoading: allMarketGroupsLoading } = useAllMarketGroups({
+        enabled: shouldLoadAll,
+    });
 
     const filteredMarketGroups = useFilter(allMarketGroups, filters, filterFields);
 

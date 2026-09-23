@@ -10,6 +10,7 @@ export function createLocaleFormSchema(messages: LocaleValidationMessages) {
         code: z.string().regex(/^[A-Z]{2}$/, messages.codePattern),
         name: z.string().min(1, messages.required).max(100),
         disabled: z.boolean(),
+        isRtl: z.boolean().optional(),
     });
 }
 

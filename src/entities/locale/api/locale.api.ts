@@ -21,6 +21,7 @@ interface LocaleDetailResponse {
     code: string;
     name: string;
     disabled: boolean;
+    isRtl?: boolean;
 }
 
 const LOCALES_ENDPOINT = "internal/api/v1/locales";
@@ -31,6 +32,7 @@ function mapLocale(response: LocaleDetailResponse): Locale {
         code: response.code,
         name: response.name,
         disabled: response.disabled,
+        isRtl: response.isRtl,
     };
 }
 
@@ -60,6 +62,7 @@ export interface LocaleRequestValues {
     code: string;
     name: string;
     disabled: boolean;
+    isRtl?: boolean;
 }
 
 export async function createLocale(values: LocaleRequestValues): Promise<Locale> {
@@ -86,6 +89,7 @@ export async function updateLocale({ id, values }: UpdateLocaleParams): Promise<
             json: {
                 name: values.name,
                 disabled: values.disabled,
+                isRtl: values.isRtl,
             },
         })
         .json<LocaleDetailResponse>();

@@ -30,6 +30,8 @@ export function CitiesPage() {
     const downloadCities = useDownloadCities();
 
     const filterFields = CODE_NAME_FILTER_FIELDS;
+    const emptyFilterFields = EMPTY_CODE_NAME_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -41,7 +43,7 @@ export function CitiesPage() {
         handleReset: handleFiltersReset,
     } = useUrlFilters({
         fields: filterFields,
-        emptyFilters: EMPTY_CODE_NAME_FILTERS,
+        emptyFilters: emptyFilterFields,
     });
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
@@ -51,15 +53,17 @@ export function CitiesPage() {
     const filteredCities = useFilter(allCities, filters, filterFields);
 
     const { data, isLoading, isFetching } = useCities(apiPage, pageSize);
+
     const deleteCity = useDeleteCity();
+
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [editingCity, setEditingCity] = useState<City | undefined>();
+
     const { handleError } = useMutationErrorHandler();
 
     const tableData = hasActiveFilters ? filteredCities : (data?.content ?? []);
 
     const tableLoading = hasActiveFilters ? allCitiesLoading : isLoading || isFetching;
-
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [editingCity, setEditingCity] = useState<City | undefined>();
 
     const handleAdd = () => {
         setEditingCity(undefined);
@@ -110,7 +114,7 @@ export function CitiesPage() {
                             <FilterSearch
                                 fields={filterFields}
                                 initialValues={filters}
-                                emptyValues={EMPTY_CODE_NAME_FILTERS}
+                                emptyValues={emptyFilterFields}
                                 onChange={handleFiltersChange}
                                 onReset={handleFiltersReset}
                                 onClose={() => setSearchOpen(false)}

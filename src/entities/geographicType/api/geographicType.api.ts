@@ -43,11 +43,16 @@ export async function getGeographicType(id: number): Promise<GeographicType> {
     return await api.get(`${GEOGRAPHIC_TYPES_ENDPOINT}/${id}`).json<GeographicTypeResponse>();
 }
 
-export async function getAllGeographicTypes(locale: string): Promise<GeographicType[]> {
-    return getAllPages(getGeographicTypes, (a, b) =>
-        a.code.localeCompare(b.code, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllGeographicTypes(
+    locale: string,
+    disabled?: boolean,
+): Promise<GeographicType[]> {
+    return getAllPages(
+        (page, size) => getGeographicTypes(page, size, disabled),
+        (a, b) =>
+            a.code.localeCompare(b.code, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

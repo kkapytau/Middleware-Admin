@@ -43,8 +43,9 @@ export function CurrenciesPage() {
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-    const { data: allCurrencies = [], isLoading: allCurrenciesLoading } =
-        useAllCurrencies(shouldLoadAll);
+    const { data: allCurrencies = [], isLoading: allCurrenciesLoading } = useAllCurrencies({
+        enabled: shouldLoadAll,
+    });
 
     const filteredCurrencies = useFilter(allCurrencies, filters, filterFields);
 

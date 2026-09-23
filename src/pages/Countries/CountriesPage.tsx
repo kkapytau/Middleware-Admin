@@ -23,15 +23,15 @@ import {
     useUrlPagination,
 } from "@/shared/hooks";
 import { downloadBlob } from "@/shared/lib";
+
 export function CountriesPage() {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [editingCountry, setEditingCountry] = useState<Country | undefined>();
     const { t } = useTranslation("app");
 
     const downloadCountries = useDownloadCountries();
 
     const filterFields = COUNTRY_FILTER_FIELDS;
     const emptyFilterFields = EMPTY_COUNTRY_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -54,6 +54,9 @@ export function CountriesPage() {
     const { data, isLoading, isFetching } = useCountries(apiPage, pageSize);
 
     const deleteCountry = useDeleteCountry();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [editingCountry, setEditingCountry] = useState<Country | undefined>();
 
     const { handleError } = useMutationErrorHandler();
 

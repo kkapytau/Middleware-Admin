@@ -5,12 +5,17 @@ import { OPTIONS_STALE_TIME } from "@/shared/constants";
 
 import { currencyKeys, getAllCurrencies } from "../api";
 
-export function useAllCurrencies(enabled = true) {
+interface UseAllCurrenciesOptions {
+    enabled?: boolean;
+    disabled?: boolean;
+}
+
+export function useAllCurrencies({ enabled = true, disabled }: UseAllCurrenciesOptions = {}) {
     const { i18n } = useTranslation();
 
     return useQuery({
-        queryKey: currencyKeys.options(i18n.language),
-        queryFn: () => getAllCurrencies(i18n.language),
+        queryKey: currencyKeys.options(i18n.language, disabled),
+        queryFn: () => getAllCurrencies(i18n.language, disabled),
         staleTime: OPTIONS_STALE_TIME,
         enabled,
     });

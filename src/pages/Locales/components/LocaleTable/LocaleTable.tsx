@@ -36,6 +36,12 @@ export function LocaleTable({ data, loading, pagination, onEdit }: LocalesTableP
             render: (disabled: boolean) => <Checkbox checked={disabled} disabled />,
         },
         {
+            title: t("columns.isRtl"),
+            dataIndex: "isRtl",
+            key: "isRtl",
+            render: (isRtl: boolean) => <Checkbox checked={isRtl} disabled />,
+        },
+        {
             title: t("actions.actions"),
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,

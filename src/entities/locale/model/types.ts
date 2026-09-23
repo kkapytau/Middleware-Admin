@@ -5,10 +5,12 @@ export interface Locale {
     code: string;
     name: string;
     disabled: boolean;
+    isRtl?: boolean;
 }
 
 export const defaultLocaleFormValues: LocaleFormValues = {
     code: "",
     name: "",
     disabled: false,
+    isRtl: false,
 };

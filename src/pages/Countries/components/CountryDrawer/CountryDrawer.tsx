@@ -36,8 +36,17 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
     const { data: countryDetail, isLoading: isLoadingCountry } = useCountry(countryId);
 
     const transformValues = (values: CountryFormValues): CountryRequestValues => ({
-        ...values,
+        code: values.code,
+        name: values.name,
+        isCountry: values.isCountry,
+        isMarket: values.isMarket,
         translations: mapTranslationsToApi(values.translations),
+
+        ...(values.codeNumeric ? { codeNumeric: values.codeNumeric } : {}),
+
+        ...(values.currencyId !== null ? { currencyId: values.currencyId } : {}),
+
+        ...(values.marketGroupId !== null ? { marketGroupId: values.marketGroupId } : {}),
     });
 
     const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
@@ -54,10 +63,10 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
             countryDetail
                 ? {
                       code: countryDetail.code,
-                      codeNumeric: countryDetail.codeNumeric,
+                      codeNumeric: countryDetail.codeNumeric ?? "",
                       name: countryDetail.name,
-                      currencyId: countryDetail.currency?.id ?? 0,
-                      marketGroupId: countryDetail.marketGroup?.id ?? 0,
+                      currencyId: countryDetail.currency?.id ?? null,
+                      marketGroupId: countryDetail.marketGroup?.id ?? null,
                       isCountry: countryDetail.isCountry,
                       isMarket: countryDetail.isMarket,
                       translations: mapTranslationsToForm(countryDetail.translations),

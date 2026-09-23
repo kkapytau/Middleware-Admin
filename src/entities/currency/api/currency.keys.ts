@@ -5,5 +5,6 @@ export const currencyKeys = {
 
     detail: (id: number | null) => [...currencyKeys.all, "detail", id] as const,
 
-    options: (locale: string) => [...currencyKeys.all, "options", locale] as const,
+    options: (locale: string, disabled?: boolean) =>
+        [...currencyKeys.all, "options", locale, disabled] as const,
 };

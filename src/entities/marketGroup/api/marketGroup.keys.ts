@@ -5,5 +5,6 @@ export const marketGroupKeys = {
 
     detail: (id: number | null) => [...marketGroupKeys.all, "detail", id] as const,
 
-    options: (locale: string) => [...marketGroupKeys.all, "options", locale] as const,
+    options: (locale: string, disabled?: boolean) =>
+        [...marketGroupKeys.all, "options", locale, disabled] as const,
 };

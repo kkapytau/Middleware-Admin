@@ -5,12 +5,17 @@ import { OPTIONS_STALE_TIME } from "@/shared/constants";
 
 import { getAllMarketGroups, marketGroupKeys } from "../api";
 
-export function useAllMarketGroups(enabled = true) {
+interface UseAllMarketGroupsOptions {
+    enabled?: boolean;
+    disabled?: boolean;
+}
+
+export function useAllMarketGroups({ enabled = true, disabled }: UseAllMarketGroupsOptions = {}) {
     const { i18n } = useTranslation();
 
     return useQuery({
-        queryKey: marketGroupKeys.options(i18n.language),
-        queryFn: () => getAllMarketGroups(i18n.language),
+        queryKey: marketGroupKeys.options(i18n.language, disabled),
+        queryFn: () => getAllMarketGroups(i18n.language, disabled),
         staleTime: OPTIONS_STALE_TIME,
         enabled,
     });

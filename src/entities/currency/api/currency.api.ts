@@ -43,11 +43,13 @@ export async function getCurrency(id: number): Promise<Currency> {
     return await api.get(`${CURRENCIES_ENDPOINT}/${id}`).json<CurrencyResponse>();
 }
 
-export async function getAllCurrencies(locale: string): Promise<Currency[]> {
-    return getAllPages(getCurrencies, (a, b) =>
-        a.code.localeCompare(b.code, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllCurrencies(locale: string, disabled?: boolean): Promise<Currency[]> {
+    return getAllPages(
+        (page, size) => getCurrencies(page, size, disabled),
+        (a, b) =>
+            a.code.localeCompare(b.code, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

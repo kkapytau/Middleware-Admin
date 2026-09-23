@@ -43,8 +43,9 @@ export function TimezonesPage() {
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-    const { data: allTimezones = [], isLoading: allTimezonesLoading } =
-        useAllTimezones(shouldLoadAll);
+    const { data: allTimezones = [], isLoading: allTimezonesLoading } = useAllTimezones({
+        enabled: shouldLoadAll,
+    });
 
     const filteredTimezones = useFilter(allTimezones, filters, filterFields);
 

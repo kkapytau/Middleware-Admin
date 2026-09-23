@@ -32,6 +32,8 @@ export function LocaleForm({ isEditing, control }: LocaleFormProps) {
                 placeholder={t("form.enterName")}
             />
 
+            <FormSwitch control={control} name="isRtl" label={t("form.isRtl")} />
+
             {isEditing && (
                 <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
             )}

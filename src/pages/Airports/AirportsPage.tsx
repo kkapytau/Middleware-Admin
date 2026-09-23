@@ -36,6 +36,7 @@ export function AirportsPage() {
 
     const filterFields = CODE_NAME_DISABLED_FILTER_FIELDS;
     const emptyFilterFields = EMPTY_CODE_NAME_DISABLED_FILTERS;
+
     const {
         filters,
         hasActiveFilters,
@@ -52,7 +53,9 @@ export function AirportsPage() {
 
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
-    const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports(shouldLoadAll);
+    const { data: allAirports = [], isLoading: allAirportsLoading } = useAllAirports({
+        enabled: shouldLoadAll,
+    });
 
     const filteredAirports = useFilter(allAirports, filters, filterFields);
 

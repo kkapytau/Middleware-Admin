@@ -50,7 +50,9 @@ export function GeographicTypesPage() {
     const { page, pageSize, apiPage, handlePaginationChange } = useUrlPagination();
 
     const { data: allGeographicTypes = [], isLoading: allGeographicTypesLoading } =
-        useAllGeographicTypes(shouldLoadAll);
+        useAllGeographicTypes({
+            enabled: shouldLoadAll,
+        });
 
     const filteredGeographicTypes = useFilter(allGeographicTypes, filters, filterFields);
 

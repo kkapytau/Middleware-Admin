@@ -5,12 +5,17 @@ import { OPTIONS_STALE_TIME } from "@/shared/constants";
 
 import { areaKeys, getAllAreas } from "../api";
 
-export function useAllAreas(enabled = true) {
+interface UseAllAreasOptions {
+    enabled?: boolean;
+    disabled?: boolean;
+}
+
+export function useAllAreas({ enabled = true, disabled }: UseAllAreasOptions = {}) {
     const { i18n } = useTranslation();
 
     return useQuery({
-        queryKey: areaKeys.options(i18n.language),
-        queryFn: () => getAllAreas(i18n.language),
+        queryKey: areaKeys.options(i18n.language, disabled),
+        queryFn: () => getAllAreas(i18n.language, disabled),
         staleTime: OPTIONS_STALE_TIME,
         enabled,
     });

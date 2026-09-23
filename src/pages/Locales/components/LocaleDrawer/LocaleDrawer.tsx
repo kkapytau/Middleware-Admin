@@ -33,6 +33,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
         code: values.code,
         name: values.name,
         disabled: values.disabled,
+        isRtl: values.isRtl,
     });
 
     const { isEditing, isSubmitting, handleSubmit } = useEntityMutation({
@@ -51,6 +52,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
                       code: locale.code,
                       name: locale.name,
                       disabled: locale.disabled,
+                      isRtl: locale.isRtl,
                   }
                 : undefined,
         [locale],

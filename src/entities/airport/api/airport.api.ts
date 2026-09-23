@@ -49,22 +49,29 @@ function mapAirportDetail(response: AirportDetailResponse): AirportDetail {
     };
 }
 
-export async function getAirports(page: number, size: number): Promise<PageResponse<Airport>> {
+export async function getAirports(
+    page: number,
+    size: number,
+    disabled?: boolean,
+): Promise<PageResponse<Airport>> {
     return await api
         .get(AIRPORTS_ENDPOINT, {
             searchParams: {
                 page,
                 size,
+                ...(disabled !== undefined ? { disabled } : {}),
             },
         })
         .json<AirportListResponse>();
 }
 
-export async function getAllAirports(locale: string): Promise<Airport[]> {
-    return getAllPages(getAirports, (a, b) =>
-        a.name.localeCompare(b.name, locale, {
-            sensitivity: "base",
-        }),
+export async function getAllAirports(locale: string, disabled?: boolean): Promise<Airport[]> {
+    return getAllPages(
+        (page, size) => getAirports(page, size, disabled),
+        (a, b) =>
+            a.name.localeCompare(b.name, locale, {
+                sensitivity: "base",
+            }),
     );
 }
 

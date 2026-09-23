@@ -21,7 +21,7 @@ interface CountryListResponse {
 interface CountryDetailResponse {
     id: number;
     code: string;
-    codeNumeric: string;
+    codeNumeric: string | null;
     name: string;
     isCountry: boolean;
     isMarket: boolean;
@@ -31,13 +31,13 @@ interface CountryDetailResponse {
         code: string;
         name: string;
         disabled: boolean;
-    };
+    } | null;
     marketGroup: {
         id: number;
         code: string;
         disabled: boolean;
         translations: Record<string, string>;
-    };
+    } | null;
 }
 
 const COUNTRIES_ENDPOINT = "internal/api/v1/countries";
@@ -46,7 +46,7 @@ function mapCountryDetail(response: CountryDetailResponse): CountryDetail {
     return {
         id: response.id,
         code: response.code,
-        codeNumeric: response.codeNumeric,
+        codeNumeric: response.codeNumeric ?? "",
         name: response.name,
         isCountry: response.isCountry,
         isMarket: response.isMarket,
@@ -96,10 +96,10 @@ export async function getCountry(id: number): Promise<CountryDetail> {
 
 export interface CountryRequestValues {
     code: string;
-    codeNumeric: string;
+    codeNumeric?: string;
     name: string;
-    currencyId: number;
-    marketGroupId: number;
+    currencyId?: number;
+    marketGroupId?: number;
     isCountry: boolean;
     isMarket: boolean;
     translations: Record<string, string>;

@@ -5,5 +5,6 @@ export const geographicTypeKeys = {
 
     detail: (id: number | null) => [...geographicTypeKeys.all, "detail", id] as const,
 
-    options: (locale: string) => [...geographicTypeKeys.all, "options", locale] as const,
+    options: (locale: string, disabled?: boolean) =>
+        [...geographicTypeKeys.all, "options", locale, disabled] as const,
 };
