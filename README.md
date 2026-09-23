@@ -2,7 +2,7 @@
 
 Admin interface built with **React, TypeScript, Vite, Ant Design and TanStack Query**.
 
-The application provides an administration UI for managing middleware/domain data such as airports, cities, countries, continents and flow functions.
+The application provides an administration UI for managing middleware/domain data such as airports, cities, countries and flow functions.
 
 The project follows a lightweight feature-oriented architecture with a clear separation between application infrastructure, domain entities, pages and shared components.
 
@@ -40,7 +40,6 @@ src/
 ├── entities/
 │   ├── airport/              # Airport domain entity
 │   ├── city/                 # City domain entity
-│   ├── continent/            # Continent domain entity
 │   ├── country/              # Country domain entity
 │   └── ...
 │
@@ -48,7 +47,6 @@ src/
 │   ├── Airports/             # Airports page
 │   ├── Cities/               # Cities page
 │   ├── Countries/            # Countries page
-│   ├── Continents/           # Continents page
 │   ├── Functions/            # Flow functions page
 │   └── Login/                # Login page
 │
@@ -152,8 +150,8 @@ For example:
 pages/
 └── Airports/
     ├── components/
-    ├── AirportsPage.tsx
-    └── AirportsPage.module.scss
+    ├── CurrenciesPage.tsx
+    └── CurrenciesPage.module.scss
 ```
 
 Pages should primarily orchestrate the screen rather than contain reusable domain logic.
@@ -243,15 +241,14 @@ Unauthenticated users are redirected to:
 
 The current application routes include:
 
-| Route         | Access    | Description               |
-| ------------- | --------- | ------------------------- |
-| `/login`      | Public    | Login page                |
-| `/`           | Protected | Redirects to `/airports`  |
-| `/airports`   | Protected | Airport management        |
-| `/cities`     | Protected | City management           |
-| `/countries`  | Protected | Country management        |
-| `/continents` | Protected | Continent management      |
-| `/functions`  | Protected | Flow functions management |
+| Route        | Access    | Description               |
+| ------------ | --------- | ------------------------- |
+| `/login`     | Public    | Login page                |
+| `/`          | Protected | Redirects to `/airports`  |
+| `/airports`  | Protected | Airport management        |
+| `/cities`    | Protected | City management           |
+| `/countries` | Protected | Country management        |
+| `/functions` | Protected | Flow functions management |
 
 The location pages are no longer nested under a `/location` URL prefix.
 
@@ -261,7 +258,6 @@ For example:
 /airports
 /cities
 /countries
-/continents
 ```
 
 instead of:
@@ -270,7 +266,6 @@ instead of:
 /location/airports
 /location/cities
 /location/countries
-/location/continents
 ```
 
 ## Navigation
@@ -300,7 +295,6 @@ Location
 ├── Airports
 ├── Cities
 ├── Countries
-└── Continents
 ```
 
 The route path is used as the menu key so that the selected navigation item stays synchronized with the current URL.
@@ -658,10 +652,10 @@ Use shared controls whenever possible:
     label={t("currency.name")}
 />
 
-<FormCheckbox
-    name="deleted"
+<FormSwitch
+    name="isCountry"
     control={control}
-    label={t("common.deleted")}
+    label={t("country.isCountry")}
 />
 ```
 
@@ -973,6 +967,7 @@ FormInput
 FormNumberInput
 FormSelect
 FormCheckbox
+FormSwitch
 ```
 
 These components integrate:
@@ -1030,7 +1025,7 @@ Pages consume entity hooks rather than implementing API calls directly.
 Example:
 
 ```ts
-const { data, isLoading } = useAirports();
+const { data, isLoading } = useCurrencies();
 ```
 
 Global `QueryClient` configuration is located under:
@@ -1067,7 +1062,7 @@ Examples include:
 
 ```text
 shared/config/filters/
-├── airportFilterFields.ts
+├── codeNameDisabledFilterFields.ts
 ├── codeNameFilterFields.ts
 ├── flowRuleFilterFields.ts
 └── nameFilterFields.ts
@@ -1109,8 +1104,8 @@ Page-specific styles are kept next to the page that owns them:
 
 ```text
 Airports/
-├── AirportsPage.tsx
-└── AirportsPage.module.scss
+├── CurrenciesPage.tsx
+└── CurrenciesPage.module.scss
 ```
 
 Shared styles should only be introduced when they represent genuinely reusable UI behavior.
