@@ -150,8 +150,8 @@ For example:
 pages/
 └── Airports/
     ├── components/
-    ├── CurrenciesPage.tsx
-    └── CurrenciesPage.module.scss
+    ├── AirportsPage.tsx
+    └── AirportsPage.module.scss
 ```
 
 Pages should primarily orchestrate the screen rather than contain reusable domain logic.
@@ -326,7 +326,7 @@ For a new entity, add or update the appropriate route configuration.
 For example, if we are adding a `Currency` entity, the route could look like:
 
 ```ts
-const currencyRoute: AppRoute = {
+const currenciesRoute: AppRoute = {
     key: "currencies",
     type: "page",
     access: "protected",
@@ -334,7 +334,6 @@ const currencyRoute: AppRoute = {
     titleKey: "navigation.currencies",
     icon: DollarOutlined,
     showInNavigation: true,
-    permissions: [permissions.currency.read],
     component: CurrenciesPage,
 };
 ```
@@ -345,6 +344,30 @@ The route configuration is used for both:
 - sidebar/navigation.
 
 There is no need to maintain a separate menu configuration.
+
+### Route Permissions
+
+Currently, route visibility is not restricted by user permissions.
+All authenticated users can access the available application routes.
+
+Permissions are currently used to control entity actions such as
+creating, updating, and deleting records.
+
+Route-level permissions are opt-in. If a future route should only be
+accessible to users with a specific permission, declare it explicitly
+in the route configuration:
+
+```text
+{
+    path: "/some-admin-page",
+    element: <SomeAdminPage />,
+    permissions: [PERMISSIONS.ADMIN_AREA],
+}
+```
+
+This should only be used when access to the route itself needs to be
+restricted. Permissions for entity actions continue to control the
+available actions within accessible pages.
 
 ### Route checklist
 
@@ -422,11 +445,11 @@ The `api` directory contains HTTP requests for the entity.
 Typical operations are:
 
 ```text
-GET    /currencies
-GET    /currencies/{id}
-POST   /currencies
-PUT    /currencies/{id}
-DELETE /currencies
+GET    /internal/api/v1/currencies
+GET    /internal/api/v1/currencies/{id}
+POST   /internal/api/v1/currencies
+PUT    /internal/api/v1/currencies/{id}
+DELETE /internal/api/v1/currencies
 ```
 
 The API layer should be responsible only for communication with the backend.
@@ -1104,8 +1127,8 @@ Page-specific styles are kept next to the page that owns them:
 
 ```text
 Airports/
-├── CurrenciesPage.tsx
-└── CurrenciesPage.module.scss
+├── AirportsPage.tsx
+└── AirportsPage.module.scss
 ```
 
 Shared styles should only be introduced when they represent genuinely reusable UI behavior.
