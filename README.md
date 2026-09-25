@@ -830,6 +830,7 @@ When adding a new CRUD entity, follow this sequence:
    ├── translations
    ├── permissions
    ├── validation
+   ├── automation IDs
    └── filters/sorting/pagination if required
 ```
 
@@ -1111,6 +1112,80 @@ titleKey: "navigation.airports";
 ```
 
 This keeps route configuration independent from the actual translated text.
+
+---
+
+# Test Automation
+
+The application provides stable `data-testid` attributes for UI test automation.
+
+Test IDs are generated through the shared `AUTOMATION_IDS` configuration instead of being declared as arbitrary strings throughout the application.
+
+For example:
+
+```ts
+AUTOMATION_IDS.downloadButton("countries");
+AUTOMATION_IDS.filterActivatorButton("countries");
+```
+
+This keeps test selectors:
+
+- consistent across entities;
+- predictable for automated tests;
+- easy to discover through IDE autocomplete;
+- independent from translated labels and visual styling.
+
+## Automation ID conventions
+
+Test IDs should be semantic and describe the UI element they identify.
+
+Entity-specific IDs should be generated from the entity name rather than manually duplicated:
+
+```tsx
+<Button data-testid={AUTOMATION_IDS.downloadButton(entityName)}>...</Button>
+```
+
+Shared components should generate their automation IDs internally whenever the same UI pattern is reused across entities.
+
+For example, common controls such as:
+
+- download buttons;
+- filter activators;
+- create buttons;
+- edit/delete actions;
+- pagination;
+- navigation items;
+- form controls
+
+should use the shared automation ID conventions.
+
+## Test selectors
+
+Prefer `data-testid` for elements that need a stable automation selector.
+
+Do not use:
+
+- translated text as the primary selector;
+- CSS classes intended for styling;
+- Ant Design internal class names;
+- generated DOM structure;
+- arbitrary hard-coded test IDs repeated across entities.
+
+When possible, tests should combine a stable `data-testid` with semantic queries such as roles or accessible names.
+
+For example:
+
+```ts
+const pagination = screen.getByTestId("countries-pagination");
+
+within(pagination).getByRole("button", {
+    name: /next/i,
+});
+```
+
+The purpose of `data-testid` is to provide a stable automation contract without coupling tests to the visual implementation of the UI.
+
+When adding a new reusable UI component or entity, follow the existing `AUTOMATION_IDS` conventions instead of introducing a new ad-hoc naming scheme.
 
 ---
 
