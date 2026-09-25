@@ -6,15 +6,17 @@ import { FormInput } from "@/shared/components/form";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 
 interface FlowFormProps {
+    entityName: string;
     control: Control<FlowFormValues>;
 }
 
-export function FlowForm({ control }: FlowFormProps) {
+export function FlowForm({ control, entityName }: FlowFormProps) {
     const { t } = useTranslation("app");
 
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.flowCode")}
@@ -25,6 +27,7 @@ export function FlowForm({ control }: FlowFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.flowName")}

@@ -8,6 +8,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface FlowRulesTableProps {
     data: FlowRule[];
+    entityName: string;
     loading?: boolean;
     pagination?: TablePaginationConfig;
     deletingFlowRuleId?: number;
@@ -21,6 +22,7 @@ export function FlowRulesTable({
     onEdit,
     onDelete,
     pagination,
+    entityName,
 }: FlowRulesTableProps) {
     const { t } = useTranslation("app");
 
@@ -46,7 +48,12 @@ export function FlowRulesTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flowRule) => (
-                <EntityActions record={flowRule} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={flowRule}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -54,6 +61,7 @@ export function FlowRulesTable({
     return (
         <EntityTable<FlowRule>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

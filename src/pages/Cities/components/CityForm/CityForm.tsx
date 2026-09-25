@@ -1,4 +1,3 @@
-import { Button, Flex } from "antd";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -7,16 +6,18 @@ import { type CityFormValues } from "@/entities/city";
 import { useAllCountries } from "@/entities/country";
 import { useAllTimezones } from "@/entities/timezone";
 import { FormInput, FormSelect } from "@/shared/components/form";
+import { TranslationsButton } from "@/shared/components/form/TranslationsButton";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useTranslationsForm } from "@/shared/hooks";
 
 interface CityFormProps {
+    entityName: string;
     control: Control<CityFormValues>;
     setValue: UseFormSetValue<CityFormValues>;
 }
 
-export function CityForm({ control, setValue }: CityFormProps) {
+export function CityForm({ control, setValue, entityName }: CityFormProps) {
     const { t } = useTranslation("app");
 
     const { data: countries = [], isLoading: isLoadingCountries } = useAllCountries({
@@ -60,6 +61,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.code")}
@@ -69,6 +71,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.name")}
@@ -76,6 +79,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="countryId"
                 label={t("form.country")}
@@ -87,6 +91,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="areaId"
                 label={t("form.area")}
@@ -98,6 +103,7 @@ export function CityForm({ control, setValue }: CityFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="timeZoneId"
                 label={t("form.timezone")}
@@ -108,13 +114,14 @@ export function CityForm({ control, setValue }: CityFormProps) {
                 showSearch
             />
 
-            <Flex justify="flex-start">
-                <Button type="default" disabled={false} onClick={() => setTranslationsOpen(true)}>
-                    🌐 {t("translations.manage")}
-                </Button>
-            </Flex>
+            <TranslationsButton
+                entityName={entityName}
+                disabled={false}
+                onClick={() => setTranslationsOpen(true)}
+            ></TranslationsButton>
 
             <TranslationsModal
+                entityName={entityName}
                 key={translationsOpen ? "open" : "closed"}
                 open={translationsOpen}
                 value={translations ?? []}

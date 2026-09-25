@@ -5,16 +5,18 @@ import type { GeographicTypeFormValues } from "@/entities/geographicType";
 import { FormInput, FormSwitch } from "@/shared/components/form";
 
 interface GeographicTypeFormProps {
+    entityName: string;
     isEditing: boolean;
     control: Control<GeographicTypeFormValues>;
 }
 
-export function GeographicTypeForm({ isEditing, control }: GeographicTypeFormProps) {
+export function GeographicTypeForm({ isEditing, control, entityName }: GeographicTypeFormProps) {
     const { t } = useTranslation("app");
 
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.code")}
@@ -24,7 +26,12 @@ export function GeographicTypeForm({ isEditing, control }: GeographicTypeFormPro
             />
 
             {isEditing && (
-                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
+                <FormSwitch
+                    entityName={entityName}
+                    control={control}
+                    name="disabled"
+                    label={t("form.disabled")}
+                />
             )}
         </>
     );

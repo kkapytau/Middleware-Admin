@@ -1,4 +1,4 @@
-import { api, type PageResponse } from "@/shared/api";
+import { api, getAllPages, type PageResponse } from "@/shared/api";
 
 import type { Locale } from "../model";
 
@@ -56,6 +56,16 @@ export async function getLocale(id: number): Promise<Locale> {
     const response = await api.get(`${LOCALES_ENDPOINT}/${id}`).json<LocaleDetailResponse>();
 
     return mapLocale(response);
+}
+
+export async function getAllLocales(locale: string, disabled?: boolean): Promise<Locale[]> {
+    return getAllPages(
+        (page, size) => getLocales(page, size, disabled),
+        (a, b) =>
+            a.code.localeCompare(b.code, locale, {
+                sensitivity: "base",
+            }),
+    );
 }
 
 export interface LocaleRequestValues {

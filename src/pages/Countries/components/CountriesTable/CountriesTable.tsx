@@ -10,6 +10,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 interface CountriesTableProps {
     data: Country[];
     loading: boolean;
+    entityName: string;
     pagination?: TablePaginationConfig;
     onEdit: (country: Country) => void;
     onDelete: (country: Country) => Promise<void>;
@@ -21,6 +22,7 @@ export function CountriesTable({
     pagination,
     onEdit,
     onDelete,
+    entityName,
 }: CountriesTableProps) {
     const { t } = useTranslation("app");
 
@@ -63,7 +65,12 @@ export function CountriesTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, record) => (
-                <EntityActions record={record} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={record}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -71,6 +78,7 @@ export function CountriesTable({
     return (
         <EntityTable<Country>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

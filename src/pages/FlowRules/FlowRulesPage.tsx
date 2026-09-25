@@ -18,9 +18,12 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 import { FlowRulesDrawer } from "./components/FlowRulesDrawer";
 import { FlowRulesTable } from "./components/FlowRulesTable";
+
+const entityName = "flow-rules";
 
 export function FlowRulesPage() {
     const { t } = useTranslation("app");
@@ -93,16 +96,19 @@ export function FlowRulesPage() {
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.flowRule")}
                 onAdd={handleCreate}
                 actions={
                     <FilterButton
+                        testId={AUTOMATION_ID.filterActivator(entityName)}
                         label={t("filters.title")}
                         activeCount={activeFiltersCount}
                         open={searchOpen}
                         onOpenChange={setSearchOpen}
                     >
                         <FilterSearch
+                            entityName={entityName}
                             fields={filterFields}
                             initialValues={filters}
                             emptyValues={emptyFilterFields}
@@ -115,6 +121,7 @@ export function FlowRulesPage() {
             />
 
             <FlowRulesTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -130,6 +137,7 @@ export function FlowRulesPage() {
             />
 
             <FlowRulesDrawer
+                entityName={entityName}
                 open={drawerOpen}
                 flowRule={editingFlowRule}
                 onClose={handleDrawerClose}

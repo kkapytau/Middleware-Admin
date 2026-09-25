@@ -1,6 +1,8 @@
 import { Form, InputNumber } from "antd";
 import { Controller, type FieldValues } from "react-hook-form";
 
+import { AUTOMATION_ID } from "@/shared/lib";
+
 import type { FormNumberInputProps } from "./FormNumberInput.types";
 
 export function FormNumberInput<T extends FieldValues>({
@@ -10,6 +12,7 @@ export function FormNumberInput<T extends FieldValues>({
     placeholder,
     disabled,
     inputProps,
+    entityName,
 }: FormNumberInputProps<T>) {
     return (
         <Controller
@@ -22,6 +25,7 @@ export function FormNumberInput<T extends FieldValues>({
                     help={fieldState.error?.message}
                 >
                     <InputNumber
+                        data-testid={AUTOMATION_ID.formNumberInput(entityName, name)}
                         {...field}
                         value={field.value ?? null}
                         onChange={(value) => {

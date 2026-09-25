@@ -21,11 +21,12 @@ import { AreaForm } from "../AreaForm";
 
 interface AreaDrawerProps {
     open: boolean;
+    entityName: string;
     area?: AreaDetail;
     onClose: () => void;
 }
 
-export function AreaDrawer({ open, area, onClose }: AreaDrawerProps) {
+export function AreaDrawer({ open, area, onClose, entityName }: AreaDrawerProps) {
     const { t } = useTranslation("app");
 
     const createArea = useCreateArea();
@@ -80,6 +81,7 @@ export function AreaDrawer({ open, area, onClose }: AreaDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             submitting={isSubmitting}
             formId="area-form"
@@ -95,7 +97,12 @@ export function AreaDrawer({ open, area, onClose }: AreaDrawerProps) {
             }
             onClose={onClose}
         >
-            <AreaForm isEditing={isEditing} control={control} setValue={setValue} />
+            <AreaForm
+                entityName={entityName}
+                isEditing={isEditing}
+                control={control}
+                setValue={setValue}
+            />
         </EntityDrawer>
     );
 }

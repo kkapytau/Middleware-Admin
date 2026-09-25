@@ -21,11 +21,12 @@ import { mapTranslationsToForm } from "@/shared/lib";
 
 interface AirportDrawerProps {
     open: boolean;
+    entityName: string;
     airport?: Airport;
     onClose: () => void;
 }
 
-export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
+export function AirportDrawer({ open, airport, onClose, entityName }: AirportDrawerProps) {
     const { t } = useTranslation("app");
 
     const createAirport = useCreateAirport();
@@ -88,6 +89,7 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             loading={isEditing && isLoadingAirport}
             submitting={isSubmitting}
@@ -104,7 +106,12 @@ export function AirportDrawer({ open, airport, onClose }: AirportDrawerProps) {
             }
             onClose={onClose}
         >
-            <AirportForm isEditing={isEditing} control={control} setValue={setValue} />
+            <AirportForm
+                entityName={entityName}
+                isEditing={isEditing}
+                control={control}
+                setValue={setValue}
+            />
         </EntityDrawer>
     );
 }

@@ -5,12 +5,14 @@ import { useTranslation } from "react-i18next";
 
 import { type FlowFunctionFormValues } from "@/entities/flowFunction/model";
 import { FormInput } from "@/shared/components/form";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 interface FunctionFormProps {
+    entityName: string;
     control: Control<FlowFunctionFormValues>;
 }
 
-export function FunctionForm({ control }: FunctionFormProps) {
+export function FunctionForm({ control, entityName }: FunctionFormProps) {
     const { t } = useTranslation("app");
 
     const { fields, append, remove } = useFieldArray({
@@ -21,6 +23,7 @@ export function FunctionForm({ control }: FunctionFormProps) {
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.functionName")}
@@ -32,18 +35,21 @@ export function FunctionForm({ control }: FunctionFormProps) {
                     {fields.map((field, index) => (
                         <Flex key={field.id} gap={8}>
                             <FormInput
+                                entityName={entityName}
                                 control={control}
                                 name={`values.${index}.key`}
                                 placeholder={t("form.key")}
                             />
 
                             <FormInput
+                                entityName={entityName}
                                 control={control}
                                 name={`values.${index}.value`}
                                 placeholder={t("form.value")}
                             />
 
                             <Button
+                                data-testid={AUTOMATION_ID.removePair(entityName)}
                                 danger
                                 type="text"
                                 icon={<DeleteOutlined />}
@@ -54,6 +60,7 @@ export function FunctionForm({ control }: FunctionFormProps) {
                     ))}
 
                     <Button
+                        data-testid={AUTOMATION_ID.addPair(entityName)}
                         type="dashed"
                         icon={<PlusOutlined />}
                         onClick={() =>

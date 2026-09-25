@@ -9,6 +9,7 @@ import { useLocales } from "@/entities/locale";
 import { createTranslationsSchema } from "@/shared/components";
 import { FormInput } from "@/shared/components";
 import { DEFAULT_PAGE, MAX_PAGE_SIZE } from "@/shared/constants";
+import { AUTOMATION_ID } from "@/shared/lib";
 import type { TranslationFormValue } from "@/shared/types";
 
 interface TranslationsFormValues {
@@ -17,12 +18,19 @@ interface TranslationsFormValues {
 
 interface TranslationsModalProps {
     open: boolean;
+    entityName: string;
     value: TranslationFormValue[];
     onDone: (translations: TranslationFormValue[]) => void;
     onCancel: () => void;
 }
 
-export function TranslationsModal({ open, value, onDone, onCancel }: TranslationsModalProps) {
+export function TranslationsModal({
+    open,
+    value,
+    onDone,
+    onCancel,
+    entityName,
+}: TranslationsModalProps) {
     const { t } = useTranslation("app");
 
     const { data, isLoading } = useLocales(DEFAULT_PAGE - 1, MAX_PAGE_SIZE, false);
@@ -74,12 +82,17 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
             open={open}
             onCancel={onCancel}
             footer={[
-                <Button key="cancel" onClick={onCancel}>
+                <Button
+                    data-testid={AUTOMATION_ID.translationsCancel(entityName)}
+                    key="cancel"
+                    onClick={onCancel}
+                >
                     {t("common.cancel")}
                 </Button>,
                 ...(canUpdate
                     ? [
                           <Button
+                              data-testid={AUTOMATION_ID.translationsConfirm(entityName)}
                               key="done"
                               type="primary"
                               onClick={() => void handleSubmit(handleFormSubmit)()}
@@ -104,6 +117,7 @@ export function TranslationsModal({ open, value, onDone, onCancel }: Translation
                             <Input value={field.language} disabled style={{ width: 80 }} />
 
                             <FormInput
+                                entityName={entityName}
                                 control={control}
                                 name={`translations.${index}.value`}
                                 placeholder={t("translations.valuePlaceholder")}

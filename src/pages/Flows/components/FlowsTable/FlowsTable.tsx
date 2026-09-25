@@ -8,6 +8,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface FlowsTableProps {
     data: Flow[];
+    entityName: string;
     loading?: boolean;
     pagination?: TablePaginationConfig;
     deletingFlowId?: number;
@@ -15,7 +16,14 @@ interface FlowsTableProps {
     onDelete: (flow: Flow) => Promise<void>;
 }
 
-export function FlowsTable({ data, loading, onEdit, onDelete, pagination }: FlowsTableProps) {
+export function FlowsTable({
+    data,
+    loading,
+    onEdit,
+    onDelete,
+    pagination,
+    entityName,
+}: FlowsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<Flow> = [
@@ -34,7 +42,12 @@ export function FlowsTable({ data, loading, onEdit, onDelete, pagination }: Flow
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flow) => (
-                <EntityActions record={flow} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={flow}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -42,6 +55,7 @@ export function FlowsTable({ data, loading, onEdit, onDelete, pagination }: Flow
     return (
         <EntityTable<Flow>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

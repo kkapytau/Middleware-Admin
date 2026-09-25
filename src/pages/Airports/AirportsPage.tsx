@@ -24,10 +24,12 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
 
 import { AirportDrawer } from "./components";
 import { AirportsTable } from "./components";
+
+const entityName = "airports";
 
 export function AirportsPage() {
     const { t } = useTranslation("app");
@@ -103,23 +105,26 @@ export function AirportsPage() {
     const handleDownload = async () => {
         const blob = await downloadAirports.mutateAsync();
 
-        downloadBlob(blob, "airports.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.airports")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -130,6 +135,7 @@ export function AirportsPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadAirports.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -140,6 +146,7 @@ export function AirportsPage() {
             />
 
             <AirportsTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -153,7 +160,12 @@ export function AirportsPage() {
                 onDelete={handleDelete}
             />
 
-            <AirportDrawer open={drawerOpen} airport={airportDetail} onClose={handleClose} />
+            <AirportDrawer
+                entityName={entityName}
+                open={drawerOpen}
+                airport={airportDetail}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

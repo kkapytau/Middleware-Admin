@@ -6,15 +6,17 @@ import { FormInput, FormSwitch } from "@/shared/components/form";
 
 interface TimezoneFormProps {
     isEditing: boolean;
+    entityName: string;
     control: Control<TimezoneFormValues>;
 }
 
-export function TimezoneForm({ isEditing, control }: TimezoneFormProps) {
+export function TimezoneForm({ isEditing, control, entityName }: TimezoneFormProps) {
     const { t } = useTranslation("app");
 
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.timezoneCode")}
@@ -23,6 +25,7 @@ export function TimezoneForm({ isEditing, control }: TimezoneFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="utcOffset"
                 label={t("form.utcOffset")}
@@ -30,7 +33,12 @@ export function TimezoneForm({ isEditing, control }: TimezoneFormProps) {
             />
 
             {isEditing && (
-                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
+                <FormSwitch
+                    entityName={entityName}
+                    control={control}
+                    name="disabled"
+                    label={t("form.disabled")}
+                />
             )}
         </>
     );

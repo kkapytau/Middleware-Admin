@@ -9,12 +9,13 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 
 interface LocalesTableProps {
     data: Locale[];
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
     onEdit: (locale: Locale) => void;
 }
 
-export function LocaleTable({ data, loading, pagination, onEdit }: LocalesTableProps) {
+export function LocaleTable({ data, loading, pagination, onEdit, entityName }: LocalesTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<Locale> = [
@@ -45,13 +46,16 @@ export function LocaleTable({ data, loading, pagination, onEdit }: LocalesTableP
             title: t("actions.actions"),
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
-            render: (_, record) => <EntityActions record={record} onEdit={onEdit} />,
+            render: (_, record) => (
+                <EntityActions entityName={entityName} record={record} onEdit={onEdit} />
+            ),
         },
     ];
 
     return (
         <EntityTable<Locale>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

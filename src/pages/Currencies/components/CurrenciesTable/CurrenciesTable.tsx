@@ -9,14 +9,20 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface CurrenciesTableProps {
     data: Currency[];
-
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
 
     onEdit: (currency: Currency) => void;
 }
 
-export function CurrenciesTable({ data, loading, onEdit, pagination }: CurrenciesTableProps) {
+export function CurrenciesTable({
+    data,
+    loading,
+    onEdit,
+    pagination,
+    entityName,
+}: CurrenciesTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Currency>["columns"] = [
@@ -35,13 +41,16 @@ export function CurrenciesTable({ data, loading, onEdit, pagination }: Currencie
             title: t("actions.actions"),
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
-            render: (_, currency) => <EntityActions record={currency} onEdit={onEdit} />,
+            render: (_, currency) => (
+                <EntityActions entityName={entityName} record={currency} onEdit={onEdit} />
+            ),
         },
     ];
 
     return (
         <EntityTable<Currency>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

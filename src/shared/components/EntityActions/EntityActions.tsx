@@ -2,14 +2,16 @@ import { Button, Popconfirm, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { usePermissions } from "@/app/auth";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 interface EntityActionsProps<T> {
     record: T;
+    entityName: string;
     onEdit: (record: T) => void;
     onDelete?: (record: T) => Promise<void>;
 }
 
-export function EntityActions<T>({ record, onEdit, onDelete }: EntityActionsProps<T>) {
+export function EntityActions<T>({ record, onEdit, onDelete, entityName }: EntityActionsProps<T>) {
     const { t } = useTranslation("app");
 
     const handleDelete = () => {
@@ -22,7 +24,7 @@ export function EntityActions<T>({ record, onEdit, onDelete }: EntityActionsProp
 
     return (
         <Space>
-            <Button onClick={() => onEdit(record)}>
+            <Button data-testid={AUTOMATION_ID.edit(entityName)} onClick={() => onEdit(record)}>
                 {canUpdate ? t("actions.edit") : t("actions.view")}
             </Button>
 
@@ -33,8 +35,16 @@ export function EntityActions<T>({ record, onEdit, onDelete }: EntityActionsProp
                     onConfirm={handleDelete}
                     okText={t("actions.delete")}
                     cancelText={t("actions.cancel")}
+                    okButtonProps={{
+                        "data-testid": AUTOMATION_ID.deleteConfirm(entityName),
+                    }}
+                    cancelButtonProps={{
+                        "data-testid": AUTOMATION_ID.deleteCancel(entityName),
+                    }}
                 >
-                    <Button danger>{t("actions.delete")}</Button>
+                    <Button data-testid={AUTOMATION_ID.delete(entityName)} danger>
+                        {t("actions.delete")}
+                    </Button>
                 </Popconfirm>
             )}
         </Space>

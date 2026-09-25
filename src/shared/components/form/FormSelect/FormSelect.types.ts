@@ -11,6 +11,8 @@ export interface FormSelectProps<T extends FieldValues> {
 
     name: FieldPath<T>;
 
+    entityName: string;
+
     label?: ReactNode;
 
     placeholder?: string;

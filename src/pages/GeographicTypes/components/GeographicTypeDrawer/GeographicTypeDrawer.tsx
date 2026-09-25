@@ -17,11 +17,17 @@ import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/sha
 
 interface GeographicTypeDrawerProps {
     open: boolean;
+    entityName: string;
     geographicType?: GeographicType;
     onClose: () => void;
 }
 
-export function GeographicTypeDrawer({ open, geographicType, onClose }: GeographicTypeDrawerProps) {
+export function GeographicTypeDrawer({
+    open,
+    geographicType,
+    onClose,
+    entityName,
+}: GeographicTypeDrawerProps) {
     const { t } = useTranslation("app");
 
     const createGeographicType = useCreateGeographicType();
@@ -70,6 +76,7 @@ export function GeographicTypeDrawer({ open, geographicType, onClose }: Geograph
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             submitting={isSubmitting}
             formId="geographic-type-form"
@@ -85,7 +92,7 @@ export function GeographicTypeDrawer({ open, geographicType, onClose }: Geograph
             }
             onClose={onClose}
         >
-            <GeographicTypeForm isEditing={isEditing} control={control} />
+            <GeographicTypeForm entityName={entityName} isEditing={isEditing} control={control} />
         </EntityDrawer>
     );
 }

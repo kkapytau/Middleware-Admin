@@ -22,7 +22,9 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
+
+const entityName = "cities";
 
 export function CitiesPage() {
     const { t } = useTranslation("app");
@@ -95,23 +97,26 @@ export function CitiesPage() {
     const handleDownload = async () => {
         const blob = await downloadCities.mutateAsync();
 
-        downloadBlob(blob, "cities.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.city")}
                 onAdd={handleAdd}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -122,6 +127,7 @@ export function CitiesPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadCities.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -132,6 +138,7 @@ export function CitiesPage() {
             />
 
             <CityTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -146,7 +153,12 @@ export function CitiesPage() {
                 onDelete={handleDelete}
             />
 
-            <CityDrawer open={openDrawer} city={editingCity} onClose={handleClose} />
+            <CityDrawer
+                entityName={entityName}
+                open={openDrawer}
+                city={editingCity}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

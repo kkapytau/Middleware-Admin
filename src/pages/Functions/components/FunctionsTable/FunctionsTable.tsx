@@ -8,6 +8,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface FunctionsTableProps {
     data: FlowFunction[];
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
     onEdit: (flowFunction: FlowFunction) => void;
@@ -20,6 +21,7 @@ export function FunctionsTable({
     onEdit,
     onDelete,
     pagination,
+    entityName,
 }: FunctionsTableProps) {
     const { t } = useTranslation("app");
 
@@ -34,7 +36,12 @@ export function FunctionsTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, flowFunction) => (
-                <EntityActions record={flowFunction} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={flowFunction}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -42,6 +49,7 @@ export function FunctionsTable({
     return (
         <EntityTable<FlowFunction>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

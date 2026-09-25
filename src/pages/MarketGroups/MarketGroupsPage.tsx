@@ -21,9 +21,11 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
 
 import { MarketGroupDrawer, MarketGroupsTable } from "./components";
+
+const entityName = "market-groups";
 
 export function MarketGroupsPage() {
     const { t } = useTranslation("app");
@@ -100,23 +102,26 @@ export function MarketGroupsPage() {
     const handleDownload = async () => {
         const blob = await downloadMarketGroups.mutateAsync();
 
-        downloadBlob(blob, "market-groups.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.marketGroups")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -127,6 +132,7 @@ export function MarketGroupsPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadMarketGroups.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -137,6 +143,7 @@ export function MarketGroupsPage() {
             />
 
             <MarketGroupsTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -153,6 +160,7 @@ export function MarketGroupsPage() {
             />
 
             <MarketGroupDrawer
+                entityName={entityName}
                 open={drawerOpen}
                 marketGroup={marketGroupDetail}
                 onClose={handleClose}

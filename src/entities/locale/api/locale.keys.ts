@@ -9,4 +9,7 @@ export const localeKeys = {
     details: () => [...localeKeys.all, "detail"] as const,
 
     detail: (id: number) => [...localeKeys.details(), id] as const,
+
+    options: (locale: string, disabled?: boolean) =>
+        [...localeKeys.all, "options", locale, disabled] as const,
 };

@@ -9,7 +9,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface MarketGroupsTableProps {
     data: MarketGroup[];
-
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
 
@@ -23,6 +23,7 @@ export function MarketGroupsTable({
     onEdit,
     onDelete,
     pagination,
+    entityName,
 }: MarketGroupsTableProps) {
     const { t } = useTranslation("app");
 
@@ -43,7 +44,12 @@ export function MarketGroupsTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, marketGroup) => (
-                <EntityActions record={marketGroup} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={marketGroup}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -51,6 +57,7 @@ export function MarketGroupsTable({
     return (
         <EntityTable<MarketGroup>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

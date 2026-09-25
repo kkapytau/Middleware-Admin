@@ -17,11 +17,12 @@ import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/sha
 
 interface CurrencyDrawerProps {
     open: boolean;
+    entityName: string;
     currency?: Currency;
     onClose: () => void;
 }
 
-export function CurrencyDrawer({ open, currency, onClose }: CurrencyDrawerProps) {
+export function CurrencyDrawer({ open, currency, onClose, entityName }: CurrencyDrawerProps) {
     const { t } = useTranslation("app");
 
     const createCurrency = useCreateCurrency();
@@ -70,6 +71,7 @@ export function CurrencyDrawer({ open, currency, onClose }: CurrencyDrawerProps)
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             submitting={isSubmitting}
             formId="currency-form"
@@ -85,7 +87,7 @@ export function CurrencyDrawer({ open, currency, onClose }: CurrencyDrawerProps)
             }
             onClose={onClose}
         >
-            <CurrencyForm isEditing={isEditing} control={control} />
+            <CurrencyForm entityName={entityName} isEditing={isEditing} control={control} />
         </EntityDrawer>
     );
 }

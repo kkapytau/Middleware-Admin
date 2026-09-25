@@ -9,7 +9,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 
 interface AirportsTableProps {
     data: Airport[];
-
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
 
@@ -18,7 +18,14 @@ interface AirportsTableProps {
     onDelete: (airport: Airport) => Promise<void>;
 }
 
-export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: AirportsTableProps) {
+export function AirportsTable({
+    data,
+    loading,
+    onEdit,
+    onDelete,
+    pagination,
+    entityName,
+}: AirportsTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Airport>["columns"] = [
@@ -44,7 +51,12 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, airport) => (
-                <EntityActions record={airport} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={airport}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -52,6 +64,7 @@ export function AirportsTable({ data, loading, onEdit, onDelete, pagination }: A
     return (
         <EntityTable<Airport>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

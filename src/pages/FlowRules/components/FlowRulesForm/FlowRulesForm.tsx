@@ -8,10 +8,11 @@ import type { FlowRuleFormValues } from "@/entities/flowRule";
 import { FormInput, FormSelect } from "@/shared/components/form";
 
 interface FlowRuleFormProps {
+    entityName: string;
     control: Control<FlowRuleFormValues>;
 }
 
-export function FlowRulesForm({ control }: FlowRuleFormProps) {
+export function FlowRulesForm({ control, entityName }: FlowRuleFormProps) {
     const { t } = useTranslation("app");
 
     const { data: flows = [], isLoading: flowsLoading } = useAllFlows();
@@ -24,6 +25,7 @@ export function FlowRulesForm({ control }: FlowRuleFormProps) {
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.flowRuleName")}
@@ -31,6 +33,7 @@ export function FlowRulesForm({ control }: FlowRuleFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="flowId"
                 label={t("form.flow")}

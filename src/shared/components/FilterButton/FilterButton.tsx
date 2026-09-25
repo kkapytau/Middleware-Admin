@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 interface FilterButtonProps {
     label: ReactNode;
+    testId: string;
     activeCount?: number;
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -17,6 +18,7 @@ export function FilterButton({
     open,
     onOpenChange,
     placement = "bottomLeft",
+    testId,
     children,
 }: FilterButtonProps) {
     return (
@@ -28,7 +30,9 @@ export function FilterButton({
             content={children}
         >
             <Badge count={activeCount} size="small">
-                <Button icon={<FilterOutlined />}>{label}</Button>
+                <Button data-testid={testId} icon={<FilterOutlined />}>
+                    {label}
+                </Button>
             </Badge>
         </Popover>
     );

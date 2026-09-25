@@ -22,7 +22,9 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
+
+const entityName = "countries";
 
 export function CountriesPage() {
     const { t } = useTranslation("app");
@@ -92,17 +94,19 @@ export function CountriesPage() {
     const handleDownload = async () => {
         const blob = await downloadCountries.mutateAsync();
 
-        downloadBlob(blob, "countries.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.countries")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
@@ -110,6 +114,7 @@ export function CountriesPage() {
                             placement="bottom"
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -120,6 +125,7 @@ export function CountriesPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadCountries.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -130,6 +136,7 @@ export function CountriesPage() {
             />
 
             <CountriesTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -143,7 +150,12 @@ export function CountriesPage() {
                 onDelete={handleDelete}
             />
 
-            <CountryDrawer open={drawerOpen} country={editingCountry} onClose={handleClose} />
+            <CountryDrawer
+                entityName={entityName}
+                open={drawerOpen}
+                country={editingCountry}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

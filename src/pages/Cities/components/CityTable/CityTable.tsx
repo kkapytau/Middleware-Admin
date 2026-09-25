@@ -9,13 +9,21 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 interface CityTableProps {
     data: City[];
     loading: boolean;
+    entityName: string;
     pagination?: TablePaginationConfig;
     deleting: boolean;
     onEdit: (city: City) => void;
     onDelete: (city: City) => Promise<void>;
 }
 
-export function CityTable({ data, loading, onEdit, onDelete, pagination }: CityTableProps) {
+export function CityTable({
+    data,
+    loading,
+    onEdit,
+    onDelete,
+    pagination,
+    entityName,
+}: CityTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<City> = [
@@ -35,7 +43,12 @@ export function CityTable({ data, loading, onEdit, onDelete, pagination }: CityT
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, city) => (
-                <EntityActions record={city} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={city}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -43,6 +56,7 @@ export function CityTable({ data, loading, onEdit, onDelete, pagination }: CityT
     return (
         <EntityTable<City>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

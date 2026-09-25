@@ -20,11 +20,17 @@ import { mapTranslationsToForm } from "@/shared/lib";
 
 interface MarketGroupDrawerProps {
     open: boolean;
+    entityName: string;
     marketGroup?: MarketGroup;
     onClose: () => void;
 }
 
-export function MarketGroupDrawer({ open, marketGroup, onClose }: MarketGroupDrawerProps) {
+export function MarketGroupDrawer({
+    open,
+    marketGroup,
+    onClose,
+    entityName,
+}: MarketGroupDrawerProps) {
     const { t } = useTranslation("app");
 
     const createMarketGroup = useCreateMarketGroup();
@@ -84,6 +90,7 @@ export function MarketGroupDrawer({ open, marketGroup, onClose }: MarketGroupDra
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             loading={isEditing && isLoadingMarketGroup}
             submitting={isSubmitting}
@@ -100,7 +107,12 @@ export function MarketGroupDrawer({ open, marketGroup, onClose }: MarketGroupDra
             }
             onClose={onClose}
         >
-            <MarketGroupForm isEditing={isEditing} control={control} setValue={setValue} />
+            <MarketGroupForm
+                entityName={entityName}
+                isEditing={isEditing}
+                control={control}
+                setValue={setValue}
+            />
         </EntityDrawer>
     );
 }

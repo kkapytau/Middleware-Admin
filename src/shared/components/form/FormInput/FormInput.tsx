@@ -2,6 +2,8 @@ import { Form, Input } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
+import { AUTOMATION_ID } from "@/shared/lib";
+
 import type { FormInputProps } from "./FormInput.types";
 
 export function FormInput<T extends FieldValues>({
@@ -14,6 +16,7 @@ export function FormInput<T extends FieldValues>({
     maxLength,
     minLength,
     uppercase,
+    entityName,
 }: FormInputProps<T>) {
     return (
         <Controller
@@ -26,6 +29,7 @@ export function FormInput<T extends FieldValues>({
                     help={fieldState.error?.message}
                 >
                     <Input
+                        data-testid={AUTOMATION_ID.formInput(entityName, name)}
                         {...field}
                         prefix={prefix}
                         placeholder={placeholder}

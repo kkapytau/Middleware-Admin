@@ -1,3 +1,4 @@
+export * from "./automationId/getAutomationId";
 export * from "./download/downloadBlob";
 export * from "./filters/activeFilter/getActiveFiltersCount";
 export * from "./filters/activeFilter/isFilterValueActive";

@@ -15,9 +15,11 @@ import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
 import { CODE_DISABLED_FILTER_FIELDS, EMPTY_CODE_DISABLED_FILTERS } from "@/shared/config/filters";
 import { useFilter, useUrlFilters, useUrlPagination } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
 
 import { CurrenciesTable, CurrencyDrawer } from "./components";
+
+const entityName = "currencies";
 
 export function CurrenciesPage() {
     const { t } = useTranslation("app");
@@ -78,23 +80,26 @@ export function CurrenciesPage() {
     const handleDownload = async () => {
         const blob = await downloadCurrencies.mutateAsync();
 
-        downloadBlob(blob, "currencies.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.currencies")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -105,6 +110,7 @@ export function CurrenciesPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadCurrencies.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -115,6 +121,7 @@ export function CurrenciesPage() {
             />
 
             <CurrenciesTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -129,7 +136,12 @@ export function CurrenciesPage() {
                 onEdit={handleEdit}
             />
 
-            <CurrencyDrawer open={drawerOpen} currency={currencyDetail} onClose={handleClose} />
+            <CurrencyDrawer
+                entityName={entityName}
+                open={drawerOpen}
+                currency={currencyDetail}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

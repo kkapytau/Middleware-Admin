@@ -9,6 +9,7 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH } from "@/shared/constants";
 
 interface GeographicTypesTableProps {
     data: GeographicType[];
+    entityName: string;
 
     loading: boolean;
     pagination?: TablePaginationConfig;
@@ -24,6 +25,7 @@ export function GeographicTypesTable({
     onEdit,
     onDelete,
     pagination,
+    entityName,
 }: GeographicTypesTableProps) {
     const { t } = useTranslation("app");
 
@@ -44,7 +46,12 @@ export function GeographicTypesTable({
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, geographicType) => (
-                <EntityActions record={geographicType} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={geographicType}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -52,6 +59,7 @@ export function GeographicTypesTable({
     return (
         <EntityTable<GeographicType>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

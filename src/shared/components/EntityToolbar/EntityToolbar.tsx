@@ -8,10 +8,11 @@ import { usePermissions } from "@/app/auth";
 interface EntityToolbarProps {
     entity: string;
     onAdd: () => void;
+    testId: string;
     actions?: React.ReactNode;
 }
 
-export function EntityToolbar({ entity, onAdd, actions }: EntityToolbarProps) {
+export function EntityToolbar({ entity, onAdd, actions, testId }: EntityToolbarProps) {
     const { t } = useTranslation("app");
 
     const { canCreate } = usePermissions();
@@ -22,6 +23,7 @@ export function EntityToolbar({ entity, onAdd, actions }: EntityToolbarProps) {
 
             {canCreate && (
                 <Button
+                    data-testid={testId}
                     type="primary"
                     icon={<PlusOutlined />}
                     onClick={onAdd}

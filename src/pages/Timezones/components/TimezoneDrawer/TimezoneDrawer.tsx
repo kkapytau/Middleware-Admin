@@ -17,11 +17,12 @@ import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/sha
 
 interface TimezoneDrawerProps {
     open: boolean;
+    entityName: string;
     timezone?: Timezone;
     onClose: () => void;
 }
 
-export function TimezoneDrawer({ open, timezone, onClose }: TimezoneDrawerProps) {
+export function TimezoneDrawer({ open, timezone, onClose, entityName }: TimezoneDrawerProps) {
     const { t } = useTranslation("app");
 
     const createTimezone = useCreateTimezone();
@@ -74,6 +75,7 @@ export function TimezoneDrawer({ open, timezone, onClose }: TimezoneDrawerProps)
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             loading={false}
             submitting={isSubmitting}
@@ -90,7 +92,7 @@ export function TimezoneDrawer({ open, timezone, onClose }: TimezoneDrawerProps)
             }
             onClose={onClose}
         >
-            <TimezoneForm isEditing={isEditing} control={control} />
+            <TimezoneForm entityName={entityName} isEditing={isEditing} control={control} />
         </EntityDrawer>
     );
 }

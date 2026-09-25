@@ -3,6 +3,7 @@ import { Button, Card, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/app/auth";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 import styles from "./LoginPage.module.scss";
 
@@ -19,7 +20,13 @@ export function LoginPage() {
                     {t("login.title")}
                 </Title>
 
-                <Button type="primary" block icon={<WindowsOutlined />} onClick={signIn}>
+                <Button
+                    data-testid={AUTOMATION_ID.login()}
+                    type="primary"
+                    block
+                    icon={<WindowsOutlined />}
+                    onClick={signIn}
+                >
                     {t("login.signIn")}
                 </Button>
             </Card>

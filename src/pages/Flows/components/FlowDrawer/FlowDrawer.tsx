@@ -19,11 +19,12 @@ import { FlowForm } from "../FlowForm";
 
 interface FlowDrawerProps {
     open: boolean;
+    entityName: string;
     flow?: Flow;
     onClose: () => void;
 }
 
-export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
+export function FlowDrawer({ open, flow, onClose, entityName }: FlowDrawerProps) {
     const { t } = useTranslation("app");
 
     const createFlow = useCreateFlow();
@@ -69,6 +70,7 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             submitting={isSubmitting}
             onSubmit={handleFormFinish}
@@ -84,7 +86,7 @@ export function FlowDrawer({ open, flow, onClose }: FlowDrawerProps) {
             }
             onClose={onClose}
         >
-            <FlowForm control={control} />
+            <FlowForm entityName={entityName} control={control} />
         </EntityDrawer>
     );
 }

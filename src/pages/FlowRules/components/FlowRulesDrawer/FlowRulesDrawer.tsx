@@ -19,11 +19,12 @@ import { FlowRulesForm } from "../FlowRulesForm";
 
 interface FlowRuleDrawerProps {
     open: boolean;
+    entityName: string;
     flowRule?: FlowRule;
     onClose: () => void;
 }
 
-export function FlowRulesDrawer({ open, flowRule, onClose }: FlowRuleDrawerProps) {
+export function FlowRulesDrawer({ open, flowRule, onClose, entityName }: FlowRuleDrawerProps) {
     const { t } = useTranslation("app");
 
     const createFlowRule = useCreateFlowRule();
@@ -77,6 +78,7 @@ export function FlowRulesDrawer({ open, flowRule, onClose }: FlowRuleDrawerProps
     return (
         <EntityDrawer<FlowRuleFormValues>
             open={open}
+            entityName={entityName}
             submitting={isSubmitting}
             formId="flow-rule-form"
             title={
@@ -91,7 +93,7 @@ export function FlowRulesDrawer({ open, flowRule, onClose }: FlowRuleDrawerProps
             onSubmit={handleFormFinish}
             onClose={onClose}
         >
-            <FlowRulesForm control={control} />
+            <FlowRulesForm entityName={entityName} control={control} />
         </EntityDrawer>
     );
 }

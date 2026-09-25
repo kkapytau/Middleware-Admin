@@ -18,11 +18,12 @@ import { useEntityForm, useEntityMutation, useMutationErrorHandler } from "@/sha
 
 interface LocaleDrawerProps {
     open: boolean;
+    entityName: string;
     locale?: Locale;
     onClose: () => void;
 }
 
-export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
+export function LocaleDrawer({ open, locale, onClose, entityName }: LocaleDrawerProps) {
     const { t } = useTranslation("app");
 
     const createLocale = useCreateLocale();
@@ -75,6 +76,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             onSubmit={handleFormFinish}
             submitting={isSubmitting}
@@ -90,7 +92,7 @@ export function LocaleDrawer({ open, locale, onClose }: LocaleDrawerProps) {
             }
             onClose={onClose}
         >
-            <LocaleForm isEditing={isEditing} control={control} />
+            <LocaleForm entityName={entityName} isEditing={isEditing} control={control} />
         </EntityDrawer>
     );
 }

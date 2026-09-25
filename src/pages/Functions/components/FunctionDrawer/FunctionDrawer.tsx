@@ -19,11 +19,12 @@ import { identity } from "@/shared/lib";
 
 interface FunctionDrawerProps {
     open: boolean;
+    entityName: string;
     flowFunction?: FlowFunctionDetail;
     onClose: () => void;
 }
 
-export function FunctionDrawer({ open, flowFunction, onClose }: FunctionDrawerProps) {
+export function FunctionDrawer({ open, flowFunction, onClose, entityName }: FunctionDrawerProps) {
     const { t } = useTranslation("app");
 
     const createFlowFunction = useCreateFlowFunction();
@@ -71,6 +72,7 @@ export function FunctionDrawer({ open, flowFunction, onClose }: FunctionDrawerPr
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             submitting={isSubmitting}
             onSubmit={handleFormFinish}
@@ -86,7 +88,7 @@ export function FunctionDrawer({ open, flowFunction, onClose }: FunctionDrawerPr
             }
             onClose={onClose}
         >
-            <FunctionForm control={control} />
+            <FunctionForm entityName={entityName} control={control} />
         </EntityDrawer>
     );
 }

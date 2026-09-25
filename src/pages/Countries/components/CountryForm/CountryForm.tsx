@@ -1,5 +1,4 @@
-import { Button, Flex } from "antd";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -7,16 +6,18 @@ import { type CountryFormValues } from "@/entities/country";
 import { useAllCurrencies } from "@/entities/currency";
 import { useAllMarketGroups } from "@/entities/marketGroup";
 import { FormInput, FormSelect, FormSwitch } from "@/shared/components/form";
+import { TranslationsButton } from "@/shared/components/form/TranslationsButton";
 import { TranslationsModal } from "@/shared/components/TranslationsModal";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 import { useTranslationsForm } from "@/shared/hooks";
 
 interface CountryFormProps {
+    entityName: string;
     control: Control<CountryFormValues>;
     setValue: UseFormSetValue<CountryFormValues>;
 }
 
-export function CountryForm({ control, setValue }: CountryFormProps) {
+export function CountryForm({ control, setValue, entityName }: CountryFormProps) {
     const { t } = useTranslation("app");
 
     const { data: currencies = [], isLoading: isCurrenciesLoading } = useAllCurrencies({
@@ -47,17 +48,24 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
         name: "isMarket",
     });
 
+    const previousIsCountry = useRef(isCountry);
+    const previousIsMarket = useRef(isMarket);
+
     useEffect(() => {
-        if (!isCountry) {
+        if (previousIsCountry.current && !isCountry) {
             setValue("codeNumeric", "");
             setValue("currencyId", null);
         }
+
+        previousIsCountry.current = isCountry;
     }, [isCountry, setValue]);
 
     useEffect(() => {
-        if (!isMarket) {
+        if (previousIsMarket.current && !isMarket) {
             setValue("marketGroupId", null);
         }
+
+        previousIsMarket.current = isMarket;
     }, [isMarket, setValue]);
 
     const {
@@ -74,6 +82,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.code")}
@@ -83,6 +92,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="codeNumeric"
                 label={t("form.codeNumeric")}
@@ -92,6 +102,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.name")}
@@ -99,6 +110,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="currencyId"
                 label={t("form.currency")}
@@ -111,6 +123,7 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
             />
 
             <FormSelect
+                entityName={entityName}
                 control={control}
                 name="marketGroupId"
                 label={t("form.marketGroup")}
@@ -122,17 +135,28 @@ export function CountryForm({ control, setValue }: CountryFormProps) {
                 disabled={!isMarket}
             />
 
-            <FormSwitch control={control} name="isCountry" label={t("form.isCountry")} />
+            <FormSwitch
+                entityName={entityName}
+                control={control}
+                name="isCountry"
+                label={t("form.isCountry")}
+            />
 
-            <FormSwitch control={control} name="isMarket" label={t("form.isMarket")} />
+            <FormSwitch
+                entityName={entityName}
+                control={control}
+                name="isMarket"
+                label={t("form.isMarket")}
+            />
 
-            <Flex justify="flex-start">
-                <Button type="default" onClick={() => setTranslationsOpen(true)}>
-                    🌐 {t("translations.manage")}
-                </Button>
-            </Flex>
+            <TranslationsButton
+                entityName={entityName}
+                disabled={false}
+                onClick={() => setTranslationsOpen(true)}
+            ></TranslationsButton>
 
             <TranslationsModal
+                entityName={entityName}
                 key={translationsOpen ? "open" : "closed"}
                 open={translationsOpen}
                 value={translations ?? []}

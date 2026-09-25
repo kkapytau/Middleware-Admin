@@ -6,16 +6,18 @@ import { FormInput, FormSwitch } from "@/shared/components/form";
 import { MAX_CODE_LENGTH } from "@/shared/constants";
 
 interface LocaleFormProps {
+    entityName: string;
     isEditing: boolean;
     control: Control<LocaleFormValues>;
 }
 
-export function LocaleForm({ isEditing, control }: LocaleFormProps) {
+export function LocaleForm({ isEditing, control, entityName }: LocaleFormProps) {
     const { t } = useTranslation("app");
 
     return (
         <>
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="code"
                 label={t("form.code")}
@@ -26,16 +28,27 @@ export function LocaleForm({ isEditing, control }: LocaleFormProps) {
             />
 
             <FormInput
+                entityName={entityName}
                 control={control}
                 name="name"
                 label={t("form.name")}
                 placeholder={t("form.enterName")}
             />
 
-            <FormSwitch control={control} name="isRtl" label={t("form.isRtl")} />
+            <FormSwitch
+                entityName={entityName}
+                control={control}
+                name="isRtl"
+                label={t("form.isRtl")}
+            />
 
             {isEditing && (
-                <FormSwitch control={control} name="disabled" label={t("form.disabled")} />
+                <FormSwitch
+                    entityName={entityName}
+                    control={control}
+                    name="disabled"
+                    label={t("form.disabled")}
+                />
             )}
         </>
     );

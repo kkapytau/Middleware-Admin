@@ -15,9 +15,11 @@ import { FilterButton } from "@/shared/components/FilterButton";
 import { FilterSearch } from "@/shared/components/FilterSearch";
 import { CODE_DISABLED_FILTER_FIELDS, EMPTY_CODE_DISABLED_FILTERS } from "@/shared/config/filters";
 import { useFilter, useUrlFilters, useUrlPagination } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
 
 import { TimezoneDrawer, TimezonesTable } from "./components";
+
+const entityName = "time-zones";
 
 export function TimezonesPage() {
     const { t } = useTranslation("app");
@@ -78,23 +80,26 @@ export function TimezonesPage() {
     const handleDownload = async () => {
         const blob = await downloadTimezones.mutateAsync();
 
-        downloadBlob(blob, "timezones.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.timezones")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -105,6 +110,7 @@ export function TimezonesPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadTimezones.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -115,6 +121,7 @@ export function TimezonesPage() {
             />
 
             <TimezonesTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -127,7 +134,12 @@ export function TimezonesPage() {
                 onEdit={handleEdit}
             />
 
-            <TimezoneDrawer open={drawerOpen} timezone={timezoneDetail} onClose={handleClose} />
+            <TimezoneDrawer
+                entityName={entityName}
+                open={drawerOpen}
+                timezone={timezoneDetail}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

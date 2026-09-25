@@ -12,6 +12,7 @@ interface FilterSearchProps<TItem extends object, TFilters extends object> {
     fields: FilterFieldConfig<TItem>[];
     initialValues: TFilters;
     emptyValues: TFilters;
+    entityName: string;
     onChange: (values: TFilters) => void;
     onReset: () => void;
     onClose: () => void;
@@ -24,6 +25,7 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
     onChange,
     onReset,
     onClose,
+    entityName,
 }: FilterSearchProps<TItem, TFilters>) {
     const { t } = useTranslation("app");
 
@@ -43,6 +45,7 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
                         case "text":
                             return (
                                 <FormInput
+                                    entityName={entityName}
                                     key={field.name}
                                     control={control}
                                     name={field.name as Path<TFilters>}
@@ -61,6 +64,7 @@ export function FilterSearch<TItem extends object, TFilters extends object>({
                                     style={field.type === "boolean" ? { width: 150 } : undefined}
                                 >
                                     <BooleanFilterSelect
+                                        entityName={entityName}
                                         key={field.name}
                                         control={control}
                                         name={field.name as Path<TFilters>}

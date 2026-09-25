@@ -3,11 +3,13 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import { usePermissions } from "@/app/auth";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 import styles from "./EntityDrawer.module.scss";
 
 type EntityDrawerProps<TFormValues> = {
     open: boolean;
+    entityName: string;
     loading?: boolean;
     title: ReactNode;
     formId: string;
@@ -21,6 +23,7 @@ export function EntityDrawer<TFormValues>({
     open,
     loading = false,
     title,
+    entityName,
     formId,
     submitting = false,
     onClose,
@@ -49,12 +52,17 @@ export function EntityDrawer<TFormValues>({
             footer={
                 <div className={styles.footer}>
                     <Space>
-                        <Button onClick={onClose} disabled={submitting}>
+                        <Button
+                            data-testid={AUTOMATION_ID.formCancel(entityName)}
+                            onClick={onClose}
+                            disabled={submitting}
+                        >
                             {t("actions.cancel")}
                         </Button>
 
                         {canUpdate && (
                             <Button
+                                data-testid={AUTOMATION_ID.formConfirm(entityName)}
                                 type="primary"
                                 htmlType="submit"
                                 form={formId}

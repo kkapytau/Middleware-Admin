@@ -8,6 +8,7 @@ import type { UserRole } from "@/app/auth";
 import { hasPermission, useAuth } from "@/app/auth";
 import { type AppRoute, appRoutes } from "@/app/routes";
 import { AppLogo } from "@/shared/components";
+import { AUTOMATION_ID } from "@/shared/lib";
 
 import styles from "./AppSidebar.module.scss";
 
@@ -41,7 +42,11 @@ function buildMenuItems(
             return [
                 {
                     key: route.key,
-                    label: t(route.titleKey),
+                    label: (
+                        <span data-testid={AUTOMATION_ID.navigationGroup(route.key)}>
+                            {t(route.titleKey)}
+                        </span>
+                    ),
                     icon: Icon ? <Icon /> : undefined,
                     children,
                 },
@@ -51,7 +56,11 @@ function buildMenuItems(
         return [
             {
                 key: route.path,
-                label: t(route.titleKey),
+                label: (
+                    <span data-testid={AUTOMATION_ID.navigationItem(route.key)}>
+                        {t(route.titleKey)}
+                    </span>
+                ),
                 icon: Icon ? <Icon /> : undefined,
             },
         ];

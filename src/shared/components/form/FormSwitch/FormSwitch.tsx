@@ -2,6 +2,8 @@ import { Form, Switch } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
+import { AUTOMATION_ID } from "@/shared/lib";
+
 import type { FormSwitchProps } from "./FormSwitch.types";
 
 export function FormSwitch<T extends FieldValues>({
@@ -10,6 +12,7 @@ export function FormSwitch<T extends FieldValues>({
     label,
     disabled,
     switchProps,
+    entityName,
 }: FormSwitchProps<T>) {
     return (
         <Controller
@@ -22,6 +25,7 @@ export function FormSwitch<T extends FieldValues>({
                     help={fieldState.error?.message}
                 >
                     <Switch
+                        data-testid={AUTOMATION_ID.formSwitch(entityName, name)}
                         checked={Boolean(field.value)}
                         onChange={field.onChange}
                         disabled={disabled}

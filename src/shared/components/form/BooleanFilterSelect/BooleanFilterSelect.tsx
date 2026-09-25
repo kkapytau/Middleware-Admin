@@ -2,6 +2,8 @@ import { Form, Select } from "antd";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
+import { AUTOMATION_ID } from "@/shared/lib";
+
 import type { BooleanFilterSelectProps } from "./BooleanFilterSelect.types";
 
 const ALL_VALUE = "__all__";
@@ -14,6 +16,7 @@ export function BooleanFilterSelect<T extends FieldValues>({
     trueLabel,
     falseLabel,
     disabled,
+    entityName,
 }: BooleanFilterSelectProps<T>) {
     return (
         <Controller
@@ -30,6 +33,7 @@ export function BooleanFilterSelect<T extends FieldValues>({
                         help={fieldState.error?.message}
                     >
                         <Select
+                            data-testid={AUTOMATION_ID.formSelect(entityName, name)}
                             value={value}
                             onChange={(nextValue) => {
                                 field.onChange(nextValue === ALL_VALUE ? "" : nextValue);

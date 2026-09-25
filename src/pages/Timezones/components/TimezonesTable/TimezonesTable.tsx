@@ -9,14 +9,20 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 
 interface TimezonesTableProps {
     data: Timezone[];
-
+    entityName: string;
     loading: boolean;
     pagination?: TablePaginationConfig;
 
     onEdit: (timezone: Timezone) => void;
 }
 
-export function TimezonesTable({ data, loading, onEdit, pagination }: TimezonesTableProps) {
+export function TimezonesTable({
+    data,
+    loading,
+    onEdit,
+    pagination,
+    entityName,
+}: TimezonesTableProps) {
     const { t } = useTranslation("app");
 
     const columns: TableProps<Timezone>["columns"] = [
@@ -42,13 +48,16 @@ export function TimezonesTable({ data, loading, onEdit, pagination }: TimezonesT
             title: t("actions.actions"),
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
-            render: (_, timezone) => <EntityActions record={timezone} onEdit={onEdit} />,
+            render: (_, timezone) => (
+                <EntityActions entityName={entityName} record={timezone} onEdit={onEdit} />
+            ),
         },
     ];
 
     return (
         <EntityTable<Timezone>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

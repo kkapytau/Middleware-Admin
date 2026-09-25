@@ -10,12 +10,20 @@ import { LOCATION_ACTIONS_COLUMN_WIDTH, LOCATION_CODE_COLUMN_WIDTH } from "@/sha
 interface AreasTableProps {
     data: Area[];
     loading: boolean;
+    entityName: string;
     pagination?: TablePaginationConfig;
     onEdit: (area: Area) => void;
     onDelete: (area: Area) => Promise<void>;
 }
 
-export function AreasTable({ data, loading, onEdit, onDelete, pagination }: AreasTableProps) {
+export function AreasTable({
+    data,
+    loading,
+    onEdit,
+    onDelete,
+    pagination,
+    entityName,
+}: AreasTableProps) {
     const { t } = useTranslation("app");
 
     const columns: ColumnsType<Area> = [
@@ -41,7 +49,12 @@ export function AreasTable({ data, loading, onEdit, onDelete, pagination }: Area
             key: "actions",
             width: LOCATION_ACTIONS_COLUMN_WIDTH,
             render: (_, record) => (
-                <EntityActions record={record} onEdit={onEdit} onDelete={onDelete} />
+                <EntityActions
+                    entityName={entityName}
+                    record={record}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ),
         },
     ];
@@ -49,6 +62,7 @@ export function AreasTable({ data, loading, onEdit, onDelete, pagination }: Area
     return (
         <EntityTable<Area>
             rowKey="id"
+            entityName={entityName}
             columns={columns}
             dataSource={data}
             loading={loading}

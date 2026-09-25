@@ -24,7 +24,9 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
+
+const entityName = "areas";
 
 export function AreasPage() {
     const { t } = useTranslation("app");
@@ -100,23 +102,26 @@ export function AreasPage() {
     const handleDownload = async () => {
         const blob = await downloadAreas.mutateAsync();
 
-        downloadBlob(blob, "areas.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.area")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -127,6 +132,7 @@ export function AreasPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadAreas.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -137,6 +143,7 @@ export function AreasPage() {
             />
 
             <AreasTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -150,7 +157,12 @@ export function AreasPage() {
                 onDelete={handleDelete}
             />
 
-            <AreaDrawer open={drawerOpen} area={editingArea} onClose={handleClose} />
+            <AreaDrawer
+                entityName={entityName}
+                open={drawerOpen}
+                area={editingArea}
+                onClose={handleClose}
+            />
         </Space>
     );
 }

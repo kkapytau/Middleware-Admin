@@ -20,11 +20,12 @@ import { CountryForm } from "../CountryForm";
 
 interface CountryDrawerProps {
     open: boolean;
+    entityName: string;
     country?: Country;
     onClose: () => void;
 }
 
-export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
+export function CountryDrawer({ open, country, onClose, entityName }: CountryDrawerProps) {
     const { t } = useTranslation("app");
 
     const createCountry = useCreateCountry();
@@ -96,6 +97,7 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             loading={isEditing && isLoadingCountry}
             submitting={isSubmitting}
@@ -112,7 +114,7 @@ export function CountryDrawer({ open, country, onClose }: CountryDrawerProps) {
             }
             onClose={onClose}
         >
-            <CountryForm control={control} setValue={setValue} />
+            <CountryForm entityName={entityName} control={control} setValue={setValue} />
         </EntityDrawer>
     );
 }

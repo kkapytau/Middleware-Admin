@@ -22,11 +22,12 @@ import { CityForm } from "../CityForm";
 
 interface CityDrawerProps {
     open: boolean;
+    entityName: string;
     city?: City;
     onClose: () => void;
 }
 
-export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
+export function CityDrawer({ open, city, onClose, entityName }: CityDrawerProps) {
     const { t } = useTranslation("app");
 
     const createCity = useCreateCity();
@@ -87,6 +88,7 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
 
     return (
         <EntityDrawer
+            entityName={entityName}
             open={open}
             onSubmit={handleFormFinish}
             title={
@@ -102,7 +104,7 @@ export function CityDrawer({ open, city, onClose }: CityDrawerProps) {
             formId="city-form"
             onClose={onClose}
         >
-            <CityForm control={control} setValue={setValue} />
+            <CityForm entityName={entityName} control={control} setValue={setValue} />
         </EntityDrawer>
     );
 }

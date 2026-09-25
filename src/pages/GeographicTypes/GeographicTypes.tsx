@@ -21,9 +21,11 @@ import {
     useUrlFilters,
     useUrlPagination,
 } from "@/shared/hooks";
-import { downloadBlob } from "@/shared/lib";
+import { AUTOMATION_ID, downloadBlob } from "@/shared/lib";
 
 import { GeographicTypeDrawer, GeographicTypesTable } from "./components";
+
+const entityName = "geographic-types";
 
 export function GeographicTypesPage() {
     const { t } = useTranslation("app");
@@ -101,23 +103,26 @@ export function GeographicTypesPage() {
     const handleDownload = async () => {
         const blob = await downloadGeographicTypes.mutateAsync();
 
-        downloadBlob(blob, "geographic-types.csv");
+        downloadBlob(blob, `${entityName}.csv`);
     };
 
     return (
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
             <EntityToolbar
+                testId={AUTOMATION_ID.add(entityName)}
                 entity={t("navigation.geographicTypes")}
                 onAdd={handleCreate}
                 actions={
                     <>
                         <FilterButton
+                            testId={AUTOMATION_ID.filterActivator(entityName)}
                             label={t("filters.title")}
                             activeCount={activeFiltersCount}
                             open={searchOpen}
                             onOpenChange={setSearchOpen}
                         >
                             <FilterSearch
+                                entityName={entityName}
                                 fields={filterFields}
                                 initialValues={filters}
                                 emptyValues={emptyFilterFields}
@@ -128,6 +133,7 @@ export function GeographicTypesPage() {
                         </FilterButton>
 
                         <DownloadButton
+                            testId={AUTOMATION_ID.download(entityName)}
                             loading={downloadGeographicTypes.isPending}
                             onClick={() => {
                                 void handleDownload();
@@ -138,6 +144,7 @@ export function GeographicTypesPage() {
             />
 
             <GeographicTypesTable
+                entityName={entityName}
                 data={tableData}
                 loading={tableLoading}
                 pagination={{
@@ -154,6 +161,7 @@ export function GeographicTypesPage() {
             />
 
             <GeographicTypeDrawer
+                entityName={entityName}
                 open={drawerOpen}
                 geographicType={geographicTypeDetail}
                 onClose={handleClose}
